@@ -21,11 +21,11 @@ Mtra. Mónica Lara
 
 Se enviaron tres cápsulas para trabajar de manera más adecuada el curso
 
-* [Instrucciones para hacer una cuenta en Rstudio.cloud] (https://www.youtube.com/watch?v=Jcw146tEa5w=
+* [Instrucciones para hacer una cuenta en Rstudio.cloud](https://www.youtube.com/watch?v=Jcw146tEa5w)
 
-* [Cápsula de introducción a R (opcional)](https://www.youtube.com/watch?v=HR2MXwrzt00=
+* [Cápsula de introducción a R (opcional)](https://www.youtube.com/watch?v=HR2MXwrzt00)
 
-* [Importar repositorio a rstudio.cloud] (https://www.youtube.com/watch?v=enYCTyXfgh0&feature=youtu.be)
+* [Importar repositorio a rstudio.cloud](https://www.youtube.com/watch?v=enYCTyXfgh0&feature=youtu.be)
 
 ## Contenido
 
