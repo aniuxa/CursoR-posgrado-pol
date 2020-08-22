@@ -38,7 +38,7 @@ d. Introducción al programa y a la idea de programación por objetos
 
 *Sesión 2:*
 
-  a.Importación de información desde diferentes formatos (2 horas)
+ - a. Importación de información desde diferentes formatos (2 horas)
 
 *Sesiones 3 y 4*
 
@@ -49,13 +49,15 @@ i.	Univarida
 ii.	Bivariada
 
 *Sesión 5*
-c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
+
+- c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
 
 i.	Introducción a ggplot
 
 ii.	Uso de “esquisse” para visualizar información 
 
 *Sesión 6*
+
 d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 horas)
 
 i.	Gráficos multivariados
