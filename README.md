@@ -17,3 +17,64 @@ Mtra. Mónica Lara
 
 *	Importar textos e introducir al análisis de los mismos a partir de frecuencias de palabras, nombres, verbos y adjetivos.
 
+## Contenido
+
+### I.	Introducción al uso de R (2 horas)
+
+*Sesión 1*
+
+a. Fuentes de información mexicanas
+
+b. Identificación de las unidades de análisis, de muestreo y de registro.
+
+c. Lógica de las bases de datos y combinación de unidades de análisis: juntar información de distintos niveles y su interpretación
+
+d. Introducción al programa y a la idea de programación por objetos
+
+[Práctica 1](P1.md) 
+
+
+### II.	Estadística descriptiva usando información mexicana (8 horas)
+
+*Sesión 2:*
+
+a. Importación de información desde diferentes formatos (2 horas)
+
+*Sesiones 3 y 4*
+
+b.	Elementos de estadística descriptiva (4 horas)
+
+i.	Univarida
+
+ii.	Bivariada
+
+*Sesión 5*
+
+c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
+
+i.	Introducción a ggplot
+
+ii.	Uso de “esquisse” para visualizar información 
+
+*Sesión 6*
+
+d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 horas)
+
+i.	Gráficos multivariados
+
+ii.	Introducción a los mapas, uso del paquete “mxmaps”
+
+### III.	Introducción al análisis de texto
+
+*Sesión 7*
+
+a.	Importación y visualización de texto
+
+i.	Importación de archivos .txt
+
+ii.	Limpieza de caracteres
+
+iii.	Nube de palabras y otras herramientas de análisis
+
+Total de horas= 14 horas
+
