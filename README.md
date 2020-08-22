@@ -21,7 +21,7 @@ Mtra. Mónica Lara
 
 ### I.	Introducción al uso de R (2 horas)
 
-*Sesión 1:*
+*Sesión 1*
 
   a. Fuentes de información mexicanas
   b. Identificación de las unidades de análisis, de muestreo y de registro.
