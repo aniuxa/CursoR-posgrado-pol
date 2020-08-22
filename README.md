@@ -24,11 +24,8 @@ Mtra. Mónica Lara
 *Sesión 1:*
 
   a.	Fuentes de información mexicanas
-
   b.	Identificación de las unidades de análisis, de muestreo y de registro.
-
   c.	Lógica de las bases de datos y combinación de unidades de análisis: juntar información de distintos niveles y su interpretación
-
   d.	Introducción al programa y a la idea de programación por objetos
 
 
