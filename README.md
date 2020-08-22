@@ -31,7 +31,7 @@ c. Lógica de las bases de datos y combinación de unidades de análisis: juntar
 
 d. Introducción al programa y a la idea de programación por objetos
 
-[Presentación](d1.pdf) 
+[Presentación](presentaciones/d1.pdf) 
 
 [Práctica 1](P1.md) 
 
@@ -41,6 +41,7 @@ d. Introducción al programa y a la idea de programación por objetos
 *Sesión 2:*
 
 a. Importación de información desde diferentes formatos (2 horas)
+
 [Práctica 2](P2.md) 
 
 
