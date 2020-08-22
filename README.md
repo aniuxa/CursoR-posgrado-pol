@@ -22,13 +22,14 @@ Mtra. Mónica Lara
 ### I.	Introducción al uso de R (2 horas)
 
 *Sesión 1:*
-a.	Fuentes de información mexicanas
 
-b.	Identificación de las unidades de análisis, de muestreo y de registro.
+  a.	Fuentes de información mexicanas
 
-c.	Lógica de las bases de datos y combinación de unidades de análisis: juntar información de distintos niveles y su interpretación
+  b.	Identificación de las unidades de análisis, de muestreo y de registro.
 
-d.	Introducción al programa y a la idea de programación por objetos
+  c.	Lógica de las bases de datos y combinación de unidades de análisis: juntar información de distintos niveles y su interpretación
+
+  d.	Introducción al programa y a la idea de programación por objetos
 
 
 [Práctica 1](P1.md) 
@@ -37,6 +38,7 @@ d.	Introducción al programa y a la idea de programación por objetos
 ### II.	Estadística descriptiva usando información mexicana (8 horas)
 
 *Sesión 2:*
+
 a.	Importación de información desde diferentes formatos (2 horas)
 
 *Sesiones 3 y 4*
