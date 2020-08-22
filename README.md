@@ -17,6 +17,16 @@ Mtra. Mónica Lara
 
 *	Importar textos e introducir al análisis de los mismos a partir de frecuencias de palabras, nombres, verbos y adjetivos.
 
+## Previo
+
+Se enviaron tres cápsulas para trabajar de manera más adecuada el curso
+
+* [Instrucciones para hacer una cuenta en Rstudio.cloud] (https://www.youtube.com/watch?v=Jcw146tEa5w=
+
+* [Cápsula de introducción a R (opcional)](https://www.youtube.com/watch?v=HR2MXwrzt00=
+
+* [Importar repositorio a rstudio.cloud] (https://www.youtube.com/watch?v=enYCTyXfgh0&feature=youtu.be)
+
 ## Contenido
 
 ### I.	Introducción al uso de R (2 horas)
