@@ -31,6 +31,8 @@ c. Lógica de las bases de datos y combinación de unidades de análisis: juntar
 
 d. Introducción al programa y a la idea de programación por objetos
 
+[Presentación](d1.pdf) 
+
 [Práctica 1](P1.md) 
 
 
@@ -39,6 +41,8 @@ d. Introducción al programa y a la idea de programación por objetos
 *Sesión 2:*
 
 a. Importación de información desde diferentes formatos (2 horas)
+[Práctica 2](P2.md) 
+
 
 *Sesiones 3 y 4*
 
@@ -64,7 +68,7 @@ i.	Gráficos multivariados
 
 ii.	Introducción a los mapas, uso del paquete “mxmaps”
 
-### III.	Introducción al análisis de texto
+### III.	Introducción al análisis de texto (2 horas)
 
 *Sesión 7*
 
