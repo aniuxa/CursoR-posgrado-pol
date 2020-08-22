@@ -1,0 +1,176 @@
+---
+title: "Práctica 2. Más importación y manipulación de datos"
+author: "AE & ML"
+date: "22/08/2020"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Consejo para escribir "código""
+En general, cuando hacemos nuestro código querremos verificar que nuestras librerías estén instaladas. Si actualizamos nuestro R y Rstudio es probable (sobre todo en MAC) que hayamos perdido alguno.
+
+Este es un ejemplo de un código. Y vamos a introducir un paquete muy útil llamado "pacman"
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instala pacman si se requiere
+pacman::p_load(tidyverse, readxl,openxlsx, haven, sjlabelled, foreign) #carga los paquetes necesarios para esta práctica
+
+```
+
+# Importando más datos
+
+<i>¡Recuerda establecer tu directorio!</i>
+```{r 1}
+setwd("/Users/anaescoto/Dropbox/2020/CursoR-posgrado-pol")
+```
+
+Hay muchos formatos de almacenamiento de bases de datos. Vamos a aprender a importar información desde ellos.
+
+## Desde Excel 
+El paquete más compatible con RStudio es readxl. A veces, otros paquetes tienen más problemas de configuración entre R y el Java.
+
+```{r 2}
+library(readxl) # Recuerda que hay llamar al paquete
+```
+
+
+```{r 3}
+ICI_2018 <- read_excel("./datos/ICI_2018.xlsx", sheet = "para_importar")
+#View(ICI_2018)
+```
+
+Como el nombre de paquete lo indica, sólo lee. Para escribir en este formato, recomiendo el paquete "openxlsx". Lo instalamos anteriormente.
+```{r 4}
+library(openxlsx)
+```
+
+Si quisiéramos exportar un objeto a Excel
+```{r 5}
+openxlsx::write.xlsx(ICI_2018, file = "Mi_Exportación.xlsx")
+```
+
+## Repaso importación con foreing
+
+
+Recordemos nuestra base importada desde .dbf
+
+```{r}
+ecovid0420<-read.dbf("./datos/ecovid0420.dbf")
+```
+
+## Desde STATA y SPSS
+
+Si bien también se puede realizar desde el paquete foreign. Pero este no importa algunas características como las etiquetas y tampoco funciona con las versiones más nuevas de STATA. Vamos a instalar otro paquete, compatible con el mundo tidyverse. 
+
+```{r 11}
+library(haven) #pacman lo cargó pero lo ponemos acá para hablar de esta función
+```
+Recuerda que no hay que instalarlo (viene adentro de tidyverse). Se instalasólo la primera vez. Una vez instalado un paquete, lo llamamos con el comando "library"
+
+```{r}
+ecovid0420 <- read_dta("./datos/ecovid0420.dta")
+```
+
+!Importante, a R no le gustan los objetos con nombres que empiezan en números
+
+El paquete haven sí exporta información.
+```{r}
+write_dta(ecovid0420, "./datos/mi_exportación.dta", version = 12)
+```
+
+Con SSPS es muy parecido. Dentro de "haven" hay una función específica para ello. 
+
+```{r}
+encevi_hogar<- read_sav("./datos/encevi_hogar.sav")
+
+```
+
+Para escribir
+```{r}
+write_sav(ecovid0420 , "mi_exportacion.sav")
+```
+
+Checa que en todas las exportaciones en los nombres hay que incluir la extensión del programa. Si quieres guardar en un lugar diferente al directorio del trabajo, hay que escribir toda la ruta dentro de la computadora.
+
+## Revisión de nuestra base
+Vamos a revisar la base, brevemente la base
+
+```{r}
+class(ecovid0420) # tipo de objeto
+names(ecovid0420) # lista las variables
+head(ecovid0420) # muestra las primeras 6 líneas
+table(ecovid0420$CLASE2) # un tabulado simple
+```
+
+## Revisión con dplyr
+```{r}
+library(dplyr) 
+```
+
+Operador de "pipe" o "tubería" %>% (Ctrl+Shift+M)
+Antes de continuar, presentemos el operador "pipe" %>%. dplyr importa este operador de otro paquete (magrittr). 
+Este operador le permite canalizar la salida de una función a la entrada de otra función. En lugar de funciones de anidamiento (lectura desde adentro hacia afuera), la idea de la tubería es leer las funciones de izquierda a derecha.
+
+```{r}
+ecovid0420 %>% 
+    select(pb1, pb2) %>% 
+    head
+```
+
+```{r}
+ecovid0420 %>% 
+    select(pb1, pb2) %>% 
+    glimpse
+```
+
+## Etiquetas importadas y cómo usarlas
+
+Podemos ver que los objetos "data.frame"(spoiler, ya hablaremos de ellos), tiene una clase que se llama "haven_labelled"
+
+```{r}
+
+class(ecovid0420$pb1)
+
+```
+
+¿Esto que significa? Que en el programa original hay alguna etiqueta que podemos usar. 
+
+```{r}
+library(sjlabelled)
+table(ecovid0420$pb1)
+table(as_label(ecovid0420$pb1))
+
+```
+
+## Leer desde archivos de texto y desde una url
+Desde el portal <https://datos.gob.mx/> tenemos acceso a directo a varias fuentes de información, al ser datos abiertos, los archivos de texto son muy comunes.
+
+Leeremos parte de esa información, específicamente la de CONAPO
+<https://datos.gob.mx/busca/dataset/proyecciones-de-la-poblacion-de-mexico-y-de-las-entidades-federativas-2016-2050>
+
+En estas bases hay acentos y otros carecteres especiales del español, por lo que agregaremos una opción de "encoding", de lo contrario da error.
+
+```{r}
+mig_inter_quin_proyecciones <- read.csv("http://www.conapo.gob.mx/work/models/CONAPO/Datos_Abiertos/Proyecciones2018/mig_inter_quin_proyecciones.csv", encoding="latin1")
+#View(mig_inter_quin_proyecciones)
+names(mig_inter_quin_proyecciones)
+```
+
+# Ejercicio
+Escoja una base de CONAPO. Impórtela
+Replique la exploración de la práctica
+Utilice al menos un comando con dplyr
+
+
+Envíe el script utilizando la liga:
+<https://forms.gle/KMpTWDkgsu4adsv28>
+
