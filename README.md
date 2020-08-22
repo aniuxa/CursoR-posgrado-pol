@@ -2,6 +2,7 @@
  Curso intersemestral
  
 Dra. Ana Escoto
+
 Mtra. Mónica Lara
 
 ## Objetivo general
