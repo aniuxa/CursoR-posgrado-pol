@@ -31,7 +31,7 @@ c. Lógica de las bases de datos y combinación de unidades de análisis: juntar
 
 d. Introducción al programa y a la idea de programación por objetos
 
-[Presentación](presentaciones/d1.pdf) 
+[Presentación](https://github.com/aniuxa/CursoR-posgrado-pol/blob/master/presentaciones/d1.pdf) 
 
 [Práctica 1](P1.md) 
 
