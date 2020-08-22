@@ -38,7 +38,7 @@ d. Introducción al programa y a la idea de programación por objetos
 
 *Sesión 2:*
 
-  a) Importación de información desde diferentes formatos (2 horas)
+a. Importación de información desde diferentes formatos (2 horas)
 
 *Sesiones 3 y 4*
 
