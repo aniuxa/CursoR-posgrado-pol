@@ -1697,9 +1697,1248 @@ names(mig_inter_quin_proyecciones)</code></pre>
 ## [6] &quot;SEXO&quot;        &quot;EMIGRANTES&quot;  &quot;INMIGRANTES&quot;</code></pre>
 </div>
 </div>
+<div id="revisando-ecovid-ml" class="section level1">
+<h1>Revisando ECOVID-ML</h1>
+<p>Vamos a trabajar con la ECOVID-ML, una nueva fuente desarrollada por INEGI. <a href="https://www.inegi.org.mx/investigacion/ecovidml/2020/" class="uri">https://www.inegi.org.mx/investigacion/ecovidml/2020/</a></p>
+<blockquote>
+<p>Obtener información básica complementaria sobre ocupación y empleo y el efecto sobre el mercado laboral de la pandemia originada por el COVID-19.</p>
+</blockquote>
+<blockquote>
+<p>Objetivos específicos Identificar a los ocupados y las características básicas del contexto laboral. Identificar a los no ocupados, la condición de búsqueda de trabajo, deseo de trabajar y el motivo por el que no buscó trabajo. Captar información de los ausentes que retornarán a su trabajo al terminar la contingencia, como acercamiento a la caracterización de la pérdida de trabajo. Recopilar información sobre cómo la población está afrontando la pandemia con énfasis en el trabajo, ocupación y empleo. Conocer el medio por el que las personas se mantienen informadas de la situación y las medidas de protección que siguen por la contingencia sanitaria.</p>
+</blockquote>
+<div id="ojeando" class="section level2">
+<h2>Ojeando</h2>
+<pre class="r"><code>glimpse(ecovid0420)</code></pre>
+<pre><code>## Rows: 5,593
+## Columns: 163
+## $ per        &lt;dbl+lbl&gt; 220, 220, 220, 220, 220, 220, 220, 220, 220, 220, 220,…
+## $ ent        &lt;dbl+lbl&gt; 24, 10, 18, 16, 21, 12,  7, 10, 12,  4, 12, 17, 11, 20…
+## $ con        &lt;chr&gt; &quot;24E10476&quot;, &quot;10E10586&quot;, &quot;18E10542&quot;, &quot;16E10239&quot;, &quot;21E10113&quot;…
+## $ r_pre      &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ r_pre_dia  &lt;dbl&gt; 30, 30, 30, 27, 28, 30, 30, 30, 30, 28, 30, 27, 27, 30, 27…
+## $ r_pre_mes  &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4…
+## $ r_def      &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ r_def_dia  &lt;dbl&gt; 30, 30, 30, 27, 28, 30, 30, 30, 30, 28, 30, 27, 27, 30, 27…
+## $ r_def_mes  &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4…
+## $ r_def_anio &lt;dbl&gt; 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20…
+## $ pa1        &lt;dbl&gt; 4, 1, 8, 5, 7, 12, 6, 2, 5, 7, 7, 4, 9, 6, 4, 2, 2, 6, 4, …
+## $ pa2_1      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pa2_1_1    &lt;dbl&gt; 1, 1, 5, 4, 3, 6, 5, 1, 1, 3, 2, 2, 5, 3, 2, 2, 1, 4, 2, 1…
+## $ pa2_h_1    &lt;dbl&gt; 38, 82, 3, 23, 74, 40, 49, 70, 64, 24, 30, 40, 30, 46, 38,…
+## $ pa2_h_2    &lt;dbl&gt; NA, NA, 9, 18, 38, 21, 48, NA, NA, 50, 60, 14, 20, 16, 12,…
+## $ pa2_h_3    &lt;dbl&gt; NA, NA, 23, 12, 18, 20, 44, NA, NA, 1, NA, NA, NA, 2, NA, …
+## $ pa2_h_4    &lt;dbl&gt; NA, NA, 50, 5, NA, 19, 40, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ pa2_h_5    &lt;dbl&gt; NA, NA, 32, NA, NA, 17, 36, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_h_6    &lt;dbl&gt; NA, NA, NA, NA, NA, 15, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_h_7    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_h_8    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_h_9    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_2      &lt;dbl&gt; 2, NA, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …
+## $ pa2_2_1    &lt;dbl&gt; 3, NA, 3, 1, 4, 6, 1, 1, 4, 4, 5, 2, 4, 3, 2, 0, 1, 2, 2, …
+## $ pa2_m_1    &lt;dbl&gt; 35, NA, 8, 40, 66, 40, 62, 67, 64, 22, 60, 38, 22, 26, 36,…
+## $ pa2_m_2    &lt;dbl&gt; 9, NA, 42, NA, 37, 14, NA, NA, 16, 45, 30, 13, NA, 46, 9, …
+## $ pa2_m_3    &lt;dbl&gt; 7, NA, 22, NA, 17, 12, NA, NA, 18, 22, 18, NA, NA, 86, NA,…
+## $ pa2_m_4    &lt;dbl&gt; NA, NA, NA, NA, 12, 10, NA, NA, 4, 23, 15, NA, NA, NA, NA,…
+## $ pa2_m_5    &lt;dbl&gt; NA, NA, NA, NA, NA, 8, NA, NA, NA, NA, 11, NA, NA, NA, NA,…
+## $ pa2_m_6    &lt;dbl&gt; NA, NA, NA, NA, NA, 6, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ pa2_m_7    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_m_8    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa2_m_9    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa3_1      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pa3_1_1    &lt;dbl&gt; 1, 1, 2, 2, 2, 2, 5, 1, 1, 3, 2, 3, 4, 2, 1, 2, 1, 2, 2, 1…
+## $ pa3_2      &lt;dbl&gt; 2, NA, 2, 2, 2, 2, 2, 2, 2, NA, 2, NA, 2, 2, 2, NA, 2, 2, …
+## $ pa3_2_1    &lt;dbl&gt; 2, NA, 3, 3, 7, 5, 1, 1, 3, NA, 2, NA, 4, 2, 1, NA, 2, 5, …
+## $ pa3_3      &lt;dbl&gt; 3, NA, 3, NA, 3, 3, NA, NA, 3, NA, 3, 3, NA, NA, 3, NA, NA…
+## $ pa3_3_1    &lt;dbl&gt; 2, NA, 2, NA, 3, 5, NA, NA, 2, NA, 1, 1, NA, NA, 2, NA, NA…
+## $ pa4_1      &lt;dbl&gt; NA, NA, NA, 1, NA, NA, NA, NA, NA, 1, NA, NA, NA, NA, NA, …
+## $ pa4_2      &lt;dbl&gt; NA, NA, NA, 2, NA, NA, NA, NA, NA, 2, NA, NA, 2, NA, NA, N…
+## $ pa4_3      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pa4_4      &lt;dbl&gt; NA, 4, NA, 4, NA, NA, 4, 4, 4, NA, NA, NA, NA, NA, NA, NA,…
+## $ pb1        &lt;dbl+lbl&gt; 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ pb2        &lt;dbl&gt; 38, 82, 50, 18, 23, 40, 44, 70, 64, 24, 30, 40, 20, 46, 38…
+## $ pb3        &lt;dbl+lbl&gt; 3, 2, 2, 4, 3, 2, 3, 3, 2, 8, 2, 3, 1, 2, 2, 3, 8, 3, …
+## $ pc1_1      &lt;dbl&gt; 1, NA, 1, NA, 1, NA, NA, NA, NA, 1, NA, NA, 1, 1, 1, 1, NA…
+## $ pc1_2      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pc1_3      &lt;dbl&gt; NA, 3, NA, NA, NA, 3, 3, 3, 3, NA, NA, 3, NA, NA, NA, NA, …
+## $ pc1_4      &lt;dbl&gt; NA, NA, NA, 4, NA, NA, NA, NA, NA, NA, 4, NA, NA, NA, NA, …
+## $ pc2        &lt;dbl&gt; 1, 1, 2, NA, 1, 1, 1, 1, 1, 1, NA, 1, 1, 2, 1, 1, 1, 1, 1,…
+## $ pc3        &lt;dbl+lbl&gt; NA, NA, NA,  1, NA, NA, NA, NA, NA, NA,  3, NA, NA, NA…
+## $ pc4        &lt;dbl+lbl&gt; NA, NA,  3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,  3…
+## $ pc5_1      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pc5_2      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pc5_3      &lt;dbl&gt; NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 3, NA, …
+## $ pc6        &lt;dbl&gt; NA, NA, 2, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 2, NA, …
+## $ pc7        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pd1        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pd2        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pd3        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pe1        &lt;dbl&gt; 9111, 6121, 9111, 9111, 9111, 6111, 6111, 6111, 6111, 9111…
+## $ pe2        &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
+## $ pe3        &lt;dbl&gt; 2, 5, 2, 2, 2, 5, 5, 5, 5, 1, 6, 5, 2, 2, 2, 2, 4, 5, 1, 5…
+## $ pe4        &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2…
+## $ pe5        &lt;dbl&gt; 1110, 1110, 1110, 1110, 1110, 1110, 1110, 1110, 1110, 1110…
+## $ pe5_1      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pe6        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 5, 2, 1, 2, 1…
+## $ pe7        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pe8        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pe9        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pe10       &lt;dbl&gt; 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1…
+## $ pe10_1     &lt;dbl&gt; 24, 24, NA, 12, 25, 42, 3, 45, 35, 30, 24, 25, 6, NA, 50, …
+## $ pe11       &lt;dbl&gt; 1, 1, NA, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, NA, 1, 1, 2, 1, 1,…
+## $ pe12       &lt;dbl&gt; NA, NA, 1, 2, NA, NA, 1, 2, NA, NA, 2, NA, 2, 1, NA, NA, 2…
+## $ pe12_1     &lt;dbl&gt; NA, NA, 54, NA, NA, NA, 36, NA, NA, NA, NA, NA, NA, 45, NA…
+## $ pe13       &lt;dbl&gt; NA, NA, 1, NA, NA, NA, 1, NA, NA, NA, NA, NA, NA, 11, NA, …
+## $ pe14_1     &lt;dbl&gt; 1, NA, 1, 1, 1, NA, NA, NA, NA, 1, NA, NA, 1, 1, 1, 1, NA,…
+## $ pe14_2     &lt;dbl&gt; NA, 2, NA, NA, NA, 2, 2, 2, NA, NA, NA, 2, NA, NA, NA, NA,…
+## $ pe14_3     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 3, NA, NA, NA, NA,…
+## $ pe14_4     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 4, NA, NA, NA, NA, NA, NA,…
+## $ pe15       &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3…
+## $ pe16       &lt;dbl&gt; 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 2…
+## $ pe17       &lt;dbl&gt; NA, 7, NA, NA, NA, 7, 6, 7, 7, NA, NA, 2, NA, NA, NA, NA, …
+## $ pe18       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, 3, NA, NA, NA, …
+## $ pe19_1     &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 2, 1, 3, 3, 3, 3, 3, 1, 3…
+## $ pe19_2     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 4, NA, NA,…
+## $ pf1        &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
+## $ pf2        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_1      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_2      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_3      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_4      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_5      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf3_6      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf4_1      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf4_1_1    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf5        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf6_1      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf6_2      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf6_3      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf6_4      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pf7        &lt;dbl&gt; 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 1…
+## $ pf8        &lt;dbl&gt; 2, 2, 4, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 4, 2, 2, 2, 2, 2, 2…
+## $ pf9        &lt;dbl&gt; 1, 1, NA, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, NA, 1, 1, 1, 1, 1,…
+## $ pf10       &lt;dbl&gt; 2, 1, 4, 2, 4, 4, 1, 2, 4, 2, 4, 1, 2, 4, 2, 2, 2, 1, 1, 2…
+## $ pf11       &lt;dbl&gt; 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 2…
+## $ pf12       &lt;dbl&gt; 2, NA, 1, 2, 2, NA, NA, NA, NA, 1, 2, NA, 2, 1, 2, 2, NA, …
+## $ pf13       &lt;dbl&gt; NA, NA, 3, NA, NA, NA, NA, NA, NA, 1, NA, NA, NA, 3, NA, N…
+## $ pf14       &lt;dbl&gt; NA, NA, 3, NA, NA, NA, NA, NA, NA, 3, NA, NA, NA, 3, NA, N…
+## $ pf15_1     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 1, 1, NA, NA, NA, NA, NA, NA, …
+## $ pf15_2     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 2, NA, NA, NA, NA, NA, NA, NA,…
+## $ pf15_3     &lt;dbl&gt; NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 3, NA, …
+## $ pf15_4     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 4, NA, NA, NA, NA, NA,…
+## $ pf15_5     &lt;dbl&gt; 5, NA, 5, 5, 5, 5, 5, NA, NA, NA, 5, 5, 5, NA, 5, 5, 5, 5,…
+## $ pf16       &lt;dbl&gt; 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2…
+## $ pg1        &lt;dbl&gt; 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pg2        &lt;dbl&gt; 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2…
+## $ pg3        &lt;dbl&gt; 2, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2…
+## $ pg4_1      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ pg4_2      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2, NA, NA, 2, NA, NA, NA, …
+## $ pg4_3      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ pg4_4      &lt;dbl&gt; NA, NA, NA, NA, 4, 4, NA, NA, NA, NA, NA, NA, 4, NA, NA, N…
+## $ pg5        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ pg6_1      &lt;dbl&gt; NA, 1, 1, 1, 1, 1, 1, 1, 1, 1, NA, NA, NA, NA, 1, 1, 1, NA…
+## $ pg6_2      &lt;dbl&gt; 2, NA, NA, 2, 2, NA, 2, 2, NA, NA, NA, NA, NA, 2, NA, NA, …
+## $ pg6_3      &lt;dbl&gt; NA, NA, 3, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ pg6_4      &lt;dbl&gt; 4, NA, 4, 4, NA, NA, NA, NA, NA, 4, NA, NA, 4, NA, NA, 4, …
+## $ pg6_5      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, 5, 5, NA, NA, NA, N…
+## $ pg7_1      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, NA, 1, 1, 1, 1, 1, …
+## $ pg7_2      &lt;dbl&gt; 2, 2, NA, 2, 2, NA, 2, 2, NA, 2, NA, NA, 2, NA, NA, 2, NA,…
+## $ pg7_3      &lt;dbl&gt; 3, 3, 3, NA, 3, NA, 3, 3, 3, 3, 3, NA, NA, 3, 3, NA, NA, 3…
+## $ pg7_4      &lt;dbl&gt; NA, 4, NA, 4, NA, 4, 4, 4, NA, 4, NA, NA, 4, NA, NA, 4, 4,…
+## $ pg7_5      &lt;dbl&gt; NA, 5, 5, 5, 5, NA, 5, NA, 5, 5, NA, NA, 5, 5, NA, 5, 5, 5…
+## $ pg7_6      &lt;dbl&gt; 6, NA, 6, NA, NA, NA, 6, 6, 6, 6, NA, NA, NA, NA, 6, 6, 6,…
+## $ pg7_7      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ fac_viv    &lt;dbl&gt; 2174, 2870, 666, 7890, 5039, 576, 2632, 2312, 2154, 509, 1…
+## $ fac_per    &lt;dbl&gt; 6851, 7820, 3488, 14865, 19409, 6492, 10847, 7820, 6492, 2…
+## $ clase1     &lt;dbl&gt; 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1…
+## $ clase2     &lt;dbl&gt; 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1…
+## $ clase3     &lt;dbl+lbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, …
+## $ dispob     &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+## $ raz_dis    &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+## $ pos_ocu    &lt;dbl&gt; 1, 2, 0, 1, 1, 2, 2, 2, 2, 1, 3, 2, 1, 0, 1, 1, 2, 2, 1, 2…
+## $ s_act      &lt;dbl&gt; 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1…
+## $ n_tra      &lt;dbl&gt; 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 1, 5, 2, 1, 2, 1…
+## $ local      &lt;dbl&gt; 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2…
+## $ h_tra_sr   &lt;dbl&gt; 2, 2, 0, 1, 3, 4, 1, 4, 4, 3, 2, 3, 1, 0, 5, 4, 3, 2, 1, 2…
+## $ a_ser_sal  &lt;dbl&gt; 2, 2, 0, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1…
+## $ a_aus_t    &lt;dbl&gt; 4, 4, 0, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4…
+## $ no_tra_hh  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ tra_men    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ tra_mas    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ tra_men35  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ pos_ocu2   &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+## $ s_act2     &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+## $ n_tra2     &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+## $ local2     &lt;dbl&gt; 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0…
+## $ a_ser_sal2 &lt;dbl&gt; 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0…
+## $ per_tra    &lt;dbl&gt; 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2…
+## $ ing_dis    &lt;dbl&gt; 2, 2, 2, 2, 1, 1, 1, 2, 1, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2…
+## $ f_ven      &lt;dbl&gt; 3, 3, 3, 3, 2, 2, 1, 3, 1, 3, 3, 1, 2, 3, 3, 3, 3, 2, 2, 3…
+## $ inf_cov    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</code></pre>
+<pre class="r"><code>glimpse(ecovid0420[,1:10]) # en corchete del lado derecho podemos ojear columnas </code></pre>
+<pre><code>## Rows: 5,593
+## Columns: 10
+## $ per        &lt;dbl+lbl&gt; 220, 220, 220, 220, 220, 220, 220, 220, 220, 220, 220,…
+## $ ent        &lt;dbl+lbl&gt; 24, 10, 18, 16, 21, 12,  7, 10, 12,  4, 12, 17, 11, 20…
+## $ con        &lt;chr&gt; &quot;24E10476&quot;, &quot;10E10586&quot;, &quot;18E10542&quot;, &quot;16E10239&quot;, &quot;21E10113&quot;…
+## $ r_pre      &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ r_pre_dia  &lt;dbl&gt; 30, 30, 30, 27, 28, 30, 30, 30, 30, 28, 30, 27, 27, 30, 27…
+## $ r_pre_mes  &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4…
+## $ r_def      &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ r_def_dia  &lt;dbl&gt; 30, 30, 30, 27, 28, 30, 30, 30, 30, 28, 30, 27, 27, 30, 27…
+## $ r_def_mes  &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4…
+## $ r_def_anio &lt;dbl&gt; 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20…</code></pre>
+<p>Podemos hacer un tipo “labelbook”, usando una función que viene de la librería “sjlabelled”, “get_labels”. Funciona para toda la base o para columnas, o para variables.</p>
+<pre class="r"><code>#print(get_labels(ecovid0420)) #todas
+print(get_labels(ecovid0420[, 1:10])) #de las primeras 10 variables</code></pre>
+<pre><code>## $per
+## [1] &quot;Enero-Marzo&quot;       &quot;Abril-Junio&quot;       &quot;Julio-Septiembre&quot; 
+## [4] &quot;Octubre-Diciembre&quot;
+## 
+## $ent
+##  [1] &quot;       Aguascalientes  &quot;         &quot;       Baja California &quot;        
+##  [3] &quot;       Baja California Sur     &quot; &quot;       Campeche        &quot;        
+##  [5] &quot;       Coahuila        &quot;         &quot;       Colima  &quot;                
+##  [7] &quot;       Chiapas &quot;                 &quot;       Chihuahua       &quot;        
+##  [9] &quot;       Ciudad de México       &quot;  &quot;       Durango &quot;                
+## [11] &quot;       Guanajuato      &quot;         &quot;       Guerrero        &quot;        
+## [13] &quot;       Hidalgo &quot;                 &quot;       Jalisco &quot;                
+## [15] &quot;       México &quot;                  &quot;       Michoacán      &quot;         
+## [17] &quot;       Morelos &quot;                 &quot;       Nayarit &quot;                
+## [19] &quot;       Nuevo León     &quot;          &quot;       Oaxaca  &quot;                
+## [21] &quot;       Puebla  &quot;                 &quot;       Querétaro      &quot;         
+## [23] &quot;       Quintana Roo    &quot;         &quot;       San Luis Potosí        &quot; 
+## [25] &quot;       Sinaloa &quot;                 &quot;       Sonora  &quot;                
+## [27] &quot;       Tabasco &quot;                 &quot;       Tamaulipas      &quot;        
+## [29] &quot;       Tlaxcala        &quot;         &quot;       Veracruz        &quot;        
+## [31] &quot;       Yucatán        &quot;          &quot;       Zacatecas       &quot;        
+## 
+## $con
+##    [1] &quot;24E10476&quot; &quot;10E10586&quot; &quot;18E10542&quot; &quot;16E10239&quot; &quot;21E10113&quot; &quot;12E10610&quot;
+##    [7] &quot;07E10442&quot; &quot;10E10340&quot; &quot;12E10612&quot; &quot;04E10166&quot; &quot;12E10429&quot; &quot;17E10188&quot;
+##   [13] &quot;11E10207&quot; &quot;20E10749&quot; &quot;07E10242&quot; &quot;25E10368&quot; &quot;26E10487&quot; &quot;31E10261&quot;
+##   [19] &quot;16E10198&quot; &quot;32E10152&quot; &quot;24E10266&quot; &quot;32E10301&quot; &quot;25E10212&quot; &quot;18E10263&quot;
+##   [25] &quot;13E10029&quot; &quot;18E10300&quot; &quot;14E10256&quot; &quot;21E10348&quot; &quot;18E10215&quot; &quot;07E10295&quot;
+##   [31] &quot;14E10692&quot; &quot;30E10422&quot; &quot;08E10803&quot; &quot;21E10136&quot; &quot;21E10192&quot; &quot;18E10804&quot;
+##   [37] &quot;27E10074&quot; &quot;13E10298&quot; &quot;06E10484&quot; &quot;11E10052&quot; &quot;31E10333&quot; &quot;12E10001&quot;
+##   [43] &quot;25E10241&quot; &quot;16E10022&quot; &quot;13E10142&quot; &quot;11E10604&quot; &quot;28E10267&quot; &quot;26E10186&quot;
+##   [49] &quot;07E10304&quot; &quot;25E10700&quot; &quot;07E10324&quot; &quot;16E10302&quot; &quot;16E10287&quot; &quot;18E10274&quot;
+##   [55] &quot;26E10319&quot; &quot;27E10167&quot; &quot;08E10791&quot; &quot;12E10169&quot; &quot;16E10212&quot; &quot;07E10706&quot;
+##   [61] &quot;18E10467&quot; &quot;13E10483&quot; &quot;17E10297&quot; &quot;12E10567&quot; &quot;06E10552&quot; &quot;29E10050&quot;
+##   [67] &quot;30E10038&quot; &quot;14E10211&quot; &quot;11E10425&quot; &quot;16E10334&quot; &quot;14E10687&quot; &quot;07E10199&quot;
+##   [73] &quot;12E10528&quot; &quot;12E10906&quot; &quot;31E10330&quot; &quot;29E10514&quot; &quot;21E10210&quot; &quot;12E10009&quot;
+##   [79] &quot;21E10366&quot; &quot;12E10115&quot; &quot;17E10423&quot; &quot;21E10241&quot; &quot;25E10634&quot; &quot;11E10161&quot;
+##   [85] &quot;21E10244&quot; &quot;11E10151&quot; &quot;13E10467&quot; &quot;16E10206&quot; &quot;18E10181&quot; &quot;24E10202&quot;
+##   [91] &quot;07E10525&quot; &quot;24E10311&quot; &quot;03E10023&quot; &quot;03E10285&quot; &quot;31E10063&quot; &quot;24E10336&quot;
+##   [97] &quot;25E10371&quot; &quot;03E10065&quot; &quot;21E10268&quot; &quot;16E10266&quot; &quot;28E10499&quot; &quot;06E10666&quot;
+##  [103] &quot;14E10218&quot; &quot;20E10483&quot; &quot;25E10416&quot; &quot;24E10123&quot; &quot;07E10213&quot; &quot;12E10437&quot;
+##  [109] &quot;18E10192&quot; &quot;30E10475&quot; &quot;14E10280&quot; &quot;30E10404&quot; &quot;31E10247&quot; &quot;31E10125&quot;
+##  [115] &quot;21E10173&quot; &quot;21E10220&quot; &quot;20E10292&quot; &quot;24E10951&quot; &quot;32E10249&quot; &quot;08E10213&quot;
+##  [121] &quot;21E10124&quot; &quot;07E10361&quot; &quot;17E10157&quot; &quot;25E10374&quot; &quot;25E10238&quot; &quot;13E10568&quot;
+##  [127] &quot;14E10035&quot; &quot;14E10307&quot; &quot;16E10159&quot; &quot;12E10827&quot; &quot;06E10357&quot; &quot;26E10166&quot;
+##  [133] &quot;12E10428&quot; &quot;31E10013&quot; &quot;13E10400&quot; &quot;07E10002&quot; &quot;14E10184&quot; &quot;28E10009&quot;
+##  [139] &quot;24E10131&quot; &quot;03E10029&quot; &quot;18E10128&quot; &quot;25E10967&quot; &quot;20E10803&quot; &quot;07E10382&quot;
+##  [145] &quot;27E10136&quot; &quot;20E10061&quot; &quot;32E10006&quot; &quot;04E10622&quot; &quot;28E10463&quot; &quot;14E10411&quot;
+##  [151] &quot;03E10596&quot; &quot;08E10530&quot; &quot;12E10256&quot; &quot;18E10373&quot; &quot;14E10124&quot; &quot;32E10072&quot;
+##  [157] &quot;29E10294&quot; &quot;16E10356&quot; &quot;04E10265&quot; &quot;13E10111&quot; &quot;18E10446&quot; &quot;02E10101&quot;
+##  [163] &quot;07E10352&quot; &quot;06E10474&quot; &quot;07E10507&quot; &quot;20E10655&quot; &quot;22E10325&quot; &quot;13E10803&quot;
+##  [169] &quot;29E10120&quot; &quot;12E10153&quot; &quot;29E10459&quot; &quot;08E10438&quot; &quot;17E10046&quot; &quot;12E10476&quot;
+##  [175] &quot;24E10591&quot; &quot;25E10019&quot; &quot;06E10100&quot; &quot;17E10268&quot; &quot;12E10925&quot; &quot;13E10490&quot;
+##  [181] &quot;25E10300&quot; &quot;16E10420&quot; &quot;08E10179&quot; &quot;17E10061&quot; &quot;02E10004&quot; &quot;25E10129&quot;
+##  [187] &quot;07E10445&quot; &quot;21E10386&quot; &quot;24E10138&quot; &quot;18E10651&quot; &quot;04E10123&quot; &quot;17E10455&quot;
+##  [193] &quot;18E10220&quot; &quot;25E10017&quot; &quot;12E10309&quot; &quot;12E10265&quot; &quot;20E10281&quot; &quot;04E10022&quot;
+##  [199] &quot;12E10135&quot; &quot;16E10504&quot; &quot;25E10874&quot; &quot;03E10089&quot; &quot;04E10458&quot; &quot;07E10670&quot;
+##  [205] &quot;12E10988&quot; &quot;12E10128&quot; &quot;21E10077&quot; &quot;25E10269&quot; &quot;21E10321&quot; &quot;07E10055&quot;
+##  [211] &quot;09E10032&quot; &quot;20E10338&quot; &quot;32E10534&quot; &quot;21E10201&quot; &quot;12E10415&quot; &quot;14E10319&quot;
+##  [217] &quot;08E10844&quot; &quot;21E10138&quot; &quot;07E10124&quot; &quot;14E10138&quot; &quot;16E10137&quot; &quot;24E10023&quot;
+##  [223] &quot;29E10242&quot; &quot;32E10145&quot; &quot;12E10012&quot; &quot;24E10036&quot; &quot;14E10048&quot; &quot;12E10207&quot;
+##  [229] &quot;19E10061&quot; &quot;21E10006&quot; &quot;30E10306&quot; &quot;05E10334&quot; &quot;18E10167&quot; &quot;08E10050&quot;
+##  [235] &quot;13E10396&quot; &quot;10E10045&quot; &quot;30E10631&quot; &quot;18E10170&quot; &quot;30E10698&quot; &quot;30E10432&quot;
+##  [241] &quot;08E10063&quot; &quot;27E10132&quot; &quot;22E10436&quot; &quot;12E10556&quot; &quot;11E10495&quot; &quot;31E10522&quot;
+##  [247] &quot;03E10816&quot; &quot;06E10365&quot; &quot;25E10183&quot; &quot;12E10089&quot; &quot;03E10226&quot; &quot;18E10710&quot;
+##  [253] &quot;18E10193&quot; &quot;32E10420&quot; &quot;01E10320&quot; &quot;05E10253&quot; &quot;28E10005&quot; &quot;29E10260&quot;
+##  [259] &quot;17E10313&quot; &quot;10E10248&quot; &quot;32E10329&quot; &quot;18E10327&quot; &quot;18E10661&quot; &quot;30E10061&quot;
+##  [265] &quot;05E10610&quot; &quot;05E10370&quot; &quot;01E10179&quot; &quot;14E10255&quot; &quot;18E10219&quot; &quot;32E10323&quot;
+##  [271] &quot;04E10278&quot; &quot;25E10253&quot; &quot;20E10596&quot; &quot;03E10030&quot; &quot;02E10172&quot; &quot;26E10178&quot;
+##  [277] &quot;20E10517&quot; &quot;03E10169&quot; &quot;13E10470&quot; &quot;01E10212&quot; &quot;05E10586&quot; &quot;14E10201&quot;
+##  [283] &quot;24E10834&quot; &quot;29E10534&quot; &quot;24E10050&quot; &quot;24E10467&quot; &quot;06E10187&quot; &quot;05E10259&quot;
+##  [289] &quot;11E10388&quot; &quot;10E10567&quot; &quot;19E10318&quot; &quot;32E10275&quot; &quot;24E10857&quot; &quot;28E10185&quot;
+##  [295] &quot;32E10084&quot; &quot;16E10228&quot; &quot;18E10499&quot; &quot;08E10377&quot; &quot;20E10182&quot; &quot;04E10057&quot;
+##  [301] &quot;13E10488&quot; &quot;24E10220&quot; &quot;24E10373&quot; &quot;32E10063&quot; &quot;14E10202&quot; &quot;11E10249&quot;
+##  [307] &quot;12E10845&quot; &quot;16E10704&quot; &quot;18E10036&quot; &quot;04E10478&quot; &quot;01E10499&quot; &quot;25E10350&quot;
+##  [313] &quot;17E10156&quot; &quot;25E10858&quot; &quot;25E10465&quot; &quot;10E10545&quot; &quot;20E10239&quot; &quot;18E10224&quot;
+##  [319] &quot;07E10299&quot; &quot;12E10370&quot; &quot;18E10528&quot; &quot;03E10092&quot; &quot;04E10099&quot; &quot;20E10060&quot;
+##  [325] &quot;18E10003&quot; &quot;04E10367&quot; &quot;18E10227&quot; &quot;13E10041&quot; &quot;27E10116&quot; &quot;04E10239&quot;
+##  [331] &quot;04E10209&quot; &quot;04E10382&quot; &quot;08E10485&quot; &quot;08E10066&quot; &quot;08E10057&quot; &quot;05E10069&quot;
+##  [337] &quot;05E10274&quot; &quot;32E10547&quot; &quot;08E10168&quot; &quot;03E10361&quot; &quot;32E10926&quot; &quot;26E10357&quot;
+##  [343] &quot;12E10498&quot; &quot;32E10951&quot; &quot;32E10207&quot; &quot;17E10138&quot; &quot;03E10241&quot; &quot;08E10862&quot;
+##  [349] &quot;03E10099&quot; &quot;03E10028&quot; &quot;03E10103&quot; &quot;21E10272&quot; &quot;10E10661&quot; &quot;10E10463&quot;
+##  [355] &quot;04E10336&quot; &quot;04E10039&quot; &quot;06E10625&quot; &quot;05E10410&quot; &quot;14E10470&quot; &quot;02E10083&quot;
+##  [361] &quot;17E10191&quot; &quot;17E10341&quot; &quot;32E10865&quot; &quot;02E10095&quot; &quot;31E10004&quot; &quot;25E10258&quot;
+##  [367] &quot;11E10257&quot; &quot;28E10122&quot; &quot;26E10566&quot; &quot;11E10323&quot; &quot;11E10285&quot; &quot;12E10268&quot;
+##  [373] &quot;15E10462&quot; &quot;14E10129&quot; &quot;15E10758&quot; &quot;07E10764&quot; &quot;14E10083&quot; &quot;25E10961&quot;
+##  [379] &quot;21E10258&quot; &quot;28E10535&quot; &quot;07E10761&quot; &quot;20E10267&quot; &quot;25E10015&quot; &quot;26E10338&quot;
+##  [385] &quot;20E10128&quot; &quot;01E10578&quot; &quot;10E10525&quot; &quot;01E10241&quot; &quot;21E10428&quot; &quot;19E10682&quot;
+##  [391] &quot;15E10381&quot; &quot;07E10164&quot; &quot;07E10105&quot; &quot;03E10194&quot; &quot;07E10005&quot; &quot;06E10211&quot;
+##  [397] &quot;23E10247&quot; &quot;20E10395&quot; &quot;32E10027&quot; &quot;06E10425&quot; &quot;03E10785&quot; &quot;14E10271&quot;
+##  [403] &quot;20E10379&quot; &quot;24E10608&quot; &quot;15E10936&quot; &quot;20E10635&quot; &quot;23E10119&quot; &quot;20E10930&quot;
+##  [409] &quot;20E10869&quot; &quot;08E10020&quot; &quot;17E10057&quot; &quot;25E10232&quot; &quot;07E10413&quot; &quot;23E10430&quot;
+##  [415] &quot;05E10622&quot; &quot;06E10116&quot; &quot;01E10617&quot; &quot;26E10476&quot; &quot;10E10500&quot; &quot;27E10443&quot;
+##  [421] &quot;16E10075&quot; &quot;08E10201&quot; &quot;22E10072&quot; &quot;32E10232&quot; &quot;31E10736&quot; &quot;22E10735&quot;
+##  [427] &quot;14E10045&quot; &quot;07E10185&quot; &quot;09E10240&quot; &quot;32E10274&quot; &quot;29E10389&quot; &quot;14E10792&quot;
+##  [433] &quot;17E10242&quot; &quot;15E10966&quot; &quot;23E10451&quot; &quot;18E10131&quot; &quot;09E10740&quot; &quot;25E10797&quot;
+##  [439] &quot;07E10190&quot; &quot;25E10265&quot; &quot;17E10068&quot; &quot;12E10763&quot; &quot;01E10869&quot; &quot;32E10312&quot;
+##  [445] &quot;18E10298&quot; &quot;24E10228&quot; &quot;24E10174&quot; &quot;07E10056&quot; &quot;31E10318&quot; &quot;24E10194&quot;
+##  [451] &quot;20E10622&quot; &quot;08E10174&quot; &quot;20E10688&quot; &quot;26E10413&quot; &quot;28E10174&quot; &quot;04E10571&quot;
+##  [457] &quot;05E10027&quot; &quot;13E10320&quot; &quot;20E10644&quot; &quot;20E10389&quot; &quot;23E10675&quot; &quot;09E10330&quot;
+##  [463] &quot;05E10699&quot; &quot;14E10713&quot; &quot;19E10225&quot; &quot;21E10104&quot; &quot;19E10786&quot; &quot;08E10710&quot;
+##  [469] &quot;09E10424&quot; &quot;18E10475&quot; &quot;21E10073&quot; &quot;18E10307&quot; &quot;32E10853&quot; &quot;04E10017&quot;
+##  [475] &quot;21E10491&quot; &quot;04E10104&quot; &quot;06E10502&quot; &quot;06E10498&quot; &quot;14E10157&quot; &quot;11E10347&quot;
+##  [481] &quot;28E10384&quot; &quot;18E10621&quot; &quot;32E10048&quot; &quot;24E10197&quot; &quot;18E10163&quot; &quot;31E10495&quot;
+##  [487] &quot;03E10504&quot; &quot;28E10121&quot; &quot;18E10771&quot; &quot;31E10788&quot; &quot;17E10319&quot; &quot;12E10479&quot;
+##  [493] &quot;14E10744&quot; &quot;23E10714&quot; &quot;04E10194&quot; &quot;25E10573&quot; &quot;31E10192&quot; &quot;19E10697&quot;
+##  [499] &quot;13E10025&quot; &quot;10E10498&quot; &quot;08E10723&quot; &quot;30E10406&quot; &quot;03E10237&quot; &quot;08E10040&quot;
+##  [505] &quot;27E10578&quot; &quot;19E10306&quot; &quot;32E10236&quot; &quot;09E10893&quot; &quot;26E10020&quot; &quot;09E10745&quot;
+##  [511] &quot;13E10609&quot; &quot;04E10512&quot; &quot;19E10063&quot; &quot;20E10856&quot; &quot;12E10305&quot; &quot;32E10108&quot;
+##  [517] &quot;14E10610&quot; &quot;32E10741&quot; &quot;02E10382&quot; &quot;19E10759&quot; &quot;12E10026&quot; &quot;16E10207&quot;
+##  [523] &quot;30E10498&quot; &quot;11E10168&quot; &quot;19E10286&quot; &quot;05E10419&quot; &quot;13E10699&quot; &quot;17E10651&quot;
+##  [529] &quot;03E10379&quot; &quot;23E10054&quot; &quot;16E10079&quot; &quot;05E10314&quot; &quot;02E10703&quot; &quot;21E10122&quot;
+##  [535] &quot;28E10253&quot; &quot;15E10189&quot; &quot;28E10126&quot; &quot;27E10015&quot; &quot;03E10171&quot; &quot;20E10473&quot;
+##  [541] &quot;31E10356&quot; &quot;12E10711&quot; &quot;22E10655&quot; &quot;04E10246&quot; &quot;20E10369&quot; &quot;32E10304&quot;
+##  [547] &quot;06E10174&quot; &quot;16E10155&quot; &quot;09E10587&quot; &quot;12E10288&quot; &quot;31E10064&quot; &quot;13E10669&quot;
+##  [553] &quot;03E10239&quot; &quot;10E10481&quot; &quot;13E10900&quot; &quot;30E10055&quot; &quot;24E10774&quot; &quot;30E10029&quot;
+##  [559] &quot;30E10378&quot; &quot;09E10834&quot; &quot;16E10380&quot; &quot;13E10778&quot; &quot;23E10963&quot; &quot;28E10322&quot;
+##  [565] &quot;10E10116&quot; &quot;05E10020&quot; &quot;31E10706&quot; &quot;24E10855&quot; &quot;25E10172&quot; &quot;23E10336&quot;
+##  [571] &quot;21E10120&quot; &quot;28E10030&quot; &quot;12E10462&quot; &quot;11E10286&quot; &quot;12E10635&quot; &quot;14E10863&quot;
+##  [577] &quot;04E10304&quot; &quot;21E10598&quot; &quot;16E10694&quot; &quot;16E10695&quot; &quot;12E10274&quot; &quot;30E10303&quot;
+##  [583] &quot;17E10241&quot; &quot;03E10084&quot; &quot;16E10317&quot; &quot;11E10087&quot; &quot;28E10192&quot; &quot;12E10144&quot;
+##  [589] &quot;31E10343&quot; &quot;20E10040&quot; &quot;16E10691&quot; &quot;11E10326&quot; &quot;21E10425&quot; &quot;05E10353&quot;
+##  [595] &quot;32E10352&quot; &quot;16E10550&quot; &quot;05E10687&quot; &quot;04E10038&quot; &quot;31E10186&quot; &quot;22E10299&quot;
+##  [601] &quot;14E10116&quot; &quot;30E10495&quot; &quot;15E10777&quot; &quot;32E10405&quot; &quot;10E10358&quot; &quot;24E10646&quot;
+##  [607] &quot;22E10266&quot; &quot;21E10730&quot; &quot;09E10211&quot; &quot;02E10449&quot; &quot;23E10569&quot; &quot;01E10094&quot;
+##  [613] &quot;31E10357&quot; &quot;16E10373&quot; &quot;15E10109&quot; &quot;09E10036&quot; &quot;16E10021&quot; &quot;18E10713&quot;
+##  [619] &quot;18E10005&quot; &quot;22E10105&quot; &quot;03E10380&quot; &quot;30E10476&quot; &quot;20E10940&quot; &quot;19E10116&quot;
+##  [625] &quot;28E10248&quot; &quot;23E10167&quot; &quot;32E10456&quot; &quot;25E10001&quot; &quot;09E10981&quot; &quot;10E10220&quot;
+##  [631] &quot;05E10475&quot; &quot;16E10275&quot; &quot;05E10645&quot; &quot;17E10142&quot; &quot;30E10409&quot; &quot;04E10661&quot;
+##  [637] &quot;15E10590&quot; &quot;04E10691&quot; &quot;31E10119&quot; &quot;02E10678&quot; &quot;05E10077&quot; &quot;28E10464&quot;
+##  [643] &quot;04E10408&quot; &quot;10E10074&quot; &quot;24E10077&quot; &quot;30E10575&quot; &quot;12E10527&quot; &quot;18E10111&quot;
+##  [649] &quot;20E10445&quot; &quot;13E10454&quot; &quot;20E10664&quot; &quot;01E10493&quot; &quot;16E10263&quot; &quot;07E10175&quot;
+##  [655] &quot;12E10189&quot; &quot;30E10481&quot; &quot;12E10183&quot; &quot;28E10461&quot; &quot;09E10093&quot; &quot;26E10375&quot;
+##  [661] &quot;14E10249&quot; &quot;03E10257&quot; &quot;27E10103&quot; &quot;31E10059&quot; &quot;17E10033&quot; &quot;30E10083&quot;
+##  [667] &quot;25E10956&quot; &quot;04E10383&quot; &quot;27E10055&quot; &quot;15E10349&quot; &quot;29E10171&quot; &quot;05E10164&quot;
+##  [673] &quot;22E10797&quot; &quot;08E10517&quot; &quot;15E10620&quot; &quot;32E10086&quot; &quot;10E10457&quot; &quot;03E10400&quot;
+##  [679] &quot;12E10362&quot; &quot;26E10601&quot; &quot;12E10442&quot; &quot;20E10262&quot; &quot;22E10281&quot; &quot;18E10304&quot;
+##  [685] &quot;02E10142&quot; &quot;02E10211&quot; &quot;12E10503&quot; &quot;27E10111&quot; &quot;26E10614&quot; &quot;12E10497&quot;
+##  [691] &quot;21E10115&quot; &quot;27E10500&quot; &quot;25E10115&quot; &quot;06E10041&quot; &quot;13E10862&quot; &quot;12E10313&quot;
+##  [697] &quot;10E10333&quot; &quot;18E10067&quot; &quot;16E10158&quot; &quot;29E10474&quot; &quot;12E10501&quot; &quot;29E10107&quot;
+##  [703] &quot;24E10668&quot; &quot;31E10127&quot; &quot;26E10193&quot; &quot;15E10217&quot; &quot;20E10942&quot; &quot;27E10483&quot;
+##  [709] &quot;01E10515&quot; &quot;20E10540&quot; &quot;20E10828&quot; &quot;13E10952&quot; &quot;32E10257&quot; &quot;20E10715&quot;
+##  [715] &quot;32E10023&quot; &quot;31E10061&quot; &quot;25E10069&quot; &quot;31E10312&quot; &quot;21E10159&quot; &quot;20E10265&quot;
+##  [721] &quot;25E10790&quot; &quot;29E10410&quot; &quot;13E10668&quot; &quot;08E10496&quot; &quot;15E10129&quot; &quot;12E10296&quot;
+##  [727] &quot;04E10109&quot; &quot;03E10402&quot; &quot;26E10569&quot; &quot;22E10415&quot; &quot;03E10090&quot; &quot;04E10184&quot;
+##  [733] &quot;11E10384&quot; &quot;01E10582&quot; &quot;09E10136&quot; &quot;11E10293&quot; &quot;04E10064&quot; &quot;01E10583&quot;
+##  [739] &quot;04E10251&quot; &quot;13E10055&quot; &quot;23E10367&quot; &quot;14E10447&quot; &quot;09E10165&quot; &quot;11E10327&quot;
+##  [745] &quot;22E10029&quot; &quot;32E10811&quot; &quot;24E10069&quot; &quot;32E10061&quot; &quot;32E10311&quot; &quot;20E10047&quot;
+##  [751] &quot;09E10023&quot; &quot;20E10041&quot; &quot;29E10353&quot; &quot;13E10234&quot; &quot;17E10141&quot; &quot;25E10477&quot;
+##  [757] &quot;15E10024&quot; &quot;14E10817&quot; &quot;19E10498&quot; &quot;21E10040&quot; &quot;14E10448&quot; &quot;18E10503&quot;
+##  [763] &quot;15E10502&quot; &quot;30E10159&quot; &quot;28E10720&quot; &quot;10E10198&quot; &quot;18E10652&quot; &quot;13E10316&quot;
+##  [769] &quot;23E10725&quot; &quot;25E10143&quot; &quot;21E10294&quot; &quot;21E10208&quot; &quot;21E10290&quot; &quot;17E10403&quot;
+##  [775] &quot;29E10229&quot; &quot;31E10092&quot; &quot;22E10169&quot; &quot;12E10266&quot; &quot;31E10083&quot; &quot;16E10071&quot;
+##  [781] &quot;31E10291&quot; &quot;23E10236&quot; &quot;31E10526&quot; &quot;08E10152&quot; &quot;12E10072&quot; &quot;25E10798&quot;
+##  [787] &quot;21E10005&quot; &quot;20E10221&quot; &quot;31E10022&quot; &quot;21E10002&quot; &quot;31E10299&quot; &quot;31E10654&quot;
+##  [793] &quot;02E10307&quot; &quot;31E10525&quot; &quot;31E10118&quot; &quot;31E10513&quot; &quot;04E10509&quot; &quot;15E10120&quot;
+##  [799] &quot;02E10263&quot; &quot;21E10088&quot; &quot;31E10065&quot; &quot;12E10033&quot; &quot;19E10159&quot; &quot;02E10605&quot;
+##  [805] &quot;14E10606&quot; &quot;21E10343&quot; &quot;05E10626&quot; &quot;29E10121&quot; &quot;12E10038&quot; &quot;29E10303&quot;
+##  [811] &quot;31E10099&quot; &quot;29E10205&quot; &quot;28E10070&quot; &quot;21E10697&quot; &quot;22E10194&quot; &quot;30E10060&quot;
+##  [817] &quot;05E10094&quot; &quot;31E10360&quot; &quot;20E10322&quot; &quot;02E10543&quot; &quot;29E10337&quot; &quot;17E10503&quot;
+##  [823] &quot;08E10186&quot; &quot;09E10425&quot; &quot;11E10593&quot; &quot;01E10349&quot; &quot;06E10384&quot; &quot;21E10516&quot;
+##  [829] &quot;01E10464&quot; &quot;20E10360&quot; &quot;05E10349&quot; &quot;15E10592&quot; &quot;31E10232&quot; &quot;20E10370&quot;
+##  [835] &quot;31E10286&quot; &quot;30E10764&quot; &quot;20E10172&quot; &quot;31E10021&quot; &quot;13E10784&quot; &quot;08E10167&quot;
+##  [841] &quot;15E10564&quot; &quot;17E10621&quot; &quot;14E10670&quot; &quot;11E10590&quot; &quot;32E10358&quot; &quot;09E10535&quot;
+##  [847] &quot;11E10571&quot; &quot;02E10682&quot; &quot;08E10079&quot; &quot;04E10058&quot; &quot;08E10828&quot; &quot;19E10429&quot;
+##  [853] &quot;02E10799&quot; &quot;23E10757&quot; &quot;30E10663&quot; &quot;13E10915&quot; &quot;11E10614&quot; &quot;13E10039&quot;
+##  [859] &quot;23E10098&quot; &quot;04E10301&quot; &quot;09E10816&quot; &quot;24E10051&quot; &quot;02E10658&quot; &quot;28E10173&quot;
+##  [865] &quot;22E10116&quot; &quot;28E10094&quot; &quot;15E10579&quot; &quot;09E10419&quot; &quot;08E10062&quot; &quot;14E10237&quot;
+##  [871] &quot;08E10506&quot; &quot;28E10131&quot; &quot;05E10576&quot; &quot;05E10166&quot; &quot;07E10123&quot; &quot;27E10458&quot;
+##  [877] &quot;15E10327&quot; &quot;03E10759&quot; &quot;31E10772&quot; &quot;09E10851&quot; &quot;15E10429&quot; &quot;15E10262&quot;
+##  [883] &quot;24E10276&quot; &quot;15E10372&quot; &quot;30E10059&quot; &quot;15E10428&quot; &quot;15E10212&quot; &quot;19E10936&quot;
+##  [889] &quot;22E10111&quot; &quot;24E10417&quot; &quot;26E10244&quot; &quot;14E10093&quot; &quot;21E10259&quot; &quot;24E10395&quot;
+##  [895] &quot;08E10314&quot; &quot;24E10280&quot; &quot;11E10456&quot; &quot;14E10963&quot; &quot;28E10225&quot; &quot;01E10221&quot;
+##  [901] &quot;08E10643&quot; &quot;22E10657&quot; &quot;22E10401&quot; &quot;28E10052&quot; &quot;28E10189&quot; &quot;26E10590&quot;
+##  [907] &quot;14E10145&quot; &quot;29E10011&quot; &quot;22E10091&quot; &quot;11E10109&quot; &quot;21E10103&quot; &quot;26E10176&quot;
+##  [913] &quot;11E10073&quot; &quot;32E10506&quot; &quot;22E10330&quot; &quot;17E10620&quot; &quot;21E10203&quot; &quot;05E10427&quot;
+##  [919] &quot;20E10769&quot; &quot;06E10671&quot; &quot;29E10522&quot; &quot;09E10904&quot; &quot;11E10023&quot; &quot;01E10057&quot;
+##  [925] &quot;19E10258&quot; &quot;31E10729&quot; &quot;24E10112&quot; &quot;26E10555&quot; &quot;05E10251&quot; &quot;19E10696&quot;
+##  [931] &quot;02E10880&quot; &quot;30E10035&quot; &quot;12E10214&quot; &quot;20E10578&quot; &quot;14E10993&quot; &quot;06E10397&quot;
+##  [937] &quot;14E10235&quot; &quot;09E10323&quot; &quot;08E10265&quot; &quot;16E10475&quot; &quot;19E10358&quot; &quot;32E10634&quot;
+##  [943] &quot;13E10007&quot; &quot;08E10120&quot; &quot;27E10467&quot; &quot;14E10092&quot; &quot;02E10517&quot; &quot;18E10010&quot;
+##  [949] &quot;31E10842&quot; &quot;11E10584&quot; &quot;23E10329&quot; &quot;18E10273&quot; &quot;10E10515&quot; &quot;24E10199&quot;
+##  [955] &quot;24E10674&quot; &quot;21E10050&quot; &quot;05E10160&quot; &quot;07E10174&quot; &quot;02E10494&quot; &quot;31E10358&quot;
+##  [961] &quot;26E10578&quot; &quot;20E10068&quot; &quot;20E10307&quot; &quot;24E10231&quot; &quot;27E10142&quot; &quot;32E10478&quot;
+##  [967] &quot;24E10690&quot; &quot;02E10340&quot; &quot;29E10021&quot; &quot;13E10757&quot; &quot;24E10378&quot; &quot;08E10033&quot;
+##  [973] &quot;01E10125&quot; &quot;24E10393&quot; &quot;24E10531&quot; &quot;08E10369&quot; &quot;08E10339&quot; &quot;08E10952&quot;
+##  [979] &quot;02E10388&quot; &quot;26E10126&quot; &quot;08E10379&quot; &quot;05E10599&quot; &quot;17E10258&quot; &quot;02E10492&quot;
+##  [985] &quot;08E10465&quot; &quot;26E10327&quot; &quot;22E10016&quot; &quot;02E10571&quot; &quot;26E10571&quot; &quot;01E10236&quot;
+##  [991] &quot;02E10480&quot; &quot;02E10801&quot; &quot;14E10946&quot; &quot;05E10680&quot; &quot;08E10229&quot; &quot;22E10954&quot;
+##  [997] &quot;22E10344&quot; &quot;08E10220&quot; &quot;32E10377&quot; &quot;15E10208&quot; &quot;14E10488&quot; &quot;22E10336&quot;
+## [1003] &quot;08E10428&quot; &quot;19E10174&quot; &quot;24E10762&quot; &quot;08E10656&quot; &quot;10E10681&quot; &quot;05E10142&quot;
+## [1009] &quot;21E10445&quot; &quot;11E10351&quot; &quot;08E10748&quot; &quot;01E10874&quot; &quot;17E10095&quot; &quot;04E10082&quot;
+## [1015] &quot;14E10989&quot; &quot;05E10506&quot; &quot;11E10020&quot; &quot;08E10427&quot; &quot;15E10102&quot; &quot;22E10590&quot;
+## [1021] &quot;28E10213&quot; &quot;08E10962&quot; &quot;22E10888&quot; &quot;02E10713&quot; &quot;22E10587&quot; &quot;32E10303&quot;
+## [1027] &quot;26E10445&quot; &quot;05E10090&quot; &quot;11E10227&quot; &quot;05E10254&quot; &quot;26E10453&quot; &quot;24E10630&quot;
+## [1033] &quot;22E10063&quot; &quot;22E10014&quot; &quot;05E10301&quot; &quot;01E10251&quot; &quot;22E10259&quot; &quot;26E10392&quot;
+## [1039] &quot;08E10594&quot; &quot;11E10096&quot; &quot;08E10061&quot; &quot;24E10743&quot; &quot;05E10128&quot; &quot;05E10103&quot;
+## [1045] &quot;01E10758&quot; &quot;19E10302&quot; &quot;05E10308&quot; &quot;28E10385&quot; &quot;21E10711&quot; &quot;01E10824&quot;
+## [1051] &quot;22E10241&quot; &quot;25E10935&quot; &quot;05E10242&quot; &quot;25E10213&quot; &quot;05E10145&quot; &quot;24E10706&quot;
+## [1057] &quot;08E10096&quot; &quot;11E10205&quot; &quot;14E10943&quot; &quot;06E10450&quot; &quot;18E10057&quot; &quot;02E10213&quot;
+## [1063] &quot;02E10524&quot; &quot;31E10480&quot; &quot;22E10146&quot; &quot;26E10309&quot; &quot;08E10320&quot; &quot;05E10066&quot;
+## [1069] &quot;08E10718&quot; &quot;01E10735&quot; &quot;14E10238&quot; &quot;11E10138&quot; &quot;11E10272&quot; &quot;19E10976&quot;
+## [1075] &quot;29E10187&quot; &quot;05E10296&quot; &quot;08E10170&quot; &quot;32E10038&quot; &quot;16E10044&quot; &quot;08E10026&quot;
+## [1081] &quot;16E10104&quot; &quot;12E10977&quot; &quot;25E10068&quot; &quot;26E10461&quot; &quot;31E10289&quot; &quot;03E10921&quot;
+## [1087] &quot;14E10302&quot; &quot;24E10294&quot; &quot;09E10426&quot; &quot;14E10171&quot; &quot;16E10147&quot; &quot;32E10960&quot;
+## [1093] &quot;06E10183&quot; &quot;26E10171&quot; &quot;32E10204&quot; &quot;08E10042&quot; &quot;09E10115&quot; &quot;02E10642&quot;
+## [1099] &quot;02E10182&quot; &quot;12E10328&quot; &quot;02E10401&quot; &quot;02E10911&quot; &quot;08E10470&quot; &quot;20E10585&quot;
+## [1105] &quot;15E10834&quot; &quot;22E10157&quot; &quot;29E10056&quot; &quot;21E10137&quot; &quot;30E10033&quot; &quot;06E10188&quot;
+## [1111] &quot;02E10650&quot; &quot;32E10104&quot; &quot;13E10878&quot; &quot;02E10163&quot; &quot;16E10410&quot; &quot;21E10196&quot;
+## [1117] &quot;31E10781&quot; &quot;08E10640&quot; &quot;13E10665&quot; &quot;19E10071&quot; &quot;20E10826&quot; &quot;21E10087&quot;
+## [1123] &quot;28E10397&quot; &quot;24E10229&quot; &quot;06E10682&quot; &quot;18E10331&quot; &quot;08E10192&quot; &quot;18E10560&quot;
+## [1129] &quot;25E10130&quot; &quot;08E10415&quot; &quot;12E10434&quot; &quot;26E10588&quot; &quot;01E10784&quot; &quot;19E10277&quot;
+## [1135] &quot;04E10548&quot; &quot;28E10361&quot; &quot;24E10411&quot; &quot;19E10469&quot; &quot;13E10104&quot; &quot;26E10264&quot;
+## [1141] &quot;29E10068&quot; &quot;06E10620&quot; &quot;25E10404&quot; &quot;09E10448&quot; &quot;05E10018&quot; &quot;09E10845&quot;
+## [1147] &quot;19E10233&quot; &quot;11E10380&quot; &quot;09E10166&quot; &quot;20E10327&quot; &quot;27E10478&quot; &quot;09E10097&quot;
+## [1153] &quot;13E10043&quot; &quot;03E10311&quot; &quot;08E10923&quot; &quot;18E10594&quot; &quot;17E10087&quot; &quot;03E10717&quot;
+## [1159] &quot;13E10124&quot; &quot;09E10651&quot; &quot;10E10103&quot; &quot;20E10415&quot; &quot;08E10637&quot; &quot;30E10534&quot;
+## [1165] &quot;31E10041&quot; &quot;22E10234&quot; &quot;14E10460&quot; &quot;31E10776&quot; &quot;12E10469&quot; &quot;02E10284&quot;
+## [1171] &quot;09E10666&quot; &quot;08E10706&quot; &quot;23E10128&quot; &quot;06E10394&quot; &quot;27E10108&quot; &quot;11E10162&quot;
+## [1177] &quot;18E10208&quot; &quot;25E10449&quot; &quot;08E10362&quot; &quot;32E10683&quot; &quot;11E10099&quot; &quot;22E10201&quot;
+## [1183] &quot;17E10001&quot; &quot;24E10167&quot; &quot;09E10686&quot; &quot;15E10522&quot; &quot;02E10669&quot; &quot;01E10261&quot;
+## [1189] &quot;17E10370&quot; &quot;08E10064&quot; &quot;10E10092&quot; &quot;28E10637&quot; &quot;04E10212&quot; &quot;09E10229&quot;
+## [1195] &quot;23E10296&quot; &quot;24E10206&quot; &quot;31E10778&quot; &quot;31E10554&quot; &quot;09E10421&quot; &quot;14E10392&quot;
+## [1201] &quot;02E10597&quot; &quot;09E10141&quot; &quot;25E10052&quot; &quot;03E10100&quot; &quot;04E10060&quot; &quot;27E10063&quot;
+## [1207] &quot;15E10069&quot; &quot;09E10007&quot; &quot;15E10329&quot; &quot;13E10152&quot; &quot;07E10026&quot; &quot;31E10674&quot;
+## [1213] &quot;07E10258&quot; &quot;10E10308&quot; &quot;16E10031&quot; &quot;10E10534&quot; &quot;09E10600&quot; &quot;14E10285&quot;
+## [1219] &quot;18E10532&quot; &quot;14E10105&quot; &quot;29E10322&quot; &quot;31E10026&quot; &quot;18E10361&quot; &quot;18E10294&quot;
+## [1225] &quot;06E10449&quot; &quot;23E10032&quot; &quot;10E10152&quot; &quot;20E10500&quot; &quot;09E10793&quot; &quot;08E10416&quot;
+## [1231] &quot;32E10322&quot; &quot;09E10196&quot; &quot;09E10612&quot; &quot;16E10199&quot; &quot;12E10122&quot; &quot;04E10048&quot;
+## [1237] &quot;32E10950&quot; &quot;02E10357&quot; &quot;24E10640&quot; &quot;09E10578&quot; &quot;24E10376&quot; &quot;10E10174&quot;
+## [1243] &quot;18E10708&quot; &quot;08E10244&quot; &quot;03E10010&quot; &quot;15E10030&quot; &quot;13E10656&quot; &quot;04E10221&quot;
+## [1249] &quot;10E10251&quot; &quot;24E10518&quot; &quot;20E10534&quot; &quot;04E10078&quot; &quot;10E10137&quot; &quot;31E10448&quot;
+## [1255] &quot;07E10454&quot; &quot;14E10162&quot; &quot;06E10245&quot; &quot;18E10082&quot; &quot;06E10300&quot; &quot;21E10110&quot;
+## [1261] &quot;14E10800&quot; &quot;06E10375&quot; &quot;15E10160&quot; &quot;10E10342&quot; &quot;01E10733&quot; &quot;04E10097&quot;
+## [1267] &quot;28E10301&quot; &quot;11E10473&quot; &quot;06E10109&quot; &quot;20E10394&quot; &quot;18E10340&quot; &quot;11E10060&quot;
+## [1273] &quot;14E10727&quot; &quot;29E10178&quot; &quot;30E10733&quot; &quot;01E10677&quot; &quot;12E10697&quot; &quot;13E10319&quot;
+## [1279] &quot;20E10956&quot; &quot;16E10117&quot; &quot;20E10893&quot; &quot;20E10396&quot; &quot;07E10300&quot; &quot;08E10558&quot;
+## [1285] &quot;12E10718&quot; &quot;30E10729&quot; &quot;28E10346&quot; &quot;24E10183&quot; &quot;19E10093&quot; &quot;04E10317&quot;
+## [1291] &quot;31E10066&quot; &quot;12E10756&quot; &quot;15E10937&quot; &quot;01E10402&quot; &quot;01E10063&quot; &quot;16E10086&quot;
+## [1297] &quot;09E10301&quot; &quot;07E10240&quot; &quot;23E10834&quot; &quot;01E10257&quot; &quot;09E10900&quot; &quot;25E10367&quot;
+## [1303] &quot;31E10688&quot; &quot;24E10536&quot; &quot;09E10514&quot; &quot;26E10488&quot; &quot;20E10377&quot; &quot;26E10548&quot;
+## [1309] &quot;24E10061&quot; &quot;26E10049&quot; &quot;30E10241&quot; &quot;17E10049&quot; &quot;06E10266&quot; &quot;32E10907&quot;
+## [1315] &quot;13E10047&quot; &quot;30E10141&quot; &quot;23E10318&quot; &quot;20E10168&quot; &quot;17E10031&quot; &quot;19E10224&quot;
+## [1321] &quot;10E10504&quot; &quot;25E10180&quot; &quot;25E10016&quot; &quot;10E10362&quot; &quot;06E10406&quot; &quot;05E10346&quot;
+## [1327] &quot;12E10439&quot; &quot;14E10029&quot; &quot;16E10114&quot; &quot;23E10380&quot; &quot;32E10241&quot; &quot;05E10404&quot;
+## [1333] &quot;10E10435&quot; &quot;20E10167&quot; &quot;27E10492&quot; &quot;12E10510&quot; &quot;18E10577&quot; &quot;18E10707&quot;
+## [1339] &quot;11E10481&quot; &quot;12E10092&quot; &quot;14E10955&quot; &quot;07E10478&quot; &quot;12E10311&quot; &quot;15E10004&quot;
+## [1345] &quot;05E10006&quot; &quot;05E10040&quot; &quot;04E10708&quot; &quot;07E10325&quot; &quot;10E10272&quot; &quot;30E10525&quot;
+## [1351] &quot;16E10596&quot; &quot;32E10689&quot; &quot;10E10314&quot; &quot;28E10496&quot; &quot;12E10623&quot; &quot;29E10442&quot;
+## [1357] &quot;32E10762&quot; &quot;06E10194&quot; &quot;24E10569&quot; &quot;10E10336&quot; &quot;29E10507&quot; &quot;26E10187&quot;
+## [1363] &quot;07E10151&quot; &quot;25E10063&quot; &quot;28E10631&quot; &quot;14E10040&quot; &quot;16E10370&quot; &quot;14E10842&quot;
+## [1369] &quot;32E10968&quot; &quot;07E10036&quot; &quot;13E10063&quot; &quot;31E10287&quot; &quot;25E10176&quot; &quot;27E10631&quot;
+## [1375] &quot;16E10271&quot; &quot;17E10453&quot; &quot;20E10245&quot; &quot;12E10074&quot; &quot;28E10732&quot; &quot;25E10963&quot;
+## [1381] &quot;07E10059&quot; &quot;09E10655&quot; &quot;13E10697&quot; &quot;03E10830&quot; &quot;27E10270&quot; &quot;32E10268&quot;
+## [1387] &quot;07E10132&quot; &quot;28E10394&quot; &quot;08E10232&quot; &quot;21E10285&quot; &quot;01E10171&quot; &quot;29E10058&quot;
+## [1393] &quot;07E10483&quot; &quot;18E10039&quot; &quot;27E10004&quot; &quot;12E10320&quot; &quot;32E10122&quot; &quot;21E10018&quot;
+## [1399] &quot;06E10206&quot; &quot;24E10212&quot; &quot;03E10254&quot; &quot;31E10054&quot; &quot;24E10369&quot; &quot;17E10131&quot;
+## [1405] &quot;13E10492&quot; &quot;06E10685&quot; &quot;22E10469&quot; &quot;16E10305&quot; &quot;03E10020&quot; &quot;22E10447&quot;
+## [1411] &quot;21E10084&quot; &quot;17E10274&quot; &quot;13E10571&quot; &quot;11E10378&quot; &quot;12E10054&quot; &quot;25E10804&quot;
+## [1417] &quot;01E10266&quot; &quot;20E10751&quot; &quot;12E10453&quot; &quot;02E10618&quot; &quot;16E10352&quot; &quot;25E10785&quot;
+## [1423] &quot;12E10531&quot; &quot;03E10081&quot; &quot;03E10726&quot; &quot;25E10191&quot; &quot;18E10165&quot; &quot;13E10937&quot;
+## [1429] &quot;24E10391&quot; &quot;08E10464&quot; &quot;25E10599&quot; &quot;04E10390&quot; &quot;27E10009&quot; &quot;15E10463&quot;
+## [1435] &quot;13E10240&quot; &quot;25E10240&quot; &quot;18E10444&quot; &quot;20E10337&quot; &quot;09E10110&quot; &quot;19E10933&quot;
+## [1441] &quot;05E10295&quot; &quot;16E10678&quot; &quot;25E10204&quot; &quot;04E10340&quot; &quot;22E10488&quot; &quot;17E10303&quot;
+## [1447] &quot;08E10370&quot; &quot;15E10026&quot; &quot;07E10557&quot; &quot;26E10107&quot; &quot;12E10143&quot; &quot;27E10637&quot;
+## [1453] &quot;19E10084&quot; &quot;09E10705&quot; &quot;24E10691&quot; &quot;28E10356&quot; &quot;03E10836&quot; &quot;09E10237&quot;
+## [1459] &quot;06E10634&quot; &quot;13E10397&quot; &quot;05E10046&quot; &quot;31E10407&quot; &quot;26E10285&quot; &quot;13E10162&quot;
+## [1465] &quot;16E10156&quot; &quot;31E10207&quot; &quot;32E10069&quot; &quot;05E10092&quot; &quot;22E10512&quot; &quot;20E10388&quot;
+## [1471] &quot;14E10734&quot; &quot;19E10160&quot; &quot;06E10556&quot; &quot;08E10293&quot; &quot;05E10371&quot; &quot;04E10728&quot;
+## [1477] &quot;09E10861&quot; &quot;32E10380&quot; &quot;32E10949&quot; &quot;08E10747&quot; &quot;27E10177&quot; &quot;27E10169&quot;
+## [1483] &quot;26E10047&quot; &quot;24E10862&quot; &quot;10E10175&quot; &quot;32E10394&quot; &quot;05E10662&quot; &quot;14E10150&quot;
+## [1489] &quot;18E10381&quot; &quot;10E10584&quot; &quot;06E10243&quot; &quot;06E10640&quot; &quot;28E10682&quot; &quot;21E10318&quot;
+## [1495] &quot;08E10383&quot; &quot;07E10156&quot; &quot;27E10210&quot; &quot;14E10611&quot; &quot;32E10137&quot; &quot;24E10907&quot;
+## [1501] &quot;14E10885&quot; &quot;10E10268&quot; &quot;32E10480&quot; &quot;11E10124&quot; &quot;15E10377&quot; &quot;14E10688&quot;
+## [1507] &quot;15E10688&quot; &quot;08E10781&quot; &quot;16E10513&quot; &quot;11E10399&quot; &quot;32E10353&quot; &quot;27E10101&quot;
+## [1513] &quot;23E10823&quot; &quot;11E10592&quot; &quot;15E10568&quot; &quot;03E10215&quot; &quot;07E10170&quot; &quot;04E10490&quot;
+## [1519] &quot;29E10157&quot; &quot;31E10147&quot; &quot;14E10983&quot; &quot;20E10363&quot; &quot;28E10287&quot; &quot;20E10211&quot;
+## [1525] &quot;03E10422&quot; &quot;19E10698&quot; &quot;01E10528&quot; &quot;05E10463&quot; &quot;12E10324&quot; &quot;20E10088&quot;
+## [1531] &quot;15E10116&quot; &quot;20E10280&quot; &quot;12E10640&quot; &quot;25E10004&quot; &quot;31E10712&quot; &quot;08E10345&quot;
+## [1537] &quot;23E10876&quot; &quot;25E11000&quot; &quot;22E10277&quot; &quot;18E10205&quot; &quot;08E10931&quot; &quot;09E10034&quot;
+## [1543] &quot;06E10142&quot; &quot;32E10569&quot; &quot;02E10328&quot; &quot;20E10055&quot; &quot;07E10402&quot; &quot;10E10025&quot;
+## [1549] &quot;25E10071&quot; &quot;24E10616&quot; &quot;24E10331&quot; &quot;03E10233&quot; &quot;16E10080&quot; &quot;09E10531&quot;
+## [1555] &quot;09E10251&quot; &quot;04E10498&quot; &quot;06E10066&quot; &quot;08E10708&quot; &quot;26E10039&quot; &quot;18E10424&quot;
+## [1561] &quot;21E10502&quot; &quot;08E10410&quot; &quot;31E10141&quot; &quot;23E10549&quot; &quot;13E10820&quot; &quot;19E10857&quot;
+## [1567] &quot;10E10259&quot; &quot;29E10426&quot; &quot;32E10008&quot; &quot;19E10628&quot; &quot;18E10262&quot; &quot;16E10653&quot;
+## [1573] &quot;01E10099&quot; &quot;20E10661&quot; &quot;21E10011&quot; &quot;24E10711&quot; &quot;03E10167&quot; &quot;06E10069&quot;
+## [1579] &quot;01E10463&quot; &quot;25E10842&quot; &quot;20E10665&quot; &quot;15E10179&quot; &quot;32E10808&quot; &quot;05E10153&quot;
+## [1585] &quot;14E10504&quot; &quot;17E10012&quot; &quot;15E10588&quot; &quot;03E10259&quot; &quot;30E10622&quot; &quot;18E10345&quot;
+## [1591] &quot;17E10308&quot; &quot;26E10195&quot; &quot;23E10168&quot; &quot;02E10740&quot; &quot;22E10368&quot; &quot;28E10207&quot;
+## [1597] &quot;06E10298&quot; &quot;27E10314&quot; &quot;19E10672&quot; &quot;04E10191&quot; &quot;09E10092&quot; &quot;08E10798&quot;
+## [1603] &quot;01E10481&quot; &quot;12E10765&quot; &quot;28E10069&quot; &quot;16E10203&quot; &quot;13E10726&quot; &quot;05E10342&quot;
+## [1609] &quot;31E10297&quot; &quot;02E10121&quot; &quot;24E10081&quot; &quot;04E10448&quot; &quot;14E10739&quot; &quot;28E10130&quot;
+## [1615] &quot;02E10283&quot; &quot;22E10752&quot; &quot;02E10619&quot; &quot;02E10200&quot; &quot;19E10819&quot; &quot;13E10874&quot;
+## [1621] &quot;18E10264&quot; &quot;09E10385&quot; &quot;15E10187&quot; &quot;19E10745&quot; &quot;20E10095&quot; &quot;30E10091&quot;
+## [1627] &quot;24E10173&quot; &quot;14E10707&quot; &quot;14E10366&quot; &quot;24E10760&quot; &quot;27E10190&quot; &quot;24E10365&quot;
+## [1633] &quot;13E10717&quot; &quot;28E10011&quot; &quot;02E10233&quot; &quot;24E10514&quot; &quot;28E10019&quot; &quot;06E10434&quot;
+## [1639] &quot;25E10181&quot; &quot;13E10345&quot; &quot;25E10292&quot; &quot;08E10353&quot; &quot;30E10165&quot; &quot;18E10338&quot;
+## [1645] &quot;05E10631&quot; &quot;19E10253&quot; &quot;02E10948&quot; &quot;15E10542&quot; &quot;15E10646&quot; &quot;19E10011&quot;
+## [1651] &quot;32E10653&quot; &quot;20E10410&quot; &quot;27E10133&quot; &quot;28E10134&quot; &quot;09E10296&quot; &quot;10E10327&quot;
+## [1657] &quot;32E10360&quot; &quot;09E10217&quot; &quot;19E10036&quot; &quot;08E10221&quot; &quot;16E10683&quot; &quot;07E10687&quot;
+## [1663] &quot;20E10806&quot; &quot;18E10468&quot; &quot;23E10132&quot; &quot;05E10136&quot; &quot;15E10505&quot; &quot;14E10014&quot;
+## [1669] &quot;15E10913&quot; &quot;07E10169&quot; &quot;04E10387&quot; &quot;01E10425&quot; &quot;19E10683&quot; &quot;02E10005&quot;
+## [1675] &quot;31E10208&quot; &quot;18E10573&quot; &quot;01E10283&quot; &quot;09E10443&quot; &quot;20E10298&quot; &quot;25E10205&quot;
+## [1681] &quot;17E10677&quot; &quot;17E10047&quot; &quot;04E10294&quot; &quot;32E10765&quot; &quot;22E10151&quot; &quot;07E10665&quot;
+## [1687] &quot;04E10371&quot; &quot;29E10042&quot; &quot;16E10582&quot; &quot;13E10034&quot; &quot;07E10548&quot; &quot;04E10399&quot;
+## [1693] &quot;15E10656&quot; &quot;05E10113&quot; &quot;01E10554&quot; &quot;08E10929&quot; &quot;22E10198&quot; &quot;12E10081&quot;
+## [1699] &quot;14E10383&quot; &quot;18E10020&quot; &quot;03E10131&quot; &quot;20E10241&quot; &quot;22E10626&quot; &quot;20E10658&quot;
+## [1705] &quot;13E10082&quot; &quot;08E10673&quot; &quot;22E10268&quot; &quot;09E10189&quot; &quot;16E10335&quot; &quot;17E10097&quot;
+## [1711] &quot;08E10448&quot; &quot;22E10283&quot; &quot;10E10138&quot; &quot;03E10991&quot; &quot;25E10227&quot; &quot;01E10879&quot;
+## [1717] &quot;24E10037&quot; &quot;21E10094&quot; &quot;23E10323&quot; &quot;15E10779&quot; &quot;32E10426&quot; &quot;08E10173&quot;
+## [1723] &quot;10E10212&quot; &quot;28E10219&quot; &quot;06E10400&quot; &quot;16E10074&quot; &quot;02E10058&quot; &quot;25E10095&quot;
+## [1729] &quot;02E10356&quot; &quot;28E10075&quot; &quot;08E10044&quot; &quot;10E10221&quot; &quot;14E10705&quot; &quot;19E10081&quot;
+## [1735] &quot;30E10109&quot; &quot;12E10340&quot; &quot;29E10222&quot; &quot;10E10121&quot; &quot;12E10748&quot; &quot;29E10167&quot;
+## [1741] &quot;05E10642&quot; &quot;27E10114&quot; &quot;31E10137&quot; &quot;31E10734&quot; &quot;08E10124&quot; &quot;24E10910&quot;
+## [1747] &quot;07E10053&quot; &quot;03E10997&quot; &quot;27E10109&quot; &quot;27E10057&quot; &quot;07E10016&quot; &quot;04E10180&quot;
+## [1753] &quot;25E10152&quot; &quot;20E10284&quot; &quot;26E10256&quot; &quot;09E10064&quot; &quot;11E10210&quot; &quot;12E10961&quot;
+## [1759] &quot;08E10183&quot; &quot;30E10130&quot; &quot;06E10512&quot; &quot;31E10034&quot; &quot;13E10149&quot; &quot;08E10209&quot;
+## [1765] &quot;24E10020&quot; &quot;20E10812&quot; &quot;03E10243&quot; &quot;12E10118&quot; &quot;12E10506&quot; &quot;18E10114&quot;
+## [1771] &quot;10E10606&quot; &quot;07E10245&quot; &quot;04E10608&quot; &quot;07E10440&quot; &quot;16E10292&quot; &quot;06E10704&quot;
+## [1777] &quot;07E10492&quot; &quot;28E10208&quot; &quot;27E10097&quot; &quot;18E10386&quot; &quot;24E10006&quot; &quot;03E10128&quot;
+## [1783] &quot;10E10004&quot; &quot;14E10260&quot; &quot;27E10579&quot; &quot;17E10179&quot; &quot;23E10405&quot; &quot;20E10079&quot;
+## [1789] &quot;22E10265&quot; &quot;08E10054&quot; &quot;16E10366&quot; &quot;05E10693&quot; &quot;29E10268&quot; &quot;06E10571&quot;
+## [1795] &quot;06E10426&quot; &quot;08E10917&quot; &quot;04E10069&quot; &quot;06E10168&quot; &quot;16E10607&quot; &quot;15E10154&quot;
+## [1801] &quot;19E10347&quot; &quot;26E10516&quot; &quot;07E10622&quot; &quot;09E10246&quot; &quot;25E10691&quot; &quot;12E11000&quot;
+## [1807] &quot;22E10873&quot; &quot;02E10137&quot; &quot;09E10326&quot; &quot;30E10054&quot; &quot;14E10126&quot; &quot;25E10848&quot;
+## [1813] &quot;28E10528&quot; &quot;22E10200&quot; &quot;24E10676&quot; &quot;18E10363&quot; &quot;02E10908&quot; &quot;06E10086&quot;
+## [1819] &quot;31E10434&quot; &quot;19E10002&quot; &quot;05E10182&quot; &quot;28E10444&quot; &quot;27E10439&quot; &quot;20E10855&quot;
+## [1825] &quot;16E10689&quot; &quot;03E10786&quot; &quot;01E10462&quot; &quot;01E10068&quot; &quot;28E10065&quot; &quot;22E10141&quot;
+## [1831] &quot;23E10503&quot; &quot;05E10691&quot; &quot;20E10695&quot; &quot;19E10141&quot; &quot;19E10997&quot; &quot;01E10145&quot;
+## [1837] &quot;14E10553&quot; &quot;07E10572&quot; &quot;29E10129&quot; &quot;19E10181&quot; &quot;30E10090&quot; &quot;23E10436&quot;
+## [1843] &quot;23E10646&quot; &quot;16E10260&quot; &quot;17E10209&quot; &quot;30E10095&quot; &quot;13E10177&quot; &quot;17E10699&quot;
+## [1849] &quot;15E10441&quot; &quot;27E10244&quot; &quot;08E10388&quot; &quot;11E10130&quot; &quot;11E10247&quot; &quot;08E10658&quot;
+## [1855] &quot;31E10740&quot; &quot;20E10050&quot; &quot;32E10969&quot; &quot;23E10480&quot; &quot;30E10347&quot; &quot;15E10294&quot;
+## [1861] &quot;12E10029&quot; &quot;20E10151&quot; &quot;23E10226&quot; &quot;25E10847&quot; &quot;04E10698&quot; &quot;19E10357&quot;
+## [1867] &quot;05E10177&quot; &quot;31E10402&quot; &quot;20E10444&quot; &quot;13E10421&quot; &quot;18E10674&quot; &quot;07E10368&quot;
+## [1873] &quot;09E10609&quot; &quot;25E10054&quot; &quot;02E10011&quot; &quot;14E10028&quot; &quot;02E10222&quot; &quot;04E10520&quot;
+## [1879] &quot;13E10763&quot; &quot;05E10257&quot; &quot;27E10241&quot; &quot;07E10018&quot; &quot;27E10156&quot; &quot;04E10135&quot;
+## [1885] &quot;03E10998&quot; &quot;11E10341&quot; &quot;20E10659&quot; &quot;21E10064&quot; &quot;14E10067&quot; &quot;03E10381&quot;
+## [1891] &quot;23E10246&quot; &quot;20E10323&quot; &quot;03E10910&quot; &quot;04E10486&quot; &quot;02E10032&quot; &quot;19E10234&quot;
+## [1897] &quot;02E10156&quot; &quot;28E10263&quot; &quot;31E10754&quot; &quot;07E10183&quot; &quot;14E10527&quot; &quot;28E10199&quot;
+## [1903] &quot;21E10406&quot; &quot;26E10090&quot; &quot;04E10566&quot; &quot;14E10050&quot; &quot;31E10273&quot; &quot;03E10377&quot;
+## [1909] &quot;08E10481&quot; &quot;30E10176&quot; &quot;27E10023&quot; &quot;27E10464&quot; &quot;16E10712&quot; &quot;13E10239&quot;
+## [1915] &quot;30E10694&quot; &quot;16E10320&quot; &quot;19E10328&quot; &quot;04E10356&quot; &quot;01E10290&quot; &quot;22E10202&quot;
+## [1921] &quot;02E10099&quot; &quot;20E10162&quot; &quot;09E10104&quot; &quot;28E10100&quot; &quot;17E10666&quot; &quot;02E10428&quot;
+## [1927] &quot;14E10861&quot; &quot;28E10300&quot; &quot;06E10447&quot; &quot;32E10318&quot; &quot;19E10534&quot; &quot;09E10495&quot;
+## [1933] &quot;19E10971&quot; &quot;20E10116&quot; &quot;07E10173&quot; &quot;31E10295&quot; &quot;15E10919&quot; &quot;19E10858&quot;
+## [1939] &quot;16E10097&quot; &quot;08E10948&quot; &quot;24E10515&quot; &quot;03E10724&quot; &quot;04E10027&quot; &quot;19E10695&quot;
+## [1945] &quot;22E10569&quot; &quot;19E10973&quot; &quot;32E10809&quot; &quot;19E10172&quot; &quot;03E10688&quot; &quot;07E10130&quot;
+## [1951] &quot;15E10224&quot; &quot;04E10590&quot; &quot;19E10182&quot; &quot;20E10530&quot; &quot;27E10490&quot; &quot;20E10231&quot;
+## [1957] &quot;11E10575&quot; &quot;18E10088&quot; &quot;32E10777&quot; &quot;18E10218&quot; &quot;06E10650&quot; &quot;32E10442&quot;
+## [1963] &quot;10E10575&quot; &quot;18E10314&quot; &quot;28E10079&quot; &quot;31E10483&quot; &quot;19E10705&quot; &quot;31E10139&quot;
+## [1969] &quot;01E10018&quot; &quot;09E10825&quot; &quot;09E10483&quot; &quot;03E10538&quot; &quot;11E10436&quot; &quot;03E10266&quot;
+## [1975] &quot;17E10693&quot; &quot;16E10684&quot; &quot;17E10090&quot; &quot;06E10020&quot; &quot;06E10046&quot; &quot;03E10784&quot;
+## [1981] &quot;03E10323&quot; &quot;16E10280&quot; &quot;01E10788&quot; &quot;28E10529&quot; &quot;25E10439&quot; &quot;22E10225&quot;
+## [1987] &quot;05E10099&quot; &quot;20E10608&quot; &quot;31E10406&quot; &quot;31E10755&quot; &quot;12E10821&quot; &quot;03E10222&quot;
+## [1993] &quot;03E10438&quot; &quot;15E10347&quot; &quot;23E10320&quot; &quot;30E10516&quot; &quot;06E10022&quot; &quot;19E10627&quot;
+## [1999] &quot;18E10323&quot; &quot;10E10599&quot; &quot;03E10447&quot; &quot;02E10136&quot; &quot;23E10686&quot; &quot;18E10395&quot;
+## [2005] &quot;09E10523&quot; &quot;26E10355&quot; &quot;04E10227&quot; &quot;09E10702&quot; &quot;19E10422&quot; &quot;09E10803&quot;
+## [2011] &quot;23E10014&quot; &quot;03E10315&quot; &quot;27E10008&quot; &quot;14E10828&quot; &quot;12E10979&quot; &quot;26E10607&quot;
+## [2017] &quot;13E10045&quot; &quot;27E10186&quot; &quot;31E10228&quot; &quot;15E10540&quot; &quot;14E10608&quot; &quot;29E10402&quot;
+## [2023] &quot;26E10103&quot; &quot;04E10598&quot; &quot;22E10012&quot; &quot;12E10710&quot; &quot;27E10382&quot; &quot;15E10501&quot;
+## [2029] &quot;13E10457&quot; &quot;14E10346&quot; &quot;31E10761&quot; &quot;05E10424&quot; &quot;09E10977&quot; &quot;19E10237&quot;
+## [2035] &quot;07E10047&quot; &quot;23E10376&quot; &quot;03E10190&quot; &quot;10E10211&quot; &quot;03E10326&quot; &quot;05E10109&quot;
+## [2041] &quot;09E10983&quot; &quot;07E10527&quot; &quot;14E10541&quot; &quot;11E10340&quot; &quot;23E10363&quot; &quot;22E10637&quot;
+## [2047] &quot;15E10641&quot; &quot;13E10305&quot; &quot;07E10375&quot; &quot;24E10583&quot; &quot;06E10674&quot; &quot;12E10397&quot;
+## [2053] &quot;09E10225&quot; &quot;24E10291&quot; &quot;04E10220&quot; &quot;09E10516&quot; &quot;04E10106&quot; &quot;09E10367&quot;
+## [2059] &quot;14E10084&quot; &quot;12E10553&quot; &quot;09E10840&quot; &quot;15E10935&quot; &quot;21E10585&quot; &quot;23E10134&quot;
+## [2065] &quot;15E10722&quot; &quot;23E10021&quot; &quot;26E10238&quot; &quot;15E10008&quot; &quot;17E10066&quot; &quot;04E10263&quot;
+## [2071] &quot;31E10473&quot; &quot;08E10382&quot; &quot;27E10184&quot; &quot;09E10368&quot; &quot;02E10216&quot; &quot;17E10675&quot;
+## [2077] &quot;13E10254&quot; &quot;17E10397&quot; &quot;04E10054&quot; &quot;10E10374&quot; &quot;05E10247&quot; &quot;10E10227&quot;
+## [2083] &quot;27E10238&quot; &quot;26E10527&quot; &quot;23E10084&quot; &quot;15E10168&quot; &quot;02E10009&quot; &quot;19E10766&quot;
+## [2089] &quot;08E10194&quot; &quot;26E10262&quot; &quot;16E10396&quot; &quot;22E10224&quot; &quot;23E10112&quot; &quot;19E10655&quot;
+## [2095] &quot;03E10949&quot; &quot;09E10538&quot; &quot;15E10675&quot; &quot;14E10212&quot; &quot;01E10032&quot; &quot;18E10139&quot;
+## [2101] &quot;26E10072&quot; &quot;05E10032&quot; &quot;09E10410&quot; &quot;24E10070&quot; &quot;23E10614&quot; &quot;01E10244&quot;
+## [2107] &quot;09E10941&quot; &quot;29E10501&quot; &quot;31E10178&quot; &quot;17E10249&quot; &quot;19E10474&quot; &quot;09E10202&quot;
+## [2113] &quot;11E10362&quot; &quot;06E10121&quot; &quot;29E10443&quot; &quot;30E10761&quot; &quot;06E10586&quot; &quot;20E10192&quot;
+## [2119] &quot;09E10227&quot; &quot;29E10215&quot; &quot;08E10102&quot; &quot;20E10619&quot; &quot;12E10773&quot; &quot;17E10212&quot;
+## [2125] &quot;03E10392&quot; &quot;27E10423&quot; &quot;04E10049&quot; &quot;31E10433&quot; &quot;07E10632&quot; &quot;07E10137&quot;
+## [2131] &quot;10E10621&quot; &quot;11E10185&quot; &quot;28E10509&quot; &quot;25E10572&quot; &quot;02E10304&quot; &quot;09E10818&quot;
+## [2137] &quot;03E10225&quot; &quot;31E10044&quot; &quot;21E10689&quot; &quot;08E10731&quot; &quot;03E10567&quot; &quot;15E10020&quot;
+## [2143] &quot;25E10165&quot; &quot;09E10530&quot; &quot;23E10690&quot; &quot;22E10473&quot; &quot;02E10253&quot; &quot;31E10872&quot;
+## [2149] &quot;23E10641&quot; &quot;17E10327&quot; &quot;32E10077&quot; &quot;06E10677&quot; &quot;13E10523&quot; &quot;21E10186&quot;
+## [2155] &quot;25E10351&quot; &quot;22E10213&quot; &quot;31E10852&quot; &quot;17E10582&quot; &quot;09E10797&quot; &quot;26E10531&quot;
+## [2161] &quot;22E10395&quot; &quot;03E10142&quot; &quot;32E10105&quot; &quot;29E10549&quot; &quot;27E10491&quot; &quot;30E10053&quot;
+## [2167] &quot;03E10943&quot; &quot;09E10449&quot; &quot;19E10017&quot; &quot;25E10558&quot; &quot;06E10040&quot; &quot;28E10148&quot;
+## [2173] &quot;05E10696&quot; &quot;31E10848&quot; &quot;06E10205&quot; &quot;28E10393&quot; &quot;22E10574&quot; &quot;18E10523&quot;
+## [2179] &quot;15E10378&quot; &quot;19E10981&quot; &quot;18E10346&quot; &quot;23E10256&quot; &quot;16E10154&quot; &quot;19E10998&quot;
+## [2185] &quot;06E10281&quot; &quot;14E10464&quot; &quot;04E10025&quot; &quot;23E10276&quot; &quot;24E10825&quot; &quot;04E10042&quot;
+## [2191] &quot;04E10350&quot; &quot;11E10054&quot; &quot;02E10071&quot; &quot;31E10173&quot; &quot;05E10252&quot; &quot;30E10765&quot;
+## [2197] &quot;16E10005&quot; &quot;30E10385&quot; &quot;09E10081&quot; &quot;09E10592&quot; &quot;04E10138&quot; &quot;02E10537&quot;
+## [2203] &quot;15E10543&quot; &quot;01E10262&quot; &quot;09E10734&quot; &quot;10E10053&quot; &quot;25E10997&quot; &quot;15E10367&quot;
+## [2209] &quot;30E10410&quot; &quot;14E10898&quot; &quot;21E10411&quot; &quot;16E10590&quot; &quot;20E10273&quot; &quot;12E10281&quot;
+## [2215] &quot;03E10655&quot; &quot;19E10167&quot; &quot;21E10329&quot; &quot;01E10561&quot; &quot;21E10167&quot; &quot;18E10308&quot;
+## [2221] &quot;24E10555&quot; &quot;06E10129&quot; &quot;19E10094&quot; &quot;05E10038&quot; &quot;17E10039&quot; &quot;04E10540&quot;
+## [2227] &quot;24E10057&quot; &quot;10E10609&quot; &quot;07E10253&quot; &quot;32E10211&quot; &quot;14E10431&quot; &quot;12E10406&quot;
+## [2233] &quot;01E10613&quot; &quot;15E10312&quot; &quot;30E10253&quot; &quot;07E10301&quot; &quot;18E10016&quot; &quot;13E10102&quot;
+## [2239] &quot;26E10417&quot; &quot;20E10186&quot; &quot;21E10069&quot; &quot;02E10638&quot; &quot;02E10798&quot; &quot;20E10046&quot;
+## [2245] &quot;03E10278&quot; &quot;06E10202&quot; &quot;08E10467&quot; &quot;20E10894&quot; &quot;30E10338&quot; &quot;32E10626&quot;
+## [2251] &quot;10E10523&quot; &quot;03E10026&quot; &quot;13E10807&quot; &quot;31E10231&quot; &quot;08E10487&quot; &quot;20E10277&quot;
+## [2257] &quot;03E10933&quot; &quot;14E10022&quot; &quot;13E10519&quot; &quot;29E10253&quot; &quot;25E10770&quot; &quot;15E10311&quot;
+## [2263] &quot;24E10756&quot; &quot;13E10375&quot; &quot;01E10652&quot; &quot;08E10158&quot; &quot;05E10754&quot; &quot;05E10590&quot;
+## [2269] &quot;17E10048&quot; &quot;14E10423&quot; &quot;10E10083&quot; &quot;09E10524&quot; &quot;27E10071&quot; &quot;02E10771&quot;
+## [2275] &quot;21E10432&quot; &quot;24E10839&quot; &quot;27E10474&quot; &quot;27E10006&quot; &quot;24E10538&quot; &quot;21E10363&quot;
+## [2281] &quot;10E10443&quot; &quot;25E10210&quot; &quot;04E10507&quot; &quot;14E10677&quot; &quot;20E10477&quot; &quot;13E10528&quot;
+## [2287] &quot;15E10477&quot; &quot;16E10323&quot; &quot;13E10165&quot; &quot;16E10235&quot; &quot;02E10731&quot; &quot;14E10973&quot;
+## [2293] &quot;15E10029&quot; &quot;23E10004&quot; &quot;23E10272&quot; &quot;26E10138&quot; &quot;32E10625&quot; &quot;01E10326&quot;
+## [2299] &quot;25E10067&quot; &quot;03E10036&quot; &quot;12E10164&quot; &quot;18E10711&quot; &quot;10E10670&quot; &quot;31E10155&quot;
+## [2305] &quot;25E10633&quot; &quot;18E10041&quot; &quot;20E10215&quot; &quot;32E10649&quot; &quot;20E10702&quot; &quot;21E10621&quot;
+## [2311] &quot;10E10192&quot; &quot;10E10369&quot; &quot;29E10406&quot; &quot;13E10805&quot; &quot;23E10198&quot; &quot;32E10424&quot;
+## [2317] &quot;14E10185&quot; &quot;32E10321&quot; &quot;01E10417&quot; &quot;31E10702&quot; &quot;32E10213&quot; &quot;25E10252&quot;
+## [2323] &quot;20E10235&quot; &quot;17E10447&quot; &quot;04E10249&quot; &quot;06E10347&quot; &quot;15E10752&quot; &quot;28E10275&quot;
+## [2329] &quot;01E10673&quot; &quot;10E10180&quot; &quot;21E10182&quot; &quot;25E10164&quot; &quot;15E10238&quot; &quot;26E10030&quot;
+## [2335] &quot;24E10068&quot; &quot;29E10338&quot; &quot;25E10264&quot; &quot;15E10072&quot; &quot;15E10037&quot; &quot;03E10224&quot;
+## [2341] &quot;07E10518&quot; &quot;12E10055&quot; &quot;13E10861&quot; &quot;23E10854&quot; &quot;04E10282&quot; &quot;15E10530&quot;
+## [2347] &quot;02E10288&quot; &quot;15E10306&quot; &quot;32E10810&quot; &quot;07E10314&quot; &quot;11E10365&quot; &quot;19E10608&quot;
+## [2353] &quot;11E10335&quot; &quot;23E10218&quot; &quot;19E10820&quot; &quot;12E10521&quot; &quot;23E10228&quot; &quot;30E10202&quot;
+## [2359] &quot;01E10285&quot; &quot;04E10702&quot; &quot;21E10286&quot; &quot;03E10158&quot; &quot;08E10618&quot; &quot;15E10132&quot;
+## [2365] &quot;32E10526&quot; &quot;03E10325&quot; &quot;25E10250&quot; &quot;13E10086&quot; &quot;27E10523&quot; &quot;29E10227&quot;
+## [2371] &quot;30E10251&quot; &quot;14E10248&quot; &quot;24E10900&quot; &quot;19E10437&quot; &quot;32E10107&quot; &quot;01E10339&quot;
+## [2377] &quot;03E10034&quot; &quot;21E10121&quot; &quot;14E10282&quot; &quot;08E10900&quot; &quot;29E10456&quot; &quot;09E10234&quot;
+## [2383] &quot;15E10832&quot; &quot;24E10803&quot; &quot;10E10048&quot; &quot;14E10520&quot; &quot;21E10461&quot; &quot;01E10674&quot;
+## [2389] &quot;24E10628&quot; &quot;09E10735&quot; &quot;27E10417&quot; &quot;06E10393&quot; &quot;05E10700&quot; &quot;16E10640&quot;
+## [2395] &quot;31E10196&quot; &quot;09E10411&quot; &quot;09E10502&quot; &quot;13E10602&quot; &quot;29E10505&quot; &quot;04E10248&quot;
+## [2401] &quot;31E10215&quot; &quot;20E10230&quot; &quot;17E10648&quot; &quot;06E10236&quot; &quot;04E10731&quot; &quot;22E10838&quot;
+## [2407] &quot;15E10586&quot; &quot;02E10010&quot; &quot;23E10528&quot; &quot;03E10515&quot; &quot;16E10237&quot; &quot;02E10293&quot;
+## [2413] &quot;21E10185&quot; &quot;15E10425&quot; &quot;31E10206&quot; &quot;13E10212&quot; &quot;09E10194&quot; &quot;27E10025&quot;
+## [2419] &quot;17E10689&quot; &quot;17E10044&quot; &quot;09E10427&quot; &quot;32E10552&quot; &quot;23E10314&quot; &quot;09E10236&quot;
+## [2425] &quot;18E10438&quot; &quot;03E10340&quot; &quot;12E10234&quot; &quot;18E10642&quot; &quot;14E10732&quot; &quot;09E10798&quot;
+## [2431] &quot;13E10078&quot; &quot;19E10958&quot; &quot;16E10298&quot; &quot;29E10195&quot; &quot;16E10160&quot; &quot;29E10265&quot;
+## [2437] &quot;32E10109&quot; &quot;26E10406&quot; &quot;20E10366&quot; &quot;03E10918&quot; &quot;16E10082&quot; &quot;01E10243&quot;
+## [2443] &quot;06E10445&quot; &quot;01E10322&quot; &quot;15E10052&quot; &quot;12E10708&quot; &quot;20E10343&quot; &quot;11E10269&quot;
+## [2449] &quot;03E10597&quot; &quot;04E10405&quot; &quot;14E10717&quot; &quot;21E10202&quot; &quot;31E10721&quot; &quot;01E10043&quot;
+## [2455] &quot;09E10021&quot; &quot;32E10370&quot; &quot;13E10854&quot; &quot;18E10241&quot; &quot;26E10208&quot; &quot;08E10310&quot;
+## [2461] &quot;25E10075&quot; &quot;04E10581&quot; &quot;22E10324&quot; &quot;24E10396&quot; &quot;12E10065&quot; &quot;21E10476&quot;
+## [2467] &quot;01E10110&quot; &quot;12E10073&quot; &quot;08E10626&quot; &quot;14E10791&quot; &quot;23E10111&quot; &quot;28E10362&quot;
+## [2473] &quot;28E10247&quot; &quot;20E10161&quot; &quot;19E10645&quot; &quot;17E10154&quot; &quot;29E10209&quot; &quot;20E10674&quot;
+## [2479] &quot;01E10485&quot; &quot;24E10185&quot; &quot;13E10252&quot; &quot;09E10262&quot; &quot;13E10059&quot; &quot;12E10021&quot;
+## [2485] &quot;20E10137&quot; &quot;12E10938&quot; &quot;03E10265&quot; &quot;09E10848&quot; &quot;02E10486&quot; &quot;13E10056&quot;
+## [2491] &quot;17E10354&quot; &quot;18E10358&quot; &quot;23E10585&quot; &quot;21E10253&quot; &quot;12E10319&quot; &quot;04E10020&quot;
+## [2497] &quot;30E10363&quot; &quot;20E10123&quot; &quot;19E10256&quot; &quot;20E10954&quot; &quot;32E10691&quot; &quot;04E10185&quot;
+## [2503] &quot;12E10872&quot; &quot;15E10410&quot; &quot;15E10597&quot; &quot;10E10403&quot; &quot;02E10240&quot; &quot;07E10616&quot;
+## [2509] &quot;20E10310&quot; &quot;11E10531&quot; &quot;09E10830&quot; &quot;15E10788&quot; &quot;21E10611&quot; &quot;15E10559&quot;
+## [2515] &quot;30E10411&quot; &quot;07E10273&quot; &quot;08E10716&quot; &quot;06E10291&quot; &quot;09E10134&quot; &quot;03E10406&quot;
+## [2521] &quot;15E10065&quot; &quot;20E10300&quot; &quot;10E10095&quot; &quot;31E10167&quot; &quot;20E10200&quot; &quot;13E10061&quot;
+## [2527] &quot;24E10547&quot; &quot;06E10019&quot; &quot;32E10138&quot; &quot;09E10341&quot; &quot;13E10866&quot; &quot;15E10910&quot;
+## [2533] &quot;24E10066&quot; &quot;13E10117&quot; &quot;23E10207&quot; &quot;28E10074&quot; &quot;19E10188&quot; &quot;14E10012&quot;
+## [2539] &quot;06E10179&quot; &quot;14E10039&quot; &quot;08E10538&quot; &quot;20E10356&quot; &quot;16E10646&quot; &quot;19E10471&quot;
+## [2545] &quot;18E10234&quot; &quot;12E10260&quot; &quot;02E10978&quot; &quot;13E10046&quot; &quot;13E10696&quot; &quot;17E10401&quot;
+## [2551] &quot;11E10281&quot; &quot;13E10549&quot; &quot;26E10111&quot; &quot;23E10510&quot; &quot;13E10327&quot; &quot;15E10640&quot;
+## [2557] &quot;09E10956&quot; &quot;17E10548&quot; &quot;07E10777&quot; &quot;14E10456&quot; &quot;32E10746&quot; &quot;12E10412&quot;
+## [2563] &quot;30E10167&quot; &quot;14E10939&quot; &quot;02E10050&quot; &quot;22E10911&quot; &quot;17E10153&quot; &quot;25E10843&quot;
+## [2569] &quot;28E10193&quot; &quot;03E10969&quot; &quot;27E10197&quot; &quot;02E10103&quot; &quot;23E10081&quot; &quot;23E10419&quot;
+## [2575] &quot;23E10608&quot; &quot;05E10238&quot; &quot;03E10309&quot; &quot;03E10414&quot; &quot;03E10605&quot; &quot;23E10258&quot;
+## [2581] &quot;03E10279&quot; &quot;26E10025&quot; &quot;23E10275&quot; &quot;03E10964&quot; &quot;24E10097&quot; &quot;23E10443&quot;
+## [2587] &quot;14E10469&quot; &quot;14E10165&quot; &quot;21E10200&quot; &quot;18E10421&quot; &quot;12E10037&quot; &quot;23E10187&quot;
+## [2593] &quot;26E10009&quot; &quot;23E10267&quot; &quot;23E10333&quot; &quot;03E10930&quot; &quot;15E10714&quot; &quot;17E10472&quot;
+## [2599] &quot;22E10060&quot; &quot;02E10054&quot; &quot;22E10608&quot; &quot;25E10996&quot; &quot;06E10231&quot; &quot;31E10320&quot;
+## [2605] &quot;15E10019&quot; &quot;24E10921&quot; &quot;10E10569&quot; &quot;06E10602&quot; &quot;19E10118&quot; &quot;17E10140&quot;
+## [2611] &quot;09E10476&quot; &quot;31E10730&quot; &quot;08E10531&quot; &quot;05E10132&quot; &quot;25E10833&quot; &quot;18E10370&quot;
+## [2617] &quot;11E10044&quot; &quot;08E10103&quot; &quot;06E10119&quot; &quot;13E10258&quot; &quot;32E10627&quot; &quot;04E10254&quot;
+## [2623] &quot;03E10002&quot; &quot;02E10434&quot; &quot;02E10754&quot; &quot;16E10399&quot; &quot;20E10818&quot; &quot;08E10699&quot;
+## [2629] &quot;25E10949&quot; &quot;28E10355&quot; &quot;25E10295&quot; &quot;24E10148&quot; &quot;19E10480&quot; &quot;05E10300&quot;
+## [2635] &quot;22E10127&quot; &quot;05E10452&quot; &quot;21E10074&quot; &quot;21E10526&quot; &quot;22E10806&quot; &quot;03E10777&quot;
+## [2641] &quot;04E10300&quot; &quot;05E10416&quot; &quot;13E10217&quot; &quot;12E10389&quot; &quot;04E10075&quot; &quot;03E10113&quot;
+## [2647] &quot;18E10403&quot; &quot;18E10342&quot; &quot;15E10455&quot; &quot;20E10195&quot; &quot;07E10219&quot; &quot;14E10944&quot;
+## [2653] &quot;32E10233&quot; &quot;16E10447&quot; &quot;11E10435&quot; &quot;19E10614&quot; &quot;14E10387&quot; &quot;14E10246&quot;
+## [2659] &quot;05E10120&quot; &quot;24E10827&quot; &quot;16E10491&quot; &quot;12E10360&quot; &quot;15E10131&quot; &quot;06E10153&quot;
+## [2665] &quot;02E10692&quot; &quot;15E10582&quot; &quot;04E10402&quot; &quot;20E10931&quot; &quot;13E10410&quot; &quot;12E10252&quot;
+## [2671] &quot;15E10082&quot; &quot;20E10102&quot; &quot;11E10324&quot; &quot;28E10117&quot; &quot;07E10167&quot; &quot;28E10088&quot;
+## [2677] &quot;16E10333&quot; &quot;20E10782&quot; &quot;32E10934&quot; &quot;04E10325&quot; &quot;25E10732&quot; &quot;11E10198&quot;
+## [2683] &quot;13E10214&quot; &quot;14E10681&quot; &quot;07E10251&quot; &quot;15E10255&quot; &quot;15E10122&quot; &quot;01E10153&quot;
+## [2689] &quot;20E10508&quot; &quot;11E10282&quot; &quot;10E10299&quot; &quot;14E10263&quot; &quot;09E10255&quot; &quot;20E10443&quot;
+## [2695] &quot;16E10377&quot; &quot;18E10214&quot; &quot;14E10373&quot; &quot;08E10284&quot; &quot;04E10446&quot; &quot;20E10303&quot;
+## [2701] &quot;20E10316&quot; &quot;26E10260&quot; &quot;18E10145&quot; &quot;31E10494&quot; &quot;12E10231&quot; &quot;13E10468&quot;
+## [2707] &quot;31E10015&quot; &quot;06E10493&quot; &quot;13E10794&quot; &quot;29E10233&quot; &quot;17E10060&quot; &quot;26E10066&quot;
+## [2713] &quot;30E10423&quot; &quot;17E10399&quot; &quot;03E10232&quot; &quot;13E10247&quot; &quot;15E10584&quot; &quot;32E10836&quot;
+## [2719] &quot;16E10061&quot; &quot;25E10811&quot; &quot;24E10781&quot; &quot;02E10031&quot; &quot;15E10557&quot; &quot;01E10859&quot;
+## [2725] &quot;27E10007&quot; &quot;12E10333&quot; &quot;02E10294&quot; &quot;11E10510&quot; &quot;12E10345&quot; &quot;21E10004&quot;
+## [2731] &quot;13E10021&quot; &quot;17E10410&quot; &quot;24E10031&quot; &quot;31E10442&quot; &quot;28E10587&quot; &quot;03E10409&quot;
+## [2737] &quot;04E10018&quot; &quot;22E10385&quot; &quot;19E10303&quot; &quot;14E10043&quot; &quot;04E10404&quot; &quot;27E10102&quot;
+## [2743] &quot;28E10154&quot; &quot;11E10079&quot; &quot;18E10422&quot; &quot;32E10212&quot; &quot;27E10610&quot; &quot;20E10294&quot;
+## [2749] &quot;23E10065&quot; &quot;25E10168&quot; &quot;04E10430&quot; &quot;32E10319&quot; &quot;08E10552&quot; &quot;04E10210&quot;
+## [2755] &quot;13E10129&quot; &quot;28E10351&quot; &quot;03E10318&quot; &quot;30E10683&quot; &quot;04E10189&quot; &quot;11E10521&quot;
+## [2761] &quot;18E10434&quot; &quot;05E10039&quot; &quot;27E10170&quot; &quot;05E10350&quot; &quot;14E10207&quot; &quot;18E10561&quot;
+## [2767] &quot;06E10606&quot; &quot;18E10418&quot; &quot;31E10857&quot; &quot;14E10167&quot; &quot;11E10363&quot; &quot;27E10122&quot;
+## [2773] &quot;11E10256&quot; &quot;21E10204&quot; &quot;22E10841&quot; &quot;09E10340&quot; &quot;18E10240&quot; &quot;21E10016&quot;
+## [2779] &quot;16E10560&quot; &quot;14E10079&quot; &quot;24E10124&quot; &quot;32E10959&quot; &quot;28E10359&quot; &quot;07E10646&quot;
+## [2785] &quot;01E10292&quot; &quot;31E10710&quot; &quot;14E10172&quot; &quot;18E10209&quot; &quot;26E10490&quot; &quot;17E10190&quot;
+## [2791] &quot;30E10732&quot; &quot;16E10148&quot; &quot;14E10359&quot; &quot;15E10068&quot; &quot;24E10084&quot; &quot;26E10276&quot;
+## [2797] &quot;32E10434&quot; &quot;06E10706&quot; &quot;14E10583&quot; &quot;03E10756&quot; &quot;17E10742&quot; &quot;04E10333&quot;
+## [2803] &quot;30E10211&quot; &quot;06E10371&quot; &quot;14E10368&quot; &quot;06E10673&quot; &quot;22E10347&quot; &quot;02E10349&quot;
+## [2809] &quot;20E10913&quot; &quot;30E10639&quot; &quot;11E10053&quot; &quot;18E10486&quot; &quot;03E10046&quot; &quot;06E10140&quot;
+## [2815] &quot;26E10394&quot; &quot;12E10182&quot; &quot;08E10849&quot; &quot;12E10045&quot; &quot;20E10154&quot; &quot;06E10123&quot;
+## [2821] &quot;06E10137&quot; &quot;26E10179&quot; &quot;03E10040&quot; &quot;32E10265&quot; &quot;07E10464&quot; &quot;21E10112&quot;
+## [2827] &quot;29E10244&quot; &quot;16E10068&quot; &quot;12E10096&quot; &quot;17E10023&quot; &quot;17E10366&quot; &quot;32E10067&quot;
+## [2833] &quot;03E10260&quot; &quot;20E10611&quot; &quot;20E10139&quot; &quot;09E10275&quot; &quot;32E10314&quot; &quot;15E10136&quot;
+## [2839] &quot;06E10045&quot; &quot;17E10197&quot; &quot;28E10109&quot; &quot;21E10024&quot; &quot;07E10029&quot; &quot;10E10235&quot;
+## [2845] &quot;28E10110&quot; &quot;02E10720&quot; &quot;18E10526&quot; &quot;09E10047&quot; &quot;12E10155&quot; &quot;17E10171&quot;
+## [2851] &quot;03E10269&quot; &quot;31E10475&quot; &quot;30E10043&quot; &quot;27E10390&quot; &quot;27E10310&quot; &quot;05E10147&quot;
+## [2857] &quot;05E10228&quot; &quot;24E10451&quot; &quot;25E10122&quot; &quot;08E10092&quot; &quot;15E10309&quot; &quot;13E10462&quot;
+## [2863] &quot;19E10065&quot; &quot;18E10540&quot; &quot;25E10947&quot; &quot;08E10713&quot; &quot;02E10223&quot; &quot;32E10868&quot;
+## [2869] &quot;09E10526&quot; &quot;06E10163&quot; &quot;03E10038&quot; &quot;32E10021&quot; &quot;21E10319&quot; &quot;17E10218&quot;
+## [2875] &quot;22E10506&quot; &quot;31E10157&quot; &quot;05E10101&quot; &quot;16E10720&quot; &quot;13E10597&quot; &quot;25E10318&quot;
+## [2881] &quot;15E10297&quot; &quot;31E10259&quot; &quot;04E10492&quot; &quot;26E10277&quot; &quot;11E10457&quot; &quot;08E10724&quot;
+## [2887] &quot;03E10198&quot; &quot;09E10608&quot; &quot;12E10318&quot; &quot;28E10058&quot; &quot;07E10020&quot; &quot;26E10427&quot;
+## [2893] &quot;13E10147&quot; &quot;02E10675&quot; &quot;04E10121&quot; &quot;17E10475&quot; &quot;29E10235&quot; &quot;15E10698&quot;
+## [2899] &quot;21E10188&quot; &quot;32E10641&quot; &quot;19E10323&quot; &quot;25E10011&quot; &quot;20E10034&quot; &quot;30E10384&quot;
+## [2905] &quot;25E10275&quot; &quot;15E10447&quot; &quot;19E10896&quot; &quot;18E10508&quot; &quot;23E10030&quot; &quot;15E10356&quot;
+## [2911] &quot;21E10212&quot; &quot;21E10270&quot; &quot;27E10319&quot; &quot;21E10160&quot; &quot;32E10198&quot; &quot;24E10011&quot;
+## [2917] &quot;22E10706&quot; &quot;30E10219&quot; &quot;17E10005&quot; &quot;18E10180&quot; &quot;04E10141&quot; &quot;28E10342&quot;
+## [2923] &quot;10E10002&quot; &quot;06E10102&quot; &quot;03E10637&quot; &quot;20E10359&quot; &quot;25E10251&quot; &quot;22E10391&quot;
+## [2929] &quot;12E10278&quot; &quot;20E10452&quot; &quot;11E10110&quot; &quot;29E10494&quot; &quot;03E10849&quot; &quot;12E10355&quot;
+## [2935] &quot;03E10825&quot; &quot;18E10505&quot; &quot;02E10502&quot; &quot;30E10252&quot; &quot;31E10319&quot; &quot;04E10508&quot;
+## [2941] &quot;28E10333&quot; &quot;03E10119&quot; &quot;25E10615&quot; &quot;18E10601&quot; &quot;26E10239&quot; &quot;13E10627&quot;
+## [2947] &quot;29E10329&quot; &quot;12E10764&quot; &quot;29E10225&quot; &quot;11E10019&quot; &quot;10E10641&quot; &quot;27E10237&quot;
+## [2953] &quot;03E10063&quot; &quot;18E10093&quot; &quot;29E10085&quot; &quot;23E10253&quot; &quot;02E10437&quot; &quot;12E10549&quot;
+## [2959] &quot;23E10201&quot; &quot;25E10333&quot; &quot;28E10602&quot; &quot;03E10834&quot; &quot;13E10818&quot; &quot;06E10021&quot;
+## [2965] &quot;06E10343&quot; &quot;24E10018&quot; &quot;18E10079&quot; &quot;25E10061&quot; &quot;15E10604&quot; &quot;03E10255&quot;
+## [2971] &quot;27E10125&quot; &quot;04E10028&quot; &quot;02E10506&quot; &quot;13E10050&quot; &quot;17E10469&quot; &quot;28E10380&quot;
+## [2977] &quot;26E10515&quot; &quot;03E10851&quot; &quot;26E10542&quot; &quot;32E10822&quot; &quot;14E10760&quot; &quot;18E10249&quot;
+## [2983] &quot;32E10985&quot; &quot;06E10193&quot; &quot;02E10516&quot; &quot;09E10857&quot; &quot;17E10639&quot; &quot;25E10445&quot;
+## [2989] &quot;06E10507&quot; &quot;30E10297&quot; &quot;16E10245&quot; &quot;26E10253&quot; &quot;13E10981&quot; &quot;01E10258&quot;
+## [2995] &quot;08E10235&quot; &quot;23E10454&quot; &quot;13E10434&quot; &quot;23E10118&quot; &quot;32E10245&quot; &quot;17E10238&quot;
+## [3001] &quot;20E10790&quot; &quot;29E10339&quot; &quot;17E10169&quot; &quot;19E10377&quot; &quot;02E10659&quot; &quot;32E10235&quot;
+## [3007] &quot;04E10238&quot; &quot;04E10710&quot; &quot;17E10740&quot; &quot;04E10569&quot; &quot;32E10009&quot; &quot;23E10044&quot;
+## [3013] &quot;04E10291&quot; &quot;03E10242&quot; &quot;15E10667&quot; &quot;08E10922&quot; &quot;08E10169&quot; &quot;18E10435&quot;
+## [3019] &quot;17E10461&quot; &quot;18E10729&quot; &quot;02E10075&quot; &quot;17E10181&quot; &quot;02E10167&quot; &quot;12E10452&quot;
+## [3025] &quot;15E10513&quot; &quot;08E10355&quot; &quot;17E10041&quot; &quot;26E10286&quot; &quot;06E10111&quot; &quot;15E10023&quot;
+## [3031] &quot;07E10736&quot; &quot;10E10021&quot; &quot;07E10215&quot; &quot;09E10595&quot; &quot;08E10926&quot; &quot;11E10196&quot;
+## [3037] &quot;04E10063&quot; &quot;12E10401&quot; &quot;04E10326&quot; &quot;08E10755&quot; &quot;06E10381&quot; &quot;20E10650&quot;
+## [3043] &quot;30E10131&quot; &quot;08E10380&quot; &quot;32E10575&quot; &quot;04E10004&quot; &quot;31E10607&quot; &quot;13E10130&quot;
+## [3049] &quot;25E10458&quot; &quot;15E10578&quot; &quot;08E10950&quot; &quot;24E10696&quot; &quot;20E10271&quot; &quot;24E10142&quot;
+## [3055] &quot;21E10168&quot; &quot;01E10782&quot; &quot;26E10545&quot; &quot;13E10163&quot; &quot;04E10030&quot; &quot;30E10673&quot;
+## [3061] &quot;16E10024&quot; &quot;18E10492&quot; &quot;20E10191&quot; &quot;17E10168&quot; &quot;09E10488&quot; &quot;28E10711&quot;
+## [3067] &quot;08E10338&quot; &quot;20E10190&quot; &quot;09E10288&quot; &quot;30E10047&quot; &quot;27E10104&quot; &quot;20E10166&quot;
+## [3073] &quot;13E10386&quot; &quot;27E10611&quot; &quot;10E10022&quot; &quot;18E10254&quot; &quot;32E10933&quot; &quot;15E10395&quot;
+## [3079] &quot;03E10865&quot; &quot;15E10113&quot; &quot;19E10255&quot; &quot;31E10019&quot; &quot;10E10281&quot; &quot;09E10572&quot;
+## [3085] &quot;28E10304&quot; &quot;13E10096&quot; &quot;18E10291&quot; &quot;17E10042&quot; &quot;04E10114&quot; &quot;24E10624&quot;
+## [3091] &quot;15E10270&quot; &quot;09E10568&quot; &quot;10E10279&quot; &quot;08E10393&quot; &quot;10E10520&quot; &quot;29E10127&quot;
+## [3097] &quot;21E10532&quot; &quot;17E10027&quot; &quot;27E10192&quot; &quot;24E10207&quot; &quot;02E10510&quot; &quot;14E10081&quot;
+## [3103] &quot;09E10114&quot; &quot;02E10189&quot; &quot;06E10653&quot; &quot;15E10943&quot; &quot;04E10384&quot; &quot;27E10171&quot;
+## [3109] &quot;20E10393&quot; &quot;13E10389&quot; &quot;08E10142&quot; &quot;20E10457&quot; &quot;14E10493&quot; &quot;08E10145&quot;
+## [3115] &quot;12E10555&quot; &quot;24E10804&quot; &quot;17E10273&quot; &quot;13E10135&quot; &quot;15E10134&quot; &quot;09E10991&quot;
+## [3121] &quot;03E10152&quot; &quot;13E10197&quot; &quot;12E10466&quot; &quot;07E10145&quot; &quot;13E10394&quot; &quot;13E10073&quot;
+## [3127] &quot;13E10907&quot; &quot;26E10421&quot; &quot;03E10202&quot; &quot;08E10591&quot; &quot;18E10426&quot; &quot;11E10464&quot;
+## [3133] &quot;26E10196&quot; &quot;30E10207&quot; &quot;31E10868&quot; &quot;29E10023&quot; &quot;20E10382&quot; &quot;26E10382&quot;
+## [3139] &quot;07E10147&quot; &quot;15E10348&quot; &quot;24E10198&quot; &quot;07E10621&quot; &quot;20E10138&quot; &quot;12E10035&quot;
+## [3145] &quot;23E10148&quot; &quot;24E10427&quot; &quot;20E10713&quot; &quot;26E10254&quot; &quot;24E10847&quot; &quot;07E10326&quot;
+## [3151] &quot;13E10357&quot; &quot;11E10289&quot; &quot;22E10689&quot; &quot;11E10192&quot; &quot;31E10313&quot; &quot;32E10363&quot;
+## [3157] &quot;23E10250&quot; &quot;30E10750&quot; &quot;04E10322&quot; &quot;27E10603&quot; &quot;21E10234&quot; &quot;03E10554&quot;
+## [3163] &quot;04E10621&quot; &quot;13E10270&quot; &quot;02E10706&quot; &quot;25E10207&quot; &quot;09E10013&quot; &quot;24E10918&quot;
+## [3169] &quot;15E10046&quot; &quot;24E10091&quot; &quot;09E10743&quot; &quot;30E10203&quot; &quot;07E10100&quot; &quot;32E10328&quot;
+## [3175] &quot;19E10297&quot; &quot;20E10124&quot; &quot;20E10378&quot; &quot;13E10439&quot; &quot;23E10087&quot; &quot;02E10594&quot;
+## [3181] &quot;03E10847&quot; &quot;01E10461&quot; &quot;19E10760&quot; &quot;23E10432&quot; &quot;30E10236&quot; &quot;01E10353&quot;
+## [3187] &quot;12E10243&quot; &quot;09E10212&quot; &quot;08E10187&quot; &quot;12E10468&quot; &quot;08E10279&quot; &quot;02E10212&quot;
+## [3193] &quot;19E10940&quot; &quot;27E10233&quot; &quot;03E10463&quot; &quot;02E10113&quot; &quot;18E10761&quot; &quot;13E10072&quot;
+## [3199] &quot;05E10011&quot; &quot;03E10287&quot; &quot;15E10911&quot; &quot;13E10226&quot; &quot;20E10717&quot; &quot;09E10532&quot;
+## [3205] &quot;22E10223&quot; &quot;31E10390&quot; &quot;15E10246&quot; &quot;23E10076&quot; &quot;24E10245&quot; &quot;12E10221&quot;
+## [3211] &quot;09E10243&quot; &quot;26E10071&quot; &quot;27E10593&quot; &quot;23E10015&quot; &quot;26E10358&quot; &quot;20E10663&quot;
+## [3217] &quot;22E10032&quot; &quot;26E10574&quot; &quot;23E10010&quot; &quot;08E10437&quot; &quot;23E10209&quot; &quot;20E10758&quot;
+## [3223] &quot;17E10115&quot; &quot;06E10639&quot; &quot;27E10185&quot; &quot;14E10621&quot; &quot;07E10465&quot; &quot;22E10025&quot;
+## [3229] &quot;06E10688&quot; &quot;31E10242&quot; &quot;17E10159&quot; &quot;25E10695&quot; &quot;29E10330&quot; &quot;24E10776&quot;
+## [3235] &quot;12E10631&quot; &quot;25E10969&quot; &quot;32E10125&quot; &quot;15E10632&quot; &quot;31E10530&quot; &quot;04E10299&quot;
+## [3241] &quot;32E10330&quot; &quot;23E10038&quot; &quot;07E10457&quot; &quot;32E10763&quot; &quot;23E10179&quot; &quot;07E10303&quot;
+## [3247] &quot;31E10468&quot; &quot;20E10835&quot; &quot;30E10429&quot; &quot;10E10663&quot; &quot;12E10052&quot; &quot;23E10140&quot;
+## [3253] &quot;31E10672&quot; &quot;20E10907&quot; &quot;23E10299&quot; &quot;06E10143&quot; &quot;18E10742&quot; &quot;22E10078&quot;
+## [3259] &quot;31E10114&quot; &quot;15E10562&quot; &quot;29E10110&quot; &quot;09E10916&quot; &quot;22E10313&quot; &quot;32E10549&quot;
+## [3265] &quot;10E10064&quot; &quot;24E10662&quot; &quot;13E10312&quot; &quot;24E10773&quot; &quot;16E10241&quot; &quot;02E10670&quot;
+## [3271] &quot;14E10434&quot; &quot;15E10044&quot; &quot;12E10430&quot; &quot;30E10620&quot; &quot;18E10585&quot; &quot;20E10011&quot;
+## [3277] &quot;11E10268&quot; &quot;12E10390&quot; &quot;13E10289&quot; &quot;31E10378&quot; &quot;22E10874&quot; &quot;24E10533&quot;
+## [3283] &quot;03E10484&quot; &quot;18E10198&quot; &quot;31E10394&quot; &quot;26E10157&quot; &quot;01E10875&quot; &quot;31E10221&quot;
+## [3289] &quot;09E10704&quot; &quot;13E10317&quot; &quot;27E10205&quot; &quot;01E10620&quot; &quot;05E10632&quot; &quot;29E10539&quot;
+## [3295] &quot;12E10232&quot; &quot;17E10733&quot; &quot;06E10104&quot; &quot;03E10199&quot; &quot;20E10464&quot; &quot;31E10025&quot;
+## [3301] &quot;04E10226&quot; &quot;31E10152&quot; &quot;27E10091&quot; &quot;07E10120&quot; &quot;31E10198&quot; &quot;29E10035&quot;
+## [3307] &quot;08E10119&quot; &quot;10E10089&quot; &quot;25E10084&quot; &quot;08E10763&quot; &quot;09E10388&quot; &quot;20E10498&quot;
+## [3313] &quot;10E10243&quot; &quot;32E10505&quot; &quot;27E10263&quot; &quot;24E10484&quot; &quot;16E10507&quot; &quot;25E10598&quot;
+## [3319] &quot;25E10087&quot; &quot;23E10232&quot; &quot;09E10648&quot; &quot;12E10346&quot; &quot;02E10242&quot; &quot;07E10200&quot;
+## [3325] &quot;07E10230&quot; &quot;09E10727&quot; &quot;29E10109&quot; &quot;30E10359&quot; &quot;21E10292&quot; &quot;03E10586&quot;
+## [3331] &quot;02E10535&quot; &quot;16E10279&quot; &quot;26E10051&quot; &quot;24E10874&quot; &quot;24E10679&quot; &quot;09E10450&quot;
+## [3337] &quot;19E10228&quot; &quot;04E10150&quot; &quot;03E10193&quot; &quot;26E10121&quot; &quot;19E10183&quot; &quot;19E10281&quot;
+## [3343] &quot;02E10614&quot; &quot;19E10365&quot; &quot;24E10230&quot; &quot;02E10865&quot; &quot;05E10048&quot; &quot;17E10355&quot;
+## [3349] &quot;32E10371&quot; &quot;29E10103&quot; &quot;29E10248&quot; &quot;16E10549&quot; &quot;28E10374&quot; &quot;19E10648&quot;
+## [3355] &quot;01E10540&quot; &quot;27E10348&quot; &quot;31E10361&quot; &quot;03E10153&quot; &quot;07E10364&quot; &quot;03E10647&quot;
+## [3361] &quot;27E10296&quot; &quot;32E10571&quot; &quot;13E10739&quot; &quot;23E10875&quot; &quot;03E10615&quot; &quot;07E10141&quot;
+## [3367] &quot;03E10375&quot; &quot;07E10394&quot; &quot;19E10291&quot; &quot;12E10921&quot; &quot;07E10106&quot; &quot;14E10253&quot;
+## [3373] &quot;22E10086&quot; &quot;08E10008&quot; &quot;12E10298&quot; &quot;32E10146&quot; &quot;03E10076&quot; &quot;12E10310&quot;
+## [3379] &quot;20E10908&quot; &quot;20E10285&quot; &quot;14E10719&quot; &quot;14E10829&quot; &quot;29E10375&quot; &quot;15E10108&quot;
+## [3385] &quot;05E10675&quot; &quot;25E10297&quot; &quot;12E10136&quot; &quot;32E10724&quot; &quot;14E10146&quot; &quot;03E10218&quot;
+## [3391] &quot;07E10131&quot; &quot;21E10426&quot; &quot;17E10178&quot; &quot;21E10448&quot; &quot;18E10624&quot; &quot;06E10005&quot;
+## [3397] &quot;22E10188&quot; &quot;25E10462&quot; &quot;12E10289&quot; &quot;09E10232&quot; &quot;14E10596&quot; &quot;15E10263&quot;
+## [3403] &quot;22E10537&quot; &quot;08E10854&quot; &quot;01E10360&quot; &quot;02E10711&quot; &quot;31E10160&quot; &quot;10E10594&quot;
+## [3409] &quot;30E10135&quot; &quot;02E10146&quot; &quot;06E10619&quot; &quot;26E10537&quot; &quot;02E10969&quot; &quot;01E10513&quot;
+## [3415] &quot;31E10112&quot; &quot;30E10171&quot; &quot;30E10557&quot; &quot;29E10135&quot; &quot;22E10009&quot; &quot;05E10302&quot;
+## [3421] &quot;13E10116&quot; &quot;12E10404&quot; &quot;03E10312&quot; &quot;15E10888&quot; &quot;17E10365&quot; &quot;24E10293&quot;
+## [3427] &quot;25E10428&quot; &quot;12E10903&quot; &quot;07E10758&quot; &quot;02E10033&quot; &quot;08E10474&quot; &quot;03E10994&quot;
+## [3433] &quot;03E10566&quot; &quot;15E10797&quot; &quot;20E10049&quot; &quot;19E10322&quot; &quot;20E10420&quot; &quot;09E10638&quot;
+## [3439] &quot;01E10014&quot; &quot;28E10186&quot; &quot;30E10331&quot; &quot;20E10140&quot; &quot;04E10576&quot; &quot;19E10932&quot;
+## [3445] &quot;27E10441&quot; &quot;10E10349&quot; &quot;10E10509&quot; &quot;20E10567&quot; &quot;14E10543&quot; &quot;31E10586&quot;
+## [3451] &quot;25E10254&quot; &quot;31E10076&quot; &quot;17E10367&quot; &quot;03E10118&quot; &quot;26E10425&quot; &quot;27E10026&quot;
+## [3457] &quot;13E10251&quot; &quot;15E10523&quot; &quot;10E10080&quot; &quot;30E10695&quot; &quot;06E10452&quot; &quot;09E10297&quot;
+## [3463] &quot;20E10614&quot; &quot;28E10673&quot; &quot;01E10341&quot; &quot;30E10239&quot; &quot;31E10766&quot; &quot;28E10423&quot;
+## [3469] &quot;30E10515&quot; &quot;19E10563&quot; &quot;21E10705&quot; &quot;31E10332&quot; &quot;13E10920&quot; &quot;27E10010&quot;
+## [3475] &quot;10E10118&quot; &quot;12E10091&quot; &quot;29E10228&quot; &quot;04E10245&quot; &quot;17E10122&quot; &quot;26E10058&quot;
+## [3481] &quot;03E10343&quot; &quot;08E10633&quot; &quot;01E10028&quot; &quot;26E10434&quot; &quot;16E10296&quot; &quot;22E10148&quot;
+## [3487] &quot;14E10982&quot; &quot;07E10265&quot; &quot;29E10305&quot; &quot;21E10143&quot; &quot;18E10146&quot; &quot;15E10290&quot;
+## [3493] &quot;32E10305&quot; &quot;15E10086&quot; &quot;12E10996&quot; &quot;18E10728&quot; &quot;26E10048&quot; &quot;32E10490&quot;
+## [3499] &quot;14E10356&quot; &quot;02E10214&quot; &quot;13E10592&quot; &quot;19E10096&quot; &quot;31E10597&quot; &quot;13E10745&quot;
+## [3505] &quot;21E10340&quot; &quot;32E10620&quot; &quot;03E10686&quot; &quot;25E10313&quot; &quot;04E10389&quot; &quot;08E10030&quot;
+## [3511] &quot;04E10218&quot; &quot;17E10568&quot; &quot;31E10272&quot; &quot;21E10323&quot; &quot;12E10651&quot; &quot;32E10573&quot;
+## [3517] &quot;14E10432&quot; &quot;24E10375&quot; &quot;19E10015&quot; &quot;03E10383&quot; &quot;09E10140&quot; &quot;14E10743&quot;
+## [3523] &quot;26E10173&quot; &quot;31E10284&quot; &quot;12E10263&quot; &quot;04E10247&quot; &quot;03E10208&quot; &quot;07E10194&quot;
+## [3529] &quot;22E10274&quot; &quot;02E10348&quot; &quot;14E10914&quot; &quot;27E10496&quot; &quot;32E10057&quot; &quot;18E10019&quot;
+## [3535] &quot;17E10089&quot; &quot;13E10594&quot; &quot;21E10017&quot; &quot;11E10119&quot; &quot;25E10157&quot; &quot;09E10083&quot;
+## [3541] &quot;25E10734&quot; &quot;10E10505&quot; &quot;30E10286&quot; &quot;30E10713&quot; &quot;06E10462&quot; &quot;25E10446&quot;
+## [3547] &quot;22E10717&quot; &quot;32E10135&quot; &quot;13E10574&quot; &quot;18E10226&quot; &quot;09E10030&quot; &quot;19E10178&quot;
+## [3553] &quot;16E10580&quot; &quot;23E10433&quot; &quot;20E10491&quot; &quot;19E10266&quot; &quot;32E10726&quot; &quot;08E10371&quot;
+## [3559] &quot;28E10624&quot; &quot;23E10229&quot; &quot;24E10121&quot; &quot;04E10444&quot; &quot;25E10698&quot; &quot;03E10428&quot;
+## [3565] &quot;30E10115&quot; &quot;06E10048&quot; &quot;21E10207&quot; &quot;08E10733&quot; &quot;13E10246&quot; &quot;20E10097&quot;
+## [3571] &quot;29E10298&quot; &quot;16E10568&quot; &quot;03E10345&quot; &quot;11E10333&quot; &quot;32E10205&quot; &quot;03E10420&quot;
+## [3577] &quot;11E10482&quot; &quot;23E10357&quot; &quot;19E10535&quot; &quot;17E10098&quot; &quot;17E10149&quot; &quot;30E10471&quot;
+## [3583] &quot;20E10092&quot; &quot;22E10204&quot; &quot;24E10219&quot; &quot;17E10184&quot; &quot;20E10704&quot; &quot;11E10190&quot;
+## [3589] &quot;14E10603&quot; &quot;09E10562&quot; &quot;10E10321&quot; &quot;09E10972&quot; &quot;29E10263&quot; &quot;18E10206&quot;
+## [3595] &quot;02E10022&quot; &quot;09E10179&quot; &quot;01E10834&quot; &quot;03E10352&quot; &quot;31E10686&quot; &quot;19E10054&quot;
+## [3601] &quot;18E10665&quot; &quot;12E10381&quot; &quot;14E10860&quot; &quot;13E10048&quot; &quot;29E10251&quot; &quot;27E10602&quot;
+## [3607] &quot;18E10103&quot; &quot;15E10740&quot; &quot;29E10545&quot; &quot;27E10214&quot; &quot;21E10418&quot; &quot;03E10115&quot;
+## [3613] &quot;27E10182&quot; &quot;16E10418&quot; &quot;06E10235&quot; &quot;02E10322&quot; &quot;21E10279&quot; &quot;16E10019&quot;
+## [3619] &quot;31E10109&quot; &quot;25E10663&quot; &quot;20E10358&quot; &quot;01E10227&quot; &quot;04E10734&quot; &quot;29E10328&quot;
+## [3625] &quot;03E10386&quot; &quot;22E10227&quot; &quot;07E10332&quot; &quot;32E10772&quot; &quot;20E10001&quot; &quot;28E10309&quot;
+## [3631] &quot;27E10188&quot; &quot;29E10237&quot; &quot;17E10263&quot; &quot;15E10498&quot; &quot;15E10317&quot; &quot;28E10506&quot;
+## [3637] &quot;01E10404&quot; &quot;18E10390&quot; &quot;19E10045&quot; &quot;20E10141&quot; &quot;10E10388&quot; &quot;25E10514&quot;
+## [3643] &quot;14E10402&quot; &quot;05E10025&quot; &quot;23E10046&quot; &quot;32E10441&quot; &quot;30E10181&quot; &quot;01E10745&quot;
+## [3649] &quot;21E10075&quot; &quot;05E10409&quot; &quot;25E10006&quot; &quot;30E10619&quot; &quot;13E10204&quot; &quot;06E10689&quot;
+## [3655] &quot;13E10105&quot; &quot;23E10037&quot; &quot;04E10118&quot; &quot;19E10285&quot; &quot;08E10240&quot; &quot;23E10640&quot;
+## [3661] &quot;29E10189&quot; &quot;30E10408&quot; &quot;23E10836&quot; &quot;31E10676&quot; &quot;03E10932&quot; &quot;08E10680&quot;
+## [3667] &quot;26E10539&quot; &quot;10E10559&quot; &quot;07E10205&quot; &quot;22E10292&quot; &quot;25E10190&quot; &quot;20E10636&quot;
+## [3673] &quot;03E10097&quot; &quot;10E10014&quot; &quot;22E10716&quot; &quot;29E10210&quot; &quot;23E10340&quot; &quot;09E10924&quot;
+## [3679] &quot;25E10072&quot; &quot;16E10364&quot; &quot;13E10997&quot; &quot;25E10517&quot; &quot;16E10047&quot; &quot;32E10279&quot;
+## [3685] &quot;21E10070&quot; &quot;15E10906&quot; &quot;17E10136&quot; &quot;21E10537&quot; &quot;23E10079&quot; &quot;11E10242&quot;
+## [3691] &quot;25E10131&quot; &quot;22E10115&quot; &quot;11E10025&quot; &quot;28E10018&quot; &quot;15E10506&quot; &quot;11E10352&quot;
+## [3697] &quot;03E10989&quot; &quot;08E10333&quot; &quot;15E10420&quot; &quot;06E10186&quot; &quot;15E10898&quot; &quot;03E10314&quot;
+## [3703] &quot;03E10812&quot; &quot;14E10072&quot; &quot;14E10399&quot; &quot;30E10570&quot; &quot;26E10250&quot; &quot;31E10280&quot;
+## [3709] &quot;32E10171&quot; &quot;19E10390&quot; &quot;13E10314&quot; &quot;18E10071&quot; &quot;17E10686&quot; &quot;20E10456&quot;
+## [3715] &quot;10E10434&quot; &quot;04E10312&quot; &quot;18E10348&quot; &quot;01E10041&quot; &quot;03E10415&quot; &quot;08E10811&quot;
+## [3721] &quot;08E10695&quot; &quot;09E10075&quot; &quot;10E10056&quot; &quot;02E10252&quot; &quot;15E10955&quot; &quot;24E10985&quot;
+## [3727] &quot;31E10205&quot; &quot;32E10248&quot; &quot;15E10039&quot; &quot;08E10657&quot; &quot;12E10036&quot; &quot;15E10252&quot;
+## [3733] &quot;20E10623&quot; &quot;18E10703&quot; &quot;03E10454&quot; &quot;27E10045&quot; &quot;03E10229&quot; &quot;10E10651&quot;
+## [3739] &quot;14E10284&quot; &quot;14E10766&quot; &quot;32E10821&quot; &quot;31E10334&quot; &quot;14E10990&quot; &quot;03E10542&quot;
+## [3745] &quot;03E10575&quot; &quot;01E10169&quot; &quot;25E10356&quot; &quot;14E10108&quot; &quot;12E10733&quot; &quot;11E10479&quot;
+## [3751] &quot;28E10427&quot; &quot;32E10223&quot; &quot;18E10084&quot; &quot;24E10035&quot; &quot;24E10046&quot; &quot;11E10270&quot;
+## [3757] &quot;14E10037&quot; &quot;01E10061&quot; &quot;29E10142&quot; &quot;19E10329&quot; &quot;28E10702&quot; &quot;08E10317&quot;
+## [3763] &quot;17E10219&quot; &quot;27E10095&quot; &quot;07E10157&quot; &quot;24E10285&quot; &quot;01E10138&quot; &quot;22E10503&quot;
+## [3769] &quot;22E10887&quot; &quot;01E10779&quot; &quot;06E10130&quot; &quot;23E10409&quot; &quot;23E10591&quot; &quot;20E10305&quot;
+## [3775] &quot;25E10697&quot; &quot;05E10189&quot; &quot;23E10086&quot; &quot;16E10244&quot; &quot;08E10864&quot; &quot;28E10111&quot;
+## [3781] &quot;17E10083&quot; &quot;06E10037&quot; &quot;20E10648&quot; &quot;15E10388&quot; &quot;16E10433&quot; &quot;16E10599&quot;
+## [3787] &quot;11E10158&quot; &quot;13E10914&quot; &quot;25E10089&quot; &quot;13E10362&quot; &quot;10E10547&quot; &quot;12E10472&quot;
+## [3793] &quot;08E10405&quot; &quot;22E10061&quot; &quot;12E10546&quot; &quot;12E10636&quot; &quot;15E10178&quot; &quot;07E10443&quot;
+## [3799] &quot;11E10153&quot; &quot;27E10085&quot; &quot;07E10497&quot; &quot;19E10273&quot; &quot;17E10737&quot; &quot;05E10433&quot;
+## [3805] &quot;02E10871&quot; &quot;31E10311&quot; &quot;05E10028&quot; &quot;22E10306&quot; &quot;15E10148&quot; &quot;31E10342&quot;
+## [3811] &quot;09E10186&quot; &quot;14E10809&quot; &quot;18E10017&quot; &quot;15E10119&quot; &quot;24E10746&quot; &quot;32E10757&quot;
+## [3817] &quot;24E10403&quot; &quot;10E10598&quot; &quot;15E10484&quot; &quot;29E10169&quot; &quot;05E10129&quot; &quot;30E10499&quot;
+## [3823] &quot;32E10382&quot; &quot;30E10128&quot; &quot;01E10547&quot; &quot;04E10222&quot; &quot;32E10698&quot; &quot;14E10515&quot;
+## [3829] &quot;22E10244&quot; &quot;20E10526&quot; &quot;31E10389&quot; &quot;14E10210&quot; &quot;24E10214&quot; &quot;29E10188&quot;
+## [3835] &quot;21E10079&quot; &quot;22E10377&quot; &quot;14E10095&quot; &quot;27E10614&quot; &quot;03E10385&quot; &quot;15E10674&quot;
+## [3841] &quot;12E10912&quot; &quot;02E10782&quot; &quot;21E10181&quot; &quot;06E10260&quot; &quot;12E10264&quot; &quot;05E10188&quot;
+## [3847] &quot;18E10106&quot; &quot;26E10221&quot; &quot;29E10342&quot; &quot;30E10094&quot; &quot;01E10015&quot; &quot;29E10299&quot;
+## [3853] &quot;23E10391&quot; &quot;23E10055&quot; &quot;26E10400&quot; &quot;11E10401&quot; &quot;14E10618&quot; &quot;10E10290&quot;
+## [3859] &quot;30E10216&quot; &quot;05E10019&quot; &quot;07E10153&quot; &quot;31E10039&quot; &quot;10E10510&quot; &quot;25E10926&quot;
+## [3865] &quot;31E10393&quot; &quot;22E10150&quot; &quot;09E10574&quot; &quot;09E10623&quot; &quot;11E10296&quot; &quot;07E10321&quot;
+## [3871] &quot;08E10053&quot; &quot;04E10003&quot; &quot;06E10149&quot; &quot;27E10021&quot; &quot;07E10404&quot; &quot;20E10522&quot;
+## [3877] &quot;27E10599&quot; &quot;11E10398&quot; &quot;28E10688&quot; &quot;13E10113&quot; &quot;28E10426&quot; &quot;07E10694&quot;
+## [3883] &quot;25E10123&quot; &quot;31E10007&quot; &quot;25E10415&quot; &quot;32E10734&quot; &quot;16E10187&quot; &quot;32E10293&quot;
+## [3889] &quot;30E10119&quot; &quot;16E10045&quot; &quot;05E10359&quot; &quot;32E10132&quot; &quot;15E10268&quot; &quot;26E10054&quot;
+## [3895] &quot;22E10418&quot; &quot;31E10794&quot; &quot;07E10166&quot; &quot;08E10267&quot; &quot;05E10201&quot; &quot;18E10466&quot;
+## [3901] &quot;15E10594&quot; &quot;32E10799&quot; &quot;31E10715&quot; &quot;12E10206&quot; &quot;06E10139&quot; &quot;32E10661&quot;
+## [3907] &quot;30E10449&quot; &quot;17E10499&quot; &quot;15E10199&quot; &quot;20E10580&quot; &quot;09E10723&quot; &quot;12E10327&quot;
+## [3913] &quot;08E10693&quot; &quot;03E10283&quot; &quot;30E10477&quot; &quot;17E10127&quot; &quot;12E10371&quot; &quot;29E10084&quot;
+## [3919] &quot;16E10572&quot; &quot;24E10366&quot; &quot;25E10316&quot; &quot;17E10246&quot; &quot;20E10824&quot; &quot;26E10371&quot;
+## [3925] &quot;19E10060&quot; &quot;04E10244&quot; &quot;28E10712&quot; &quot;32E10361&quot; &quot;24E10573&quot; &quot;05E10352&quot;
+## [3931] &quot;32E10747&quot; &quot;12E10010&quot; &quot;18E10368&quot; &quot;15E10570&quot; &quot;32E10444&quot; &quot;03E10376&quot;
+## [3937] &quot;17E10175&quot; &quot;17E10239&quot; &quot;09E10457&quot; &quot;12E10835&quot; &quot;02E10892&quot; &quot;05E10161&quot;
+## [3943] &quot;11E10267&quot; &quot;08E10097&quot; &quot;15E10945&quot; &quot;23E10397&quot; &quot;18E10210&quot; &quot;31E10136&quot;
+## [3949] &quot;32E10141&quot; &quot;20E10107&quot; &quot;29E10153&quot; &quot;03E10033&quot; &quot;03E10408&quot; &quot;27E10430&quot;
+## [3955] &quot;15E10628&quot; &quot;24E10171&quot; &quot;29E10193&quot; &quot;19E10549&quot; &quot;16E10551&quot; &quot;29E10174&quot;
+## [3961] &quot;03E10491&quot; &quot;04E10136&quot; &quot;06E10332&quot; &quot;10E10043&quot; &quot;18E10025&quot; &quot;19E10230&quot;
+## [3967] &quot;17E10480&quot; &quot;01E10102&quot; &quot;16E10121&quot; &quot;16E10018&quot; &quot;22E10074&quot; &quot;09E10653&quot;
+## [3973] &quot;25E10315&quot; &quot;24E10208&quot; &quot;31E10159&quot; &quot;20E10542&quot; &quot;16E10345&quot; &quot;13E10911&quot;
+## [3979] &quot;11E10237&quot; &quot;07E10060&quot; &quot;23E10059&quot; &quot;32E10012&quot; &quot;24E10908&quot; &quot;06E10165&quot;
+## [3985] &quot;18E10281&quot; &quot;17E10444&quot; &quot;32E10185&quot; &quot;11E10299&quot; &quot;01E10832&quot; &quot;24E10371&quot;
+## [3991] &quot;14E10839&quot; &quot;13E10363&quot; &quot;32E10267&quot; &quot;09E10862&quot; &quot;19E10880&quot; &quot;08E10160&quot;
+## [3997] &quot;08E10048&quot; &quot;32E10681&quot; &quot;20E10181&quot; &quot;01E10659&quot; &quot;20E10212&quot; &quot;03E10608&quot;
+## [4003] &quot;24E10492&quot; &quot;30E10028&quot; &quot;31E10014&quot; &quot;10E10573&quot; &quot;14E10640&quot; &quot;06E10242&quot;
+## [4009] &quot;17E10130&quot; &quot;18E10124&quot; &quot;14E10363&quot; &quot;11E10135&quot; &quot;02E10194&quot; &quot;23E10562&quot;
+## [4015] &quot;01E10012&quot; &quot;03E10833&quot; &quot;29E10446&quot; &quot;16E10281&quot; &quot;05E10501&quot; &quot;03E10332&quot;
+## [4021] &quot;19E10800&quot; &quot;31E10685&quot; &quot;03E10055&quot; &quot;05E10343&quot; &quot;31E10863&quot; &quot;32E10130&quot;
+## [4027] &quot;15E10767&quot; &quot;19E10076&quot; &quot;18E10055&quot; &quot;30E10039&quot; &quot;24E10670&quot; &quot;20E10750&quot;
+## [4033] &quot;25E10339&quot; &quot;14E10658&quot; &quot;32E10623&quot; &quot;27E10042&quot; &quot;06E10623&quot; &quot;22E10163&quot;
+## [4039] &quot;09E10604&quot; &quot;24E10399&quot; &quot;16E10464&quot; &quot;30E10746&quot; &quot;22E10933&quot; &quot;11E10408&quot;
+## [4045] &quot;17E10187&quot; &quot;30E10345&quot; &quot;02E10776&quot; &quot;21E10524&quot; &quot;27E10357&quot; &quot;30E10403&quot;
+## [4051] &quot;09E10230&quot; &quot;24E10374&quot; &quot;11E10357&quot; &quot;26E10175&quot; &quot;07E10732&quot; &quot;15E10947&quot;
+## [4057] &quot;06E10248&quot; &quot;31E10765&quot; &quot;04E10156&quot; &quot;08E10159&quot; &quot;09E10052&quot; &quot;22E10930&quot;
+## [4063] &quot;28E10375&quot; &quot;29E10241&quot; &quot;09E10349&quot; &quot;03E10846&quot; &quot;01E10040&quot; &quot;14E10945&quot;
+## [4069] &quot;01E10526&quot; &quot;02E10116&quot; &quot;16E10425&quot; &quot;32E10260&quot; &quot;30E10717&quot; &quot;21E10068&quot;
+## [4075] &quot;13E10295&quot; &quot;17E10269&quot; &quot;08E10850&quot; &quot;26E10320&quot; &quot;06E10209&quot; &quot;28E10456&quot;
+## [4081] &quot;18E10483&quot; &quot;03E10826&quot; &quot;04E10727&quot; &quot;10E10548&quot; &quot;14E10156&quot; &quot;15E10103&quot;
+## [4087] &quot;13E10942&quot; &quot;11E10101&quot; &quot;19E10044&quot; &quot;08E10022&quot; &quot;08E10592&quot; &quot;15E10279&quot;
+## [4093] &quot;10E10634&quot; &quot;05E10701&quot; &quot;32E10583&quot; &quot;21E10066&quot; &quot;12E10005&quot; &quot;13E10811&quot;
+## [4099] &quot;29E10032&quot; &quot;04E10701&quot; &quot;14E10401&quot; &quot;13E10719&quot; &quot;32E10917&quot; &quot;20E10921&quot;
+## [4105] &quot;23E10330&quot; &quot;10E10261&quot; &quot;19E10415&quot; &quot;08E10087&quot; &quot;20E10607&quot; &quot;31E10537&quot;
+## [4111] &quot;09E10242&quot; &quot;06E10136&quot; &quot;15E10533&quot; &quot;23E10790&quot; &quot;19E10208&quot; &quot;03E10924&quot;
+## [4117] &quot;11E10106&quot; &quot;15E10426&quot; &quot;01E10177&quot; &quot;05E10740&quot; &quot;27E10030&quot; &quot;17E10183&quot;
+## [4123] &quot;31E10569&quot; &quot;13E10343&quot; &quot;08E10413&quot; &quot;17E10599&quot; &quot;30E10747&quot; &quot;14E10273&quot;
+## [4129] &quot;26E10312&quot; &quot;04E10407&quot; &quot;27E10529&quot; &quot;27E10054&quot; &quot;17E10125&quot; &quot;32E10089&quot;
+## [4135] &quot;32E10217&quot; &quot;29E10278&quot; &quot;19E10496&quot; &quot;03E10195&quot; &quot;05E10714&quot; &quot;20E10127&quot;
+## [4141] &quot;06E10533&quot; &quot;30E10200&quot; &quot;02E10044&quot; &quot;09E10497&quot; &quot;01E10259&quot; &quot;06E10223&quot;
+## [4147] &quot;20E10017&quot; &quot;08E10878&quot; &quot;17E10502&quot; &quot;22E10002&quot; &quot;23E10461&quot; &quot;05E10657&quot;
+## [4153] &quot;14E10540&quot; &quot;26E10414&quot; &quot;32E10643&quot; &quot;19E10069&quot; &quot;04E10230&quot; &quot;23E10120&quot;
+## [4159] &quot;24E10283&quot; &quot;32E10751&quot; &quot;27E10408&quot; &quot;32E10025&quot; &quot;18E10179&quot; &quot;12E10050&quot;
+## [4165] &quot;26E10416&quot; &quot;18E10085&quot; &quot;07E10090&quot; &quot;17E10037&quot; &quot;17E10669&quot; &quot;06E10466&quot;
+## [4171] &quot;19E10074&quot; &quot;23E10484&quot; &quot;15E10669&quot; &quot;07E10339&quot; &quot;15E10128&quot; &quot;15E10365&quot;
+## [4177] &quot;05E10041&quot; &quot;07E10717&quot; &quot;08E10387&quot; &quot;09E10106&quot; &quot;32E10748&quot; &quot;17E10225&quot;
+## [4183] &quot;10E10367&quot; &quot;14E10063&quot; &quot;21E10353&quot; &quot;01E10151&quot; &quot;32E10947&quot; &quot;10E10399&quot;
+## [4189] &quot;19E10398&quot; &quot;08E10709&quot; &quot;10E10029&quot; &quot;14E10422&quot; &quot;07E10399&quot; &quot;21E10199&quot;
+## [4195] &quot;03E10074&quot; &quot;10E10456&quot; &quot;08E10528&quot; &quot;09E10031&quot; &quot;10E10085&quot; &quot;20E10214&quot;
+## [4201] &quot;12E10597&quot; &quot;21E10169&quot; &quot;19E10018&quot; &quot;25E10036&quot; &quot;07E10448&quot; &quot;11E10195&quot;
+## [4207] &quot;09E10859&quot; &quot;24E10478&quot; &quot;01E10729&quot; &quot;21E10128&quot; &quot;18E10501&quot; &quot;14E10437&quot;
+## [4213] &quot;12E10179&quot; &quot;16E10324&quot; &quot;08E10241&quot; &quot;25E10889&quot; &quot;25E10279&quot; &quot;03E10534&quot;
+## [4219] &quot;28E10417&quot; &quot;02E10157&quot; &quot;12E10409&quot; &quot;25E10050&quot; &quot;01E10576&quot; &quot;03E10474&quot;
+## [4225] &quot;13E10438&quot; &quot;27E10397&quot; &quot;23E10885&quot; &quot;12E10616&quot; &quot;03E10776&quot; &quot;23E10800&quot;
+## [4231] &quot;31E10240&quot; &quot;13E10538&quot; &quot;02E10150&quot; &quot;04E10288&quot; &quot;02E10159&quot; &quot;14E10991&quot;
+## [4237] &quot;08E10228&quot; &quot;04E10052&quot; &quot;23E10053&quot; &quot;19E10270&quot; &quot;01E10545&quot; &quot;01E10002&quot;
+## [4243] &quot;28E10230&quot; &quot;16E10628&quot; &quot;02E10755&quot; &quot;30E10652&quot; &quot;09E10048&quot; &quot;20E10033&quot;
+## [4249] &quot;20E10576&quot; &quot;10E10646&quot; &quot;04E10365&quot; &quot;01E10529&quot; &quot;24E10842&quot; &quot;32E10383&quot;
+## [4255] &quot;28E10142&quot; &quot;01E10661&quot; &quot;19E10010&quot; &quot;06E10147&quot; &quot;10E10124&quot; &quot;24E10710&quot;
+## [4261] &quot;02E10956&quot; &quot;06E10277&quot; &quot;26E10124&quot; &quot;27E10254&quot; &quot;19E10109&quot; &quot;05E10244&quot;
+## [4267] &quot;04E10129&quot; &quot;28E10147&quot; &quot;32E10596&quot; &quot;04E10122&quot; &quot;01E10724&quot; &quot;03E10639&quot;
+## [4273] &quot;25E10042&quot; &quot;31E10202&quot; &quot;01E10370&quot; &quot;10E10578&quot; &quot;12E10134&quot; &quot;15E10406&quot;
+## [4279] &quot;09E10642&quot; &quot;14E10789&quot; &quot;20E10275&quot; &quot;01E10056&quot; &quot;32E10493&quot; &quot;28E10269&quot;
+## [4285] &quot;17E10328&quot; &quot;09E10238&quot; &quot;03E10390&quot; &quot;19E10043&quot; &quot;20E10311&quot; &quot;32E10391&quot;
+## [4291] &quot;24E10562&quot; &quot;03E10227&quot; &quot;11E10577&quot; &quot;25E10162&quot; &quot;13E10825&quot; &quot;31E10587&quot;
+## [4297] &quot;17E10257&quot; &quot;04E10551&quot; &quot;23E10026&quot; &quot;17E10667&quot; &quot;13E10795&quot; &quot;08E10647&quot;
+## [4303] &quot;32E10419&quot; &quot;31E10104&quot; &quot;25E10039&quot; &quot;09E10320&quot; &quot;05E10126&quot; &quot;03E10313&quot;
+## [4309] &quot;30E10523&quot; &quot;05E10617&quot; &quot;23E10001&quot; &quot;13E10722&quot; &quot;32E10117&quot; &quot;15E10948&quot;
+## [4315] &quot;06E10473&quot; &quot;13E10733&quot; &quot;11E10211&quot; &quot;09E10247&quot; &quot;18E10047&quot; &quot;21E10704&quot;
+## [4321] &quot;15E10100&quot; &quot;09E10101&quot; &quot;30E10067&quot; &quot;24E10428&quot; &quot;13E10332&quot; &quot;08E10726&quot;
+## [4327] &quot;14E10245&quot; &quot;29E10194&quot; &quot;09E10161&quot; &quot;32E10227&quot; &quot;17E10592&quot; &quot;05E10248&quot;
+## [4333] &quot;32E10893&quot; &quot;05E10644&quot; &quot;04E10101&quot; &quot;30E10456&quot; &quot;03E10297&quot; &quot;23E10364&quot;
+## [4339] &quot;27E10373&quot; &quot;10E10038&quot; &quot;29E10158&quot; &quot;32E10143&quot; &quot;10E10032&quot; &quot;32E10675&quot;
+## [4345] &quot;09E10207&quot; &quot;05E10033&quot; &quot;20E10791&quot; &quot;25E10355&quot; &quot;11E10026&quot; &quot;25E10610&quot;
+## [4351] &quot;13E10381&quot; &quot;28E10422&quot; &quot;18E10427&quot; &quot;16E10273&quot; &quot;08E10573&quot; &quot;25E10059&quot;
+## [4357] &quot;24E10019&quot; &quot;25E10044&quot; &quot;16E10262&quot; &quot;09E10259&quot; &quot;10E10470&quot; &quot;30E10089&quot;
+## [4363] &quot;15E10059&quot; &quot;31E10591&quot; &quot;15E10454&quot; &quot;15E10917&quot; &quot;15E10226&quot; &quot;05E10047&quot;
+## [4369] &quot;22E10311&quot; &quot;15E10488&quot; &quot;07E10207&quot; &quot;12E10645&quot; &quot;17E10483&quot; &quot;20E10058&quot;
+## [4375] &quot;14E10894&quot; &quot;15E10944&quot; &quot;03E10083&quot; &quot;14E10159&quot; &quot;10E10035&quot; &quot;32E10097&quot;
+## [4381] &quot;25E10226&quot; &quot;31E10303&quot; &quot;32E10331&quot; &quot;20E10313&quot; &quot;27E10211&quot; &quot;05E10205&quot;
+## [4387] &quot;15E10934&quot; &quot;07E10710&quot; &quot;21E10305&quot; &quot;07E10401&quot; &quot;07E10276&quot; &quot;32E10888&quot;
+## [4393] &quot;06E10322&quot; &quot;07E10641&quot; &quot;16E10365&quot; &quot;01E10228&quot; &quot;13E10008&quot; &quot;23E10131&quot;
+## [4399] &quot;07E10268&quot; &quot;14E10627&quot; &quot;23E10541&quot; &quot;19E10808&quot; &quot;14E10768&quot; &quot;11E10230&quot;
+## [4405] &quot;30E10204&quot; &quot;22E10312&quot; &quot;05E10206&quot; &quot;08E10025&quot; &quot;31E10856&quot; &quot;31E10031&quot;
+## [4411] &quot;17E10088&quot; &quot;19E10120&quot; &quot;23E10291&quot; &quot;18E10222&quot; &quot;28E10604&quot; &quot;01E10036&quot;
+## [4417] &quot;15E10581&quot; &quot;16E10501&quot; &quot;23E10351&quot; &quot;06E10486&quot; &quot;30E10082&quot; &quot;03E10752&quot;
+## [4423] &quot;02E10131&quot; &quot;06E10189&quot; &quot;32E10608&quot; &quot;28E10389&quot; &quot;17E10114&quot; &quot;09E10683&quot;
+## [4429] &quot;32E10572&quot; &quot;24E10890&quot; &quot;26E10183&quot; &quot;12E10102&quot; &quot;32E10076&quot; &quot;13E10019&quot;
+## [4435] &quot;19E10884&quot; &quot;15E10580&quot; &quot;23E10090&quot; &quot;24E10486&quot; &quot;14E10098&quot; &quot;20E10126&quot;
+## [4441] &quot;09E10277&quot; &quot;03E10488&quot; &quot;16E10542&quot; &quot;32E10983&quot; &quot;08E10184&quot; &quot;23E10123&quot;
+## [4447] &quot;26E10023&quot; &quot;20E10643&quot; &quot;01E10005&quot; &quot;23E10029&quot; &quot;05E10569&quot; &quot;06E10549&quot;
+## [4453] &quot;08E10032&quot; &quot;13E10280&quot; &quot;20E10286&quot; &quot;13E10014&quot; &quot;03E10371&quot; &quot;10E10381&quot;
+## [4459] &quot;15E10081&quot; &quot;15E10090&quot; &quot;02E10951&quot; &quot;19E10470&quot; &quot;09E10640&quot; &quot;10E10171&quot;
+## [4465] &quot;23E10544&quot; &quot;10E10266&quot; &quot;29E10400&quot; &quot;01E10790&quot; &quot;20E10795&quot; &quot;15E10171&quot;
+## [4471] &quot;18E10645&quot; &quot;21E10297&quot; &quot;25E10915&quot; &quot;09E10602&quot; &quot;18E10271&quot; &quot;11E10157&quot;
+## [4477] &quot;08E10161&quot; &quot;30E10668&quot; &quot;32E10343&quot; &quot;10E10099&quot; &quot;25E10399&quot; &quot;27E10014&quot;
+## [4483] &quot;09E10586&quot; &quot;32E10036&quot; &quot;08E10667&quot; &quot;14E10925&quot; &quot;18E10074&quot; &quot;04E10199&quot;
+## [4489] &quot;20E10537&quot; &quot;23E10387&quot; &quot;14E10880&quot; &quot;23E10629&quot; &quot;26E10297&quot; &quot;15E10823&quot;
+## [4495] &quot;32E10615&quot; &quot;20E10059&quot; &quot;05E10135&quot; &quot;32E10568&quot; &quot;21E10217&quot; &quot;28E10277&quot;
+## [4501] &quot;07E10160&quot; &quot;15E10996&quot; &quot;30E10187&quot; &quot;27E10016&quot; &quot;08E10180&quot; &quot;19E10562&quot;
+## [4507] &quot;10E10114&quot; &quot;06E10662&quot; &quot;09E10617&quot; &quot;31E10090&quot; &quot;19E10212&quot; &quot;32E10537&quot;
+## [4513] &quot;14E10073&quot; &quot;08E10915&quot; &quot;04E10092&quot; &quot;23E10832&quot; &quot;09E10613&quot; &quot;04E10437&quot;
+## [4519] &quot;10E10100&quot; &quot;11E10301&quot; &quot;08E10198&quot; &quot;13E10274&quot; &quot;03E10221&quot; &quot;19E10680&quot;
+## [4525] &quot;19E10105&quot; &quot;27E10598&quot; &quot;24E10957&quot; &quot;07E10284&quot; &quot;08E10315&quot; &quot;08E10601&quot;
+## [4531] &quot;30E10123&quot; &quot;06E10042&quot; &quot;09E10860&quot; &quot;17E10597&quot; &quot;18E10727&quot; &quot;03E10245&quot;
+## [4537] &quot;07E10629&quot; &quot;02E10104&quot; &quot;28E10017&quot; &quot;24E10200&quot; &quot;09E10766&quot; &quot;25E10972&quot;
+## [4543] &quot;25E10391&quot; &quot;22E10094&quot; &quot;28E10649&quot; &quot;13E10442&quot; &quot;07E10366&quot; &quot;14E10600&quot;
+## [4549] &quot;06E10515&quot; &quot;09E10599&quot; &quot;21E10393&quot; &quot;14E10435&quot; &quot;24E10064&quot; &quot;14E10645&quot;
+## [4555] &quot;02E10462&quot; &quot;25E10109&quot; &quot;25E10051&quot; &quot;25E10026&quot; &quot;14E10678&quot; &quot;22E10220&quot;
+## [4561] &quot;05E10564&quot; &quot;31E10620&quot; &quot;32E10764&quot; &quot;16E10010&quot; &quot;24E10935&quot; &quot;24E10372&quot;
+## [4567] &quot;12E10646&quot; &quot;07E10536&quot; &quot;04E10484&quot; &quot;03E10351&quot; &quot;03E10837&quot; &quot;29E10203&quot;
+## [4573] &quot;12E10331&quot; &quot;29E10138&quot; &quot;18E10682&quot; &quot;18E10484&quot; &quot;27E10398&quot; &quot;08E10049&quot;
+## [4579] &quot;15E10389&quot; &quot;07E10037&quot; &quot;08E10148&quot; &quot;04E10070&quot; &quot;12E10195&quot; &quot;04E10035&quot;
+## [4585] &quot;01E10045&quot; &quot;12E10082&quot; &quot;25E10696&quot; &quot;05E10114&quot; &quot;20E10602&quot; &quot;19E10801&quot;
+## [4591] &quot;09E10182&quot; &quot;09E10185&quot; &quot;32E10509&quot; &quot;32E10050&quot; &quot;09E10306&quot; &quot;07E10136&quot;
+## [4597] &quot;23E10286&quot; &quot;02E10086&quot; &quot;20E10604&quot; &quot;12E10039&quot; &quot;09E10853&quot; &quot;19E10314&quot;
+## [4603] &quot;24E10832&quot; &quot;26E10389&quot; &quot;25E10234&quot; &quot;06E10614&quot; &quot;03E10217&quot; &quot;01E10147&quot;
+## [4609] &quot;24E10919&quot; &quot;21E10211&quot; &quot;13E10024&quot; &quot;24E10149&quot; &quot;15E10092&quot; &quot;32E10496&quot;
+## [4615] &quot;10E10640&quot; &quot;13E10560&quot; &quot;18E10150&quot; &quot;07E10031&quot; &quot;12E10887&quot; &quot;31E10227&quot;
+## [4621] &quot;16E10006&quot; &quot;20E10859&quot; &quot;31E10274&quot; &quot;01E10141&quot; &quot;02E10040&quot; &quot;23E10297&quot;
+## [4627] &quot;11E10403&quot; &quot;20E10414&quot; &quot;26E10466&quot; &quot;09E10724&quot; &quot;20E10289&quot; &quot;27E10613&quot;
+## [4633] &quot;29E10390&quot; &quot;11E10032&quot; &quot;13E10822&quot; &quot;09E10659&quot; &quot;09E10589&quot; &quot;21E10178&quot;
+## [4639] &quot;13E10554&quot; &quot;19E10974&quot; &quot;28E10728&quot; &quot;22E10850&quot; &quot;25E10988&quot; &quot;19E10485&quot;
+## [4645] &quot;12E10314&quot; &quot;13E10354&quot; &quot;27E10269&quot; &quot;20E10075&quot; &quot;28E10020&quot; &quot;01E10756&quot;
+## [4651] &quot;26E10486&quot; &quot;31E10742&quot; &quot;15E10496&quot; &quot;28E10470&quot; &quot;12E10212&quot; &quot;28E10282&quot;
+## [4657] &quot;02E10079&quot; &quot;10E10001&quot; &quot;23E10204&quot; &quot;32E10638&quot; &quot;28E10223&quot; &quot;32E10642&quot;
+## [4663] &quot;30E10230&quot; &quot;14E10564&quot; &quot;11E10111&quot; &quot;21E10158&quot; &quot;30E10041&quot; &quot;12E10804&quot;
+## [4669] &quot;32E10041&quot; &quot;24E10010&quot; &quot;10E10514&quot; &quot;14E10224&quot; &quot;12E10896&quot; &quot;17E10064&quot;
+## [4675] &quot;21E10139&quot; &quot;14E10831&quot; &quot;15E10075&quot; &quot;18E10169&quot; &quot;19E10798&quot; &quot;21E10601&quot;
+## [4681] &quot;28E10203&quot; &quot;09E10294&quot; &quot;20E10020&quot; &quot;25E10703&quot; &quot;04E10012&quot; &quot;12E10661&quot;
+## [4687] &quot;15E10544&quot; &quot;20E10562&quot; &quot;31E10038&quot; &quot;18E10793&quot; &quot;02E10390&quot; &quot;24E10850&quot;
+## [4693] &quot;22E10087&quot; &quot;15E10228&quot; &quot;12E10814&quot; &quot;02E10224&quot; &quot;08E10484&quot; &quot;07E10035&quot;
+## [4699] &quot;14E10830&quot; &quot;08E10262&quot; &quot;01E10650&quot; &quot;23E10561&quot; &quot;31E10382&quot; &quot;18E10013&quot;
+## [4705] &quot;25E10160&quot; &quot;14E10375&quot; &quot;02E10421&quot; &quot;05E10652&quot; &quot;20E10831&quot; &quot;08E10672&quot;
+## [4711] &quot;25E10002&quot; &quot;12E10043&quot; &quot;08E10210&quot; &quot;18E10437&quot; &quot;14E10114&quot; &quot;07E10193&quot;
+## [4717] &quot;15E10811&quot; &quot;14E10055&quot; &quot;06E10059&quot; &quot;16E10020&quot; &quot;14E10709&quot; &quot;18E10521&quot;
+## [4723] &quot;30E10163&quot; &quot;32E10238&quot; &quot;31E10278&quot; &quot;06E10391&quot; &quot;22E10098&quot; &quot;08E10434&quot;
+## [4729] &quot;07E10129&quot; &quot;22E10411&quot; &quot;32E10254&quot; &quot;22E10764&quot; &quot;03E10461&quot; &quot;10E10127&quot;
+## [4735] &quot;05E10148&quot; &quot;03E10205&quot; &quot;06E10553&quot; &quot;11E10416&quot; &quot;30E10718&quot; &quot;02E10764&quot;
+## [4741] &quot;04E10271&quot; &quot;29E10028&quot; &quot;23E10174&quot; &quot;32E10524&quot; &quot;02E10006&quot; &quot;14E10891&quot;
+## [4747] &quot;08E10156&quot; &quot;15E10298&quot; &quot;23E10050&quot; &quot;25E10384&quot; &quot;14E10802&quot; &quot;11E10589&quot;
+## [4753] &quot;20E10418&quot; &quot;32E10559&quot; &quot;30E10134&quot; &quot;11E10248&quot; &quot;32E10889&quot; &quot;24E10030&quot;
+## [4759] &quot;09E10565&quot; &quot;03E10183&quot; &quot;25E10453&quot; &quot;01E10338&quot; &quot;10E10604&quot; &quot;15E10988&quot;
+## [4765] &quot;21E10282&quot; &quot;08E10518&quot; &quot;13E10181&quot; &quot;12E10601&quot; &quot;27E10048&quot; &quot;04E10242&quot;
+## [4771] &quot;24E10014&quot; &quot;24E10727&quot; &quot;21E10209&quot; &quot;14E10049&quot; &quot;17E10009&quot; &quot;29E10287&quot;
+## [4777] &quot;08E10515&quot; &quot;04E10011&quot; &quot;23E10563&quot; &quot;14E10188&quot; &quot;19E10057&quot; &quot;29E10403&quot;
+## [4783] &quot;25E10451&quot; &quot;19E10379&quot; &quot;12E10273&quot; &quot;11E10232&quot; &quot;11E10045&quot; &quot;32E10835&quot;
+## [4789] &quot;07E10715&quot; &quot;12E10946&quot; &quot;07E10511&quot; &quot;03E10004&quot; &quot;03E10324&quot; &quot;25E10586&quot;
+## [4795] &quot;13E10890&quot; &quot;11E10331&quot; &quot;07E10054&quot; &quot;15E10093&quot; &quot;24E10106&quot; &quot;06E10185&quot;
+## [4801] &quot;20E10475&quot; &quot;03E10852&quot; &quot;05E10438&quot; &quot;06E10044&quot; &quot;12E10795&quot; &quot;05E10328&quot;
+## [4807] &quot;03E10293&quot; &quot;06E10160&quot; &quot;07E10101&quot; &quot;15E10908&quot; &quot;22E10807&quot; &quot;24E10488&quot;
+## [4813] &quot;22E10154&quot; &quot;03E10471&quot; &quot;32E10768&quot; &quot;20E10947&quot; &quot;11E10222&quot; &quot;18E10406&quot;
+## [4819] &quot;17E10336&quot; &quot;20E10417&quot; &quot;19E10794&quot; &quot;17E10117&quot; &quot;08E10193&quot; &quot;19E10170&quot;
+## [4825] &quot;19E10194&quot; &quot;28E10659&quot; &quot;14E10433&quot; &quot;04E10125&quot; &quot;28E10317&quot; &quot;09E10978&quot;
+## [4831] &quot;16E10264&quot; &quot;01E10667&quot; &quot;19E10085&quot; &quot;18E10604&quot; &quot;05E10527&quot; &quot;15E10094&quot;
+## [4837] &quot;28E10060&quot; &quot;08E10149&quot; &quot;25E10018&quot; &quot;15E10629&quot; &quot;24E10235&quot; &quot;12E10276&quot;
+## [4843] &quot;14E10500&quot; &quot;16E10183&quot; &quot;21E10036&quot; &quot;09E10475&quot; &quot;24E10249&quot; &quot;22E10656&quot;
+## [4849] &quot;27E10360&quot; &quot;24E10181&quot; &quot;15E10952&quot; &quot;03E10250&quot; &quot;23E10212&quot; &quot;05E10440&quot;
+## [4855] &quot;07E10246&quot; &quot;09E10404&quot; &quot;21E10044&quot; &quot;11E10180&quot; &quot;22E10708&quot; &quot;19E10136&quot;
+## [4861] &quot;18E10113&quot; &quot;05E10643&quot; &quot;31E10302&quot; &quot;22E10416&quot; &quot;09E10820&quot; &quot;26E10401&quot;
+## [4867] &quot;19E10062&quot; &quot;10E10587&quot; &quot;10E10659&quot; &quot;22E10108&quot; &quot;02E10259&quot; &quot;05E10236&quot;
+## [4873] &quot;32E10851&quot; &quot;31E10335&quot; &quot;28E10008&quot; &quot;12E10840&quot; &quot;18E10658&quot; &quot;08E10349&quot;
+## [4879] &quot;19E10217&quot; &quot;15E10326&quot; &quot;15E10053&quot; &quot;03E10540&quot; &quot;28E10513&quot; &quot;04E10093&quot;
+## [4885] &quot;09E10563&quot; &quot;28E10628&quot; &quot;14E10141&quot; &quot;02E10762&quot; &quot;12E10240&quot; &quot;26E10420&quot;
+## [4891] &quot;13E10011&quot; &quot;18E10087&quot; &quot;29E10207&quot; &quot;13E10264&quot; &quot;12E10080&quot; &quot;05E10496&quot;
+## [4897] &quot;14E10208&quot; &quot;02E10314&quot; &quot;21E10146&quot; &quot;14E10446&quot; &quot;06E10443&quot; &quot;28E10502&quot;
+## [4903] &quot;24E10582&quot; &quot;23E10774&quot; &quot;08E10721&quot; &quot;25E10066&quot; &quot;13E10585&quot; &quot;25E10285&quot;
+## [4909] &quot;07E10128&quot; &quot;09E10489&quot; &quot;22E10147&quot; &quot;18E10002&quot; &quot;09E10822&quot; &quot;32E10221&quot;
+## [4915] &quot;15E10112&quot; &quot;15E10929&quot; &quot;20E10119&quot; &quot;28E10527&quot; &quot;07E10769&quot; &quot;02E10916&quot;
+## [4921] &quot;07E10192&quot; &quot;09E10074&quot; &quot;28E10132&quot; &quot;32E10264&quot; &quot;15E10942&quot; &quot;30E10074&quot;
+## [4927] &quot;23E10185&quot; &quot;08E10269&quot; &quot;18E10759&quot; &quot;08E10231&quot; &quot;28E10271&quot; &quot;22E10142&quot;
+## [4933] &quot;05E10332&quot; &quot;11E10199&quot; &quot;01E10391&quot; &quot;05E10439&quot; &quot;12E10258&quot; &quot;26E10580&quot;
+## [4939] &quot;13E10290&quot; &quot;32E10247&quot; &quot;10E10134&quot; &quot;23E10100&quot; &quot;13E10658&quot; &quot;15E10670&quot;
+## [4945] &quot;03E10656&quot; &quot;07E10146&quot; &quot;11E10072&quot; &quot;01E10773&quot; &quot;23E10197&quot; &quot;01E10842&quot;
+## [4951] &quot;25E10694&quot; &quot;31E10011&quot; &quot;12E10166&quot; &quot;28E10098&quot; &quot;01E10350&quot; &quot;05E10194&quot;
+## [4957] &quot;12E10615&quot; &quot;24E10464&quot; &quot;23E10444&quot; &quot;06E10169&quot; &quot;23E10154&quot; &quot;10E10292&quot;
+## [4963] &quot;22E10084&quot; &quot;05E10460&quot; &quot;08E10446&quot; &quot;06E10635&quot; &quot;08E10769&quot; &quot;18E10091&quot;
+## [4969] &quot;31E10760&quot; &quot;31E10733&quot; &quot;14E10075&quot; &quot;08E10365&quot; &quot;16E10369&quot; &quot;23E10225&quot;
+## [4975] &quot;27E10442&quot; &quot;32E10381&quot; &quot;01E10796&quot; &quot;01E10098&quot; &quot;26E10082&quot; &quot;24E10278&quot;
+## [4981] &quot;06E10036&quot; &quot;21E10187&quot; &quot;25E10941&quot; &quot;09E10329&quot; &quot;32E10838&quot; &quot;05E10646&quot;
+## [4987] &quot;24E10807&quot; &quot;18E10534&quot; &quot;31E10191&quot; &quot;28E10026&quot; &quot;17E10678&quot; &quot;09E10175&quot;
+## [4993] &quot;06E10463&quot; &quot;31E10493&quot; &quot;14E10795&quot; &quot;03E10048&quot; &quot;09E10037&quot; &quot;03E10976&quot;
+## [4999] &quot;22E10459&quot; &quot;27E10179&quot; &quot;02E10870&quot; &quot;01E10337&quot; &quot;16E10250&quot; &quot;15E10190&quot;
+## [5005] &quot;05E10408&quot; &quot;14E10183&quot; &quot;19E10876&quot; &quot;10E10013&quot; &quot;13E10100&quot; &quot;27E10608&quot;
+## [5011] &quot;28E10400&quot; &quot;12E10257&quot; &quot;16E10242&quot; &quot;13E10604&quot; &quot;15E10202&quot; &quot;09E10418&quot;
+## [5017] &quot;09E10687&quot; &quot;09E10681&quot; &quot;13E10518&quot; &quot;27E10541&quot; &quot;20E10131&quot; &quot;04E10711&quot;
+## [5023] &quot;05E10315&quot; &quot;25E10186&quot; &quot;28E10719&quot; &quot;16E10428&quot; &quot;10E10597&quot; &quot;02E10366&quot;
+## [5029] &quot;02E10721&quot; &quot;31E10079&quot; &quot;23E10817&quot; &quot;08E10274&quot; &quot;12E10270&quot; &quot;08E10821&quot;
+## [5035] &quot;32E10043&quot; &quot;03E10623&quot; &quot;31E10010&quot; &quot;18E10349&quot; &quot;20E10185&quot; &quot;04E10543&quot;
+## [5041] &quot;24E10247&quot; &quot;04E10298&quot; &quot;23E10294&quot; &quot;15E10266&quot; &quot;02E10333&quot; &quot;12E10893&quot;
+## [5047] &quot;23E10844&quot; &quot;24E10127&quot; &quot;09E10193&quot; &quot;31E10490&quot; &quot;06E10283&quot; &quot;13E10038&quot;
+## [5053] &quot;08E10861&quot; &quot;21E10435&quot; &quot;19E10055&quot; &quot;11E10506&quot; &quot;24E10342&quot; &quot;03E10927&quot;
+## [5059] &quot;26E10457&quot; &quot;23E10833&quot; &quot;05E10434&quot; &quot;15E10117&quot; &quot;07E10263&quot; &quot;06E10107&quot;
+## [5065] &quot;14E10985&quot; &quot;18E10059&quot; &quot;22E10434&quot; &quot;03E10238&quot; &quot;09E10336&quot; &quot;09E10245&quot;
+## [5071] &quot;06E10361&quot; &quot;01E10783&quot; &quot;15E10392&quot; &quot;12E10117&quot; &quot;07E10034&quot; &quot;28E10347&quot;
+## [5077] &quot;31E10307&quot; &quot;15E10141&quot; &quot;07E10308&quot; &quot;31E10659&quot; &quot;22E10097&quot; &quot;20E10642&quot;
+## [5083] &quot;19E10300&quot; &quot;29E10114&quot; &quot;30E10535&quot; &quot;19E10288&quot; &quot;13E10340&quot; &quot;29E10310&quot;
+## [5089] &quot;15E10385&quot; &quot;12E10529&quot; &quot;26E10460&quot; &quot;07E10070&quot; &quot;18E10058&quot; &quot;08E10157&quot;
+## [5095] &quot;12E10193&quot; &quot;29E10433&quot; &quot;18E10235&quot; &quot;05E10108&quot; &quot;30E10466&quot; &quot;10E10201&quot;
+## [5101] &quot;24E10370&quot; &quot;02E10334&quot; &quot;16E10405&quot; &quot;07E10001&quot; &quot;31E10649&quot; &quot;01E10794&quot;
+## [5107] &quot;21E10054&quot; &quot;14E10013&quot; &quot;27E10279&quot; &quot;03E10754&quot; &quot;06E10378&quot; &quot;03E10444&quot;
+## [5113] &quot;07E10692&quot; &quot;26E10216&quot; &quot;10E10204&quot; &quot;27E10086&quot; &quot;12E10990&quot; &quot;09E10746&quot;
+## [5119] &quot;32E10151&quot; &quot;24E10232&quot; &quot;05E10317&quot; &quot;05E10727&quot; &quot;28E10709&quot; &quot;03E10773&quot;
+## [5125] &quot;15E10321&quot; &quot;09E10755&quot; &quot;16E10669&quot; &quot;06E10106&quot; &quot;28E10217&quot; &quot;30E10440&quot;
+## [5131] &quot;32E10955&quot; &quot;29E10301&quot; &quot;03E10053&quot; &quot;16E10098&quot; &quot;08E10436&quot; &quot;27E10519&quot;
+## [5137] &quot;14E10058&quot; &quot;09E10598&quot; &quot;14E10796&quot; &quot;18E10035&quot; &quot;04E10537&quot; &quot;05E10365&quot;
+## [5143] &quot;20E10505&quot; &quot;07E10491&quot; &quot;12E10124&quot; &quot;11E10154&quot; &quot;20E10397&quot; &quot;30E10145&quot;
+## [5149] &quot;18E10251&quot; &quot;10E10101&quot; &quot;05E10231&quot; &quot;03E10124&quot; &quot;25E10273&quot; &quot;25E10385&quot;
+## [5155] &quot;23E10683&quot; &quot;23E10776&quot; &quot;30E10645&quot; &quot;22E10677&quot; &quot;12E10507&quot; &quot;16E10713&quot;
+## [5161] &quot;22E10917&quot; &quot;14E10711&quot; &quot;10E10519&quot; &quot;28E10328&quot; &quot;20E10258&quot; &quot;08E10717&quot;
+## [5167] &quot;29E10395&quot; &quot;23E10263&quot; &quot;03E10299&quot; &quot;31E10126&quot; &quot;05E10572&quot; &quot;24E10008&quot;
+## [5173] &quot;03E10762&quot; &quot;17E10533&quot; &quot;25E10466&quot; &quot;17E10096&quot; &quot;10E10233&quot; &quot;01E10641&quot;
+## [5179] &quot;18E10301&quot; &quot;15E10182&quot; &quot;28E10162&quot; &quot;32E10106&quot; &quot;18E10570&quot; &quot;21E10256&quot;
+## [5185] &quot;15E10992&quot; &quot;20E10136&quot; &quot;17E10641&quot; &quot;01E10415&quot; &quot;32E10818&quot; &quot;09E10147&quot;
+## [5191] &quot;15E10319&quot; &quot;06E10013&quot; &quot;23E10122&quot; &quot;15E10831&quot; &quot;01E10265&quot; &quot;12E10701&quot;
+## [5197] &quot;24E10252&quot; &quot;26E10279&quot; &quot;03E10088&quot; &quot;19E10241&quot; &quot;14E10140&quot; &quot;23E10008&quot;
+## [5203] &quot;32E10365&quot; &quot;02E10474&quot; &quot;32E10530&quot; &quot;14E10954&quot; &quot;07E10379&quot; &quot;04E10417&quot;
+## [5209] &quot;23E10424&quot; &quot;17E10747&quot; &quot;22E10182&quot; &quot;07E10534&quot; &quot;24E10334&quot; &quot;27E10120&quot;
+## [5215] &quot;15E10928&quot; &quot;23E10909&quot; &quot;28E10494&quot; &quot;08E10246&quot; &quot;23E10638&quot; &quot;29E10423&quot;
+## [5221] &quot;15E10553&quot; &quot;26E10381&quot; &quot;03E10196&quot; &quot;26E10507&quot; &quot;07E10653&quot; &quot;18E10223&quot;
+## [5227] &quot;03E10234&quot; &quot;21E10243&quot; &quot;08E10873&quot; &quot;18E10470&quot; &quot;27E10262&quot; &quot;09E10220&quot;
+## [5233] &quot;04E10655&quot; &quot;22E10464&quot; &quot;18E10175&quot; &quot;13E10896&quot; &quot;07E10282&quot; &quot;02E10027&quot;
+## [5239] &quot;16E10406&quot; &quot;25E10053&quot; &quot;25E10231&quot; &quot;25E10855&quot; &quot;27E10112&quot; &quot;13E10465&quot;
+## [5245] &quot;09E10946&quot; &quot;08E10191&quot; &quot;23E10017&quot; &quot;10E10350&quot; &quot;18E10777&quot; &quot;30E10609&quot;
+## [5251] &quot;18E10178&quot; &quot;19E10595&quot; &quot;13E10287&quot; &quot;32E10246&quot; &quot;10E10140&quot; &quot;22E10100&quot;
+## [5257] &quot;14E10694&quot; &quot;17E10671&quot; &quot;09E10143&quot; &quot;27E10201&quot; &quot;25E10392&quot; &quot;14E10820&quot;
+## [5263] &quot;02E10811&quot; &quot;13E10268&quot; &quot;18E10027&quot; &quot;20E10143&quot; &quot;12E10023&quot; &quot;27E10320&quot;
+## [5269] &quot;28E10437&quot; &quot;32E10379&quot; &quot;10E10544&quot; &quot;25E10185&quot; &quot;07E10462&quot; &quot;08E10545&quot;
+## [5275] &quot;17E10293&quot; &quot;25E10247&quot; &quot;03E10236&quot; &quot;13E10339&quot; &quot;06E10477&quot; &quot;27E10370&quot;
+## [5281] &quot;01E10054&quot; &quot;12E10435&quot; &quot;32E10847&quot; &quot;18E10045&quot; &quot;02E10026&quot; &quot;18E10230&quot;
+## [5287] &quot;22E10430&quot; &quot;12E10846&quot; &quot;26E10084&quot; &quot;10E10109&quot; &quot;27E10518&quot; &quot;14E10494&quot;
+## [5293] &quot;29E10542&quot; &quot;14E10160&quot; &quot;24E10340&quot; &quot;15E10032&quot; &quot;11E10433&quot; &quot;09E10191&quot;
+## [5299] &quot;23E10233&quot; &quot;15E10664&quot; &quot;20E10257&quot; &quot;32E10134&quot; &quot;24E10314&quot; &quot;13E10223&quot;
+## [5305] &quot;09E10545&quot; &quot;12E10890&quot; &quot;01E10197&quot; &quot;03E10209&quot; &quot;20E10621&quot; &quot;16E10408&quot;
+## [5311] &quot;16E10575&quot; &quot;01E10715&quot; &quot;16E10272&quot; &quot;04E10428&quot; &quot;18E10153&quot; &quot;32E10282&quot;
+## [5317] &quot;04E10050&quot; &quot;20E10094&quot; &quot;01E10512&quot; &quot;22E10033&quot; &quot;06E10088&quot; &quot;14E10620&quot;
+## [5323] &quot;18E10063&quot; &quot;20E10579&quot; &quot;01E10253&quot; &quot;13E10865&quot; &quot;03E10271&quot; &quot;08E10077&quot;
+## [5329] &quot;23E10271&quot; &quot;11E10419&quot; &quot;09E10361&quot; &quot;25E10423&quot; &quot;17E10075&quot; &quot;19E10484&quot;
+## [5335] &quot;21E10520&quot; &quot;16E10161&quot; &quot;01E10070&quot; &quot;12E10633&quot; &quot;01E10618&quot; &quot;08E10109&quot;
+## [5341] &quot;21E10277&quot; &quot;30E10486&quot; &quot;24E10558&quot; &quot;06E10456&quot; &quot;23E10006&quot; &quot;04E10663&quot;
+## [5347] &quot;20E10609&quot; &quot;26E10412&quot; &quot;07E10043&quot; &quot;22E10296&quot; &quot;16E10459&quot; &quot;02E10235&quot;
+## [5353] &quot;10E10613&quot; &quot;15E10146&quot; &quot;30E10547&quot; &quot;17E10368&quot; &quot;09E10722&quot; &quot;02E10215&quot;
+## [5359] &quot;15E10753&quot; &quot;23E10244&quot; &quot;03E10829&quot; &quot;09E10373&quot; &quot;06E10190&quot; &quot;18E10083&quot;
+## [5365] &quot;15E10938&quot; &quot;18E10522&quot; &quot;10E10130&quot; &quot;08E10483&quot; &quot;08E10045&quot; &quot;12E10427&quot;
+## [5371] &quot;13E10299&quot; &quot;29E10356&quot; &quot;20E10093&quot; &quot;31E10168&quot; &quot;18E10189&quot; &quot;12E10292&quot;
+## [5377] &quot;28E10140&quot; &quot;23E10310&quot; &quot;24E10423&quot; &quot;20E10563&quot; &quot;24E10017&quot; &quot;16E10088&quot;
+## [5383] &quot;10E10170&quot; &quot;25E10112&quot; &quot;22E10926&quot; &quot;23E10766&quot; &quot;22E10519&quot; &quot;16E10253&quot;
+## [5389] &quot;32E10201&quot; &quot;32E10712&quot; &quot;04E10454&quot; &quot;32E10664&quot; &quot;13E10441&quot; &quot;16E10577&quot;
+## [5395] &quot;05E10222&quot; &quot;24E10946&quot; &quot;13E10087&quot; &quot;23E10003&quot; &quot;26E10246&quot; &quot;15E10556&quot;
+## [5401] &quot;12E10287&quot; &quot;26E10205&quot; &quot;03E10680&quot; &quot;03E10186&quot; &quot;15E10925&quot; &quot;30E10299&quot;
+## [5407] &quot;25E10103&quot; &quot;21E10510&quot; &quot;13E10897&quot; &quot;24E10791&quot; &quot;09E10626&quot; &quot;25E10922&quot;
+## [5413] &quot;23E10208&quot; &quot;18E10195&quot; &quot;10E10143&quot; &quot;31E10748&quot; &quot;25E10135&quot; &quot;19E10265&quot;
+## [5419] &quot;15E10205&quot; &quot;20E10705&quot; &quot;01E10073&quot; &quot;20E10867&quot; &quot;08E10898&quot; &quot;31E10841&quot;
+## [5425] &quot;30E10255&quot; &quot;10E10385&quot; &quot;04E10688&quot; &quot;15E10554&quot; &quot;18E10279&quot; &quot;31E10122&quot;
+## [5431] &quot;02E10350&quot; &quot;07E10117&quot; &quot;23E10243&quot; &quot;04E10323&quot; &quot;09E10221&quot; &quot;32E10339&quot;
+## [5437] &quot;21E10512&quot; &quot;31E10687&quot; &quot;21E10316&quot; &quot;25E10918&quot; &quot;31E10068&quot; &quot;24E10941&quot;
+## [5443] &quot;22E10120&quot; &quot;10E10172&quot; &quot;29E10091&quot; &quot;26E10156&quot; &quot;09E10713&quot; &quot;21E10347&quot;
+## [5449] &quot;17E10584&quot; &quot;20E10844&quot; &quot;15E10473&quot; &quot;31E10346&quot; &quot;25E10544&quot; &quot;29E10066&quot;
+## [5455] &quot;31E10095&quot; &quot;10E10526&quot; &quot;10E10331&quot; &quot;13E10796&quot; &quot;31E10854&quot; &quot;31E10030&quot;
+## [5461] &quot;04E10341&quot; &quot;07E10267&quot; &quot;19E10726&quot; &quot;02E10056&quot; &quot;12E10197&quot; &quot;32E10347&quot;
+## [5467] &quot;32E10073&quot; &quot;31E10762&quot; &quot;12E10760&quot; &quot;02E10814&quot; &quot;27E10379&quot; &quot;04E10269&quot;
+## [5473] &quot;09E10606&quot; &quot;08E10151&quot; &quot;05E10144&quot; &quot;13E10238&quot; &quot;30E10399&quot; &quot;31E10410&quot;
+## [5479] &quot;01E10209&quot; &quot;24E10233&quot; &quot;10E10477&quot; &quot;32E10887&quot; &quot;15E10961&quot; &quot;14E10268&quot;
+## [5485] &quot;28E10608&quot; &quot;02E10111&quot; &quot;13E10417&quot; &quot;20E10912&quot; &quot;14E10934&quot; &quot;21E10468&quot;
+## [5491] &quot;15E10678&quot; &quot;25E10353&quot; &quot;10E10039&quot; &quot;32E10144&quot; &quot;16E10265&quot; &quot;08E10256&quot;
+## [5497] &quot;24E10368&quot; &quot;31E10045&quot; &quot;15E10489&quot; &quot;27E10147&quot; &quot;08E10941&quot; &quot;02E10429&quot;
+## [5503] &quot;32E10374&quot; &quot;27E10641&quot; &quot;29E10238&quot; &quot;26E10213&quot; &quot;25E10056&quot; &quot;07E10254&quot;
+## [5509] &quot;27E10005&quot; &quot;19E10363&quot; &quot;09E10760&quot; &quot;26E10145&quot; &quot;25E10341&quot; &quot;23E10178&quot;
+## [5515] &quot;31E10060&quot; &quot;31E10121&quot; &quot;32E10273&quot; &quot;10E10441&quot; &quot;08E10482&quot; &quot;15E10621&quot;
+## [5521] &quot;03E10068&quot; &quot;12E10374&quot; &quot;23E10941&quot; &quot;31E10258&quot; &quot;32E10749&quot; &quot;29E10372&quot;
+## [5527] &quot;11E10348&quot; &quot;20E10449&quot; &quot;02E10168&quot; &quot;10E10582&quot; &quot;04E10147&quot; &quot;08E10749&quot;
+## [5533] &quot;17E10118&quot; &quot;25E10609&quot; &quot;03E10713&quot; &quot;14E10572&quot; &quot;12E10384&quot; &quot;22E10848&quot;
+## [5539] &quot;09E10362&quot; &quot;31E10816&quot; &quot;07E10742&quot; &quot;30E10313&quot; &quot;04E10202&quot; &quot;20E10296&quot;
+## [5545] &quot;21E10459&quot; &quot;07E10595&quot; &quot;01E10737&quot; &quot;06E10590&quot; &quot;32E10500&quot; &quot;09E10656&quot;
+## [5551] &quot;02E10325&quot; &quot;29E10009&quot; &quot;21E10154&quot; &quot;18E10062&quot; &quot;08E10392&quot; &quot;22E10360&quot;
+## [5557] &quot;03E10353&quot; &quot;15E10904&quot; &quot;20E10920&quot; &quot;02E10330&quot; &quot;31E10115&quot; &quot;01E10182&quot;
+## [5563] &quot;32E10082&quot; &quot;31E10743&quot; &quot;18E10117&quot; &quot;30E10686&quot; &quot;31E10244&quot; &quot;25E10607&quot;
+## [5569] &quot;32E10591&quot; &quot;04E10193&quot; &quot;32E10470&quot; &quot;01E10722&quot; &quot;05E10051&quot; &quot;20E10175&quot;
+## [5575] &quot;10E10051&quot; &quot;23E10618&quot; &quot;09E10087&quot; &quot;17E10253&quot; &quot;08E10164&quot; &quot;03E10039&quot;
+## [5581] &quot;15E10357&quot; &quot;10E10026&quot; &quot;30E10314&quot; &quot;06E10423&quot; &quot;08E10486&quot; &quot;15E10142&quot;
+## [5587] &quot;29E10008&quot; &quot;04E10236&quot; &quot;24E10948&quot; &quot;06E10324&quot; &quot;07E10138&quot; &quot;18E10265&quot;
+## [5593] &quot;31E10661&quot;
+## 
+## $r_pre
+## [1] &quot;Entrevista lograda&quot;                     
+## [2] &quot;Entrevista telefónica suspendida&quot;       
+## [3] &quot;Responde un informante inadecuado&quot;      
+## [4] &quot;El informante se negó a dar información&quot;
+## [5] &quot;No respondió la llamada&quot;                
+## [6] &quot;Otro motivo&quot;                            
+## [7] &quot;No existe el número&quot;                    
+## 
+## $r_pre_dia
+## NULL
+## 
+## $r_pre_mes
+## NULL
+## 
+## $r_def
+## [1] &quot;Entrevista lograda&quot;                     
+## [2] &quot;Entrevista telefónica suspendida&quot;       
+## [3] &quot;Responde un informante inadecuado&quot;      
+## [4] &quot;El informante se negó a dar información&quot;
+## [5] &quot;No respondió la llamada&quot;                
+## [6] &quot;Otro motivo&quot;                            
+## [7] &quot;No existe el número&quot;                    
+## 
+## $r_def_dia
+## NULL
+## 
+## $r_def_mes
+## NULL
+## 
+## $r_def_anio
+## NULL</code></pre>
+<pre class="r"><code>print(get_labels(ecovid0420$clase2)) #</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
+<div id="selección-de-casos-y-de-variables" class="section level2">
+<h2>Selección de casos y de variables</h2>
+<p>Poco a poco vamos comprendiendo más la lógica de R. Hay varias “formas” de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado</p>
+<p>Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.</p>
+<pre class="r"><code>x&lt;-ecovid0420$pb3
+x&lt;-ecovid0420[[&quot;pb3&quot;]]  # ¡Ojo con las comillas! 
+x&lt;-ecovid0420[,10]
+x&lt;-ecovid0420[,&quot;pb3&quot;]</code></pre>
+<p>Ahora, con el formato de dplyr podemos llegar a lo mismo</p>
+<pre class="r"><code>x&lt;-ecovid0420 %&gt;% 
+  select(pb3)</code></pre>
+<div id="selección-inversa" class="section level3">
+<h3>Selección “inversa”</h3>
+<p>O sea no “botar algo”, es con el negativo. No funciona con todos los formatos</p>
+<pre class="r"><code>x&lt;-ecovid0420 %&gt;% 
+  select(-pb3)
+x&lt;-ecovid0420[,-10]
+
+rm(x) #rm sólo bota objetos</code></pre>
+</div>
+<div id="selección-inversa-1" class="section level3">
+<h3>Selección “inversa”</h3>
+<p>O sea no “botar algo”, es con el negativo. No funciona con todos los formatos</p>
+<pre class="r"><code>x&lt;-ecovid0420 %&gt;% 
+  select(-pb3)
+x&lt;-ecovid0420[,-10]
+
+rm(x) #rm sólo bota objetos</code></pre>
+<p>Pero con los otros formatos podemos “asignar” valores adentro de un data.frame, y uno de eso valores puede ser “la nada”&quot;</p>
+<pre class="r"><code>ecovid0420$pb3_2&lt;-ecovid0420$pb3
+ecovid0420$pb3_2&lt;-NULL</code></pre>
+<p>De aquí viene esa cuesta en el aprendizaje; tenemos que comprender en qué forma programó el que hizo la librería e incluso a veces cómo aprendió quién te está enseñando o el foro que estás leyendo.</p>
+</div>
+</div>
+</div>
+<div id="subsetting" class="section level1">
+<h1>Subsetting</h1>
+<p>Rara vez utilizamos una base de datos completa, y rara vez queremos hacer operaciones completas con ellas.</p>
+<p>Vamos a pedir cosas más específicas y podemos seleccionar observaciones o filas. Como nuestra base de datos es muy grande, guardaremos el filtro o selección en un objeto.</p>
+<pre class="r"><code>subset1&lt;-ecovid0420[ecovid0420$pb3&gt;4,]</code></pre>
+<p>También podemos seleccionar columnas</p>
+<pre class="r"><code>subset2&lt;- ecovid0420[, c(&quot;pb1&quot;, &quot;pb2&quot;, &quot;pb3&quot;)]</code></pre>
+<p>podemos combinar los dos tipos de selección</p>
+<pre class="r"><code>subset3&lt;- ecovid0420[(ecovid0420$pb3&gt;4 &amp; ecovid0420$pb1==1 ), c(&quot;pb1&quot;, &quot;pb2&quot;, &quot;pb3&quot;)]</code></pre>
+<p>Con dplyr, podemos usar “filter” y “select”</p>
+<pre class="r"><code>subset4&lt;-ecovid0420 %&gt;% 
+  filter(pb3&gt;4 &amp; pb1==1) %&gt;%
+    select(pb1, pb2, pb3)</code></pre>
+</div>
 <div id="ejercicio" class="section level1">
 <h1>Ejercicio</h1>
-<p>Escoja una base de CONAPO. Impórtela Replique la exploración de la práctica Utilice al menos un comando con dplyr</p>
+<ul>
+<li>Escoja una base de CONAPO. Impórtela</li>
+<li>Replique la exploración de la práctica</li>
+<li>Utilice al menos un comando con dplyr</li>
+<li>Realice un subset</li>
+</ul>
 <p>Envíe el script utilizando la liga: <a href="https://forms.gle/KMpTWDkgsu4adsv28" class="uri">https://forms.gle/KMpTWDkgsu4adsv28</a></p>
 </div>
 

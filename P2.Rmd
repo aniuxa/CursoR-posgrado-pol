@@ -165,11 +165,124 @@ mig_inter_quin_proyecciones <- read.csv("http://www.conapo.gob.mx/work/models/CO
 names(mig_inter_quin_proyecciones)
 ```
 
-# Ejercicio
-Escoja una base de CONAPO. Impórtela
-Replique la exploración de la práctica
-Utilice al menos un comando con dplyr
 
+# Revisando ECOVID-ML
+
+Vamos a trabajar con la ECOVID-ML, una nueva fuente desarrollada por INEGI. 
+<https://www.inegi.org.mx/investigacion/ecovidml/2020/>
+
+>Obtener información básica complementaria sobre ocupación y empleo y el efecto sobre el mercado laboral de la pandemia originada por el COVID-19.
+
+>Objetivos específicos
+Identificar a los ocupados y las características básicas del contexto laboral.
+Identificar a los no ocupados, la condición de búsqueda de trabajo, deseo de trabajar y el motivo por el que no buscó trabajo.
+Captar información de los ausentes que retornarán a su trabajo al terminar la contingencia, como acercamiento a la caracterización de la pérdida de trabajo.
+Recopilar información sobre cómo la población está afrontando la pandemia con énfasis en el trabajo, ocupación y empleo.
+Conocer el medio por el que las personas se mantienen informadas de la situación y las medidas de protección que siguen por la contingencia sanitaria.
+
+
+
+
+## Ojeando
+```{r}
+glimpse(ecovid0420)
+glimpse(ecovid0420[,1:10]) # en corchete del lado derecho podemos ojear columnas 
+
+```
+
+Podemos hacer un tipo "labelbook", usando una función que viene de la librería "sjlabelled", "get_labels". Funciona para toda la base o para columnas, o para variables.
+```{r}
+#print(get_labels(ecovid0420)) #todas
+print(get_labels(ecovid0420[, 1:10])) #de las primeras 10 variables
+print(get_labels(ecovid0420$clase2)) #
+```
+
+## Selección de casos y de variables
+Poco a poco vamos comprendiendo más la lógica de R. Hay varias "formas" de programar. Por lo que no te asustes si varios códigos llegan al mismo resultado
+
+Para revisar el contenido de un data frame podemos usar, como lo hicimos anteriormente, el formato basededatos$var o usar corchete, checa como estas cuatro formas tan el mismo resultado.
+
+```{r}
+x<-ecovid0420$pb3
+x<-ecovid0420[["pb3"]]  # ¡Ojo con las comillas! 
+x<-ecovid0420[,10]
+x<-ecovid0420[,"pb3"]
+
+```
+
+Ahora, con el formato de dplyr podemos llegar a lo mismo
+```{r}
+x<-ecovid0420 %>% 
+  select(pb3)
+```
+
+### Selección "inversa"
+O sea no "botar algo", es con el negativo. No funciona con todos los formatos
+```{r}
+x<-ecovid0420 %>% 
+  select(-pb3)
+x<-ecovid0420[,-10]
+
+rm(x) #rm sólo bota objetos
+```
+
+
+### Selección "inversa"
+O sea no "botar algo", es con el negativo. No funciona con todos los formatos
+```{r}
+x<-ecovid0420 %>% 
+  select(-pb3)
+x<-ecovid0420[,-10]
+
+rm(x) #rm sólo bota objetos
+```
+
+Pero con los otros formatos podemos "asignar" valores adentro de un data.frame, y uno de eso valores puede ser "la nada""
+```{r}
+ecovid0420$pb3_2<-ecovid0420$pb3
+ecovid0420$pb3_2<-NULL
+
+```
+
+De aquí viene esa cuesta en el aprendizaje; tenemos que comprender en qué forma programó el que hizo la librería e incluso a veces cómo aprendió quién te está enseñando o el foro que estás leyendo.
+
+
+# Subsetting 
+Rara vez utilizamos una base de datos completa, y rara vez queremos hacer operaciones completas con ellas.
+
+Vamos a pedir cosas más específicas y podemos seleccionar observaciones o filas. Como nuestra base de datos es muy grande, guardaremos el filtro o selección en un objeto.
+
+```{r}
+subset1<-ecovid0420[ecovid0420$pb3>4,]
+```
+
+También podemos seleccionar columnas
+```{r}
+subset2<- ecovid0420[, c("pb1", "pb2", "pb3")]
+```
+
+podemos combinar los dos tipos de selección
+```{r}
+subset3<- ecovid0420[(ecovid0420$pb3>4 & ecovid0420$pb1==1 ), c("pb1", "pb2", "pb3")]
+```
+
+
+Con dplyr, podemos usar "filter" y "select"
+
+```{r}
+
+subset4<-ecovid0420 %>% 
+  filter(pb3>4 & pb1==1) %>%
+    select(pb1, pb2, pb3)
+```
+
+
+
+# Ejercicio
+* Escoja una base de CONAPO. Impórtela
+* Replique la exploración de la práctica
+* Utilice al menos un comando con dplyr
+* Realice un subset
 
 Envíe el script utilizando la liga:
 <https://forms.gle/KMpTWDkgsu4adsv28>

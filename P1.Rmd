@@ -2,12 +2,7 @@
 title: 'Práctica 1. Introducción'
 author: "AE & ML"
 date: "22/08/2020"
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
+output: github_document
 ---
 
 
@@ -159,7 +154,7 @@ library(haven)
 He puesto un ejemplo de una base de datos mexicana en dbf, en este formato.
 
 ```{r}
-ecovid0420<-read.dbf("./datos/ecovid0420.dbf") #checa cómo nos vamos adentro de nuestro directorio
+ecovid0420<-read.dbf("./datos/ecovid0420.DBF") #checa cómo nos vamos adentro de nuestro directorio
 ```
 
 # Ejercicio
