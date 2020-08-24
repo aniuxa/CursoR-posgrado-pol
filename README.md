@@ -45,6 +45,7 @@ d. Introducción al programa y a la idea de programación por objetos
 
 [Práctica 1](P1.md) 
 
+[Sesión 1](https://youtu.be/KAWkSOzEB0o)
 
 ### II.	Estadística descriptiva usando información mexicana (8 horas)
 
