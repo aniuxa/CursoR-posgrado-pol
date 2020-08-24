@@ -17,6 +17,16 @@ Mtra. Mónica Lara
 
 *	Importar textos e introducir al análisis de los mismos a partir de frecuencias de palabras, nombres, verbos y adjetivos.
 
+## Previo
+
+Se enviaron tres cápsulas para trabajar de manera más adecuada el curso
+
+* [Instrucciones para hacer una cuenta en Rstudio.cloud](https://www.youtube.com/watch?v=Jcw146tEa5w)
+
+* [Cápsula de introducción a R (opcional)](https://www.youtube.com/watch?v=HR2MXwrzt00)
+
+* [Importar repositorio a rstudio.cloud](https://www.youtube.com/watch?v=enYCTyXfgh0&feature=youtu.be)
+
 ## Contenido
 
 ### I.	Introducción al uso de R (2 horas)
@@ -31,14 +41,20 @@ c. Lógica de las bases de datos y combinación de unidades de análisis: juntar
 
 d. Introducción al programa y a la idea de programación por objetos
 
+[Presentación](https://github.com/aniuxa/CursoR-posgrado-pol/blob/master/presentaciones/d1.pdf) 
+
 [Práctica 1](P1.md) 
 
+[Sesión 1](https://youtu.be/KAWkSOzEB0o)
 
 ### II.	Estadística descriptiva usando información mexicana (8 horas)
 
 *Sesión 2:*
 
 a. Importación de información desde diferentes formatos (2 horas)
+
+[Práctica 2](P2.md) 
+
 
 *Sesiones 3 y 4*
 
@@ -64,7 +80,7 @@ i.	Gráficos multivariados
 
 ii.	Introducción a los mapas, uso del paquete “mxmaps”
 
-### III.	Introducción al análisis de texto
+### III.	Introducción al análisis de texto (2 horas)
 
 *Sesión 7*
 
