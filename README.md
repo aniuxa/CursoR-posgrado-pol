@@ -47,6 +47,8 @@ d. Introducción al programa y a la idea de programación por objetos
 
 [Sesión 1](https://youtu.be/KAWkSOzEB0o)
 
+Resolución ejercicio, [aquí](https://rpubs.com/aniuxa/Ej12018)
+
 ### II.	Estadística descriptiva usando información mexicana (8 horas)
 
 *Sesión 2:*
@@ -63,6 +65,8 @@ b.	Elementos de estadística descriptiva (4 horas)
 i.	Univarida
 
 ii.	Bivariada
+
+[Práctica 3](P3.md) 
 
 *Sesión 5*
 
