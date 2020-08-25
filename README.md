@@ -57,6 +57,7 @@ a. Importación de información desde diferentes formatos (2 horas)
 
 [Práctica 2](P2.md) 
 
+[Sesión 2](https://youtu.be/8oomP9OrJgE)
 
 *Sesiones 3 y 4*
 
