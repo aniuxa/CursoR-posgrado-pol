@@ -66,6 +66,8 @@ i.	Univarida
 
 ii.	Bivariada
 
+[Práctica 3](P3.md) 
+
 *Sesión 5*
 
 c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
