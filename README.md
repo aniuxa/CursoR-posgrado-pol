@@ -69,6 +69,8 @@ ii.	Bivariada
 
 [Práctica 3](P3.md) 
 
+[Sesión 3](https://youtu.be/OfwmbvX4QkM)
+
 [Práctica 4](P4.md) 
 
 
