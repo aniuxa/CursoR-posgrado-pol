@@ -105,3 +105,4 @@ iii.	Nube de palabras y otras herramientas de análisis
 
 Total de horas= 14 horas
 
+# [Lista de sesiones en youtube](https://www.youtube.com/playlist?list=PLDnSa5YhrAVl-0OIyECAKskAgORalFmsl)
