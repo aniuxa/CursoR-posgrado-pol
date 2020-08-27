@@ -63,15 +63,15 @@ ecovid0420 %>%
 Antes de calcular la desviación estándar, debemos calcular la varianza. Para ello, de nuevo necesitamos el concepto de desviación: desviación es la diferencia de un valor con respecto a una norma. Por lo general, asumimos esta norma como la media aritmética. Del mismo modo,la media aritmética de los cuadrados de las desviaciones de los valores de la variable con respecto a una constante cualquiera se hace mínima cuando dicha constante coincide con la media aritmética. De ahí que la varianza nos da una medida de distancia promedio, sin el problema que siempre dé cero, como pasaría si no la eleváramos a la cuadrado. A continuación presentamso sus fórmulas para la población y la muestra.
 
 
-$$s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x}) }{n-1}$$
+$$s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2 }{n-1}$$
 
-$$\sigma^2=\frac{\sum_{i=1}^{N}(x_i-\mu) }{N}$$
+$$\sigma^2=\frac{\sum_{i=1}^{N}(x_i-\mu)^2 }{N}$$
 
 La medida muestral es diferente a la poblacional en su denominador. Esto proviene de la corrección de Bessel, que corrige el sesgo estadístico en la estimación de la varianza poblacional. 
 
 La varianza es una medida muy importante pero díficil de interpretar. Debido que tenemos las unidades originales de nuestra variable: pesos al cuadrado, años al cuadrado, horas al cuadrado. De ahí, que sea importante sacarle raíz cuadrado:
 
-$$s= \sqrt{s^2}=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x}) }{n-1}}$$
+$$s= \sqrt{s^2}=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2 }{n-1}}$$
 
 La desviación estándar es entonces una medida de dispersión, que nos dice qué tan alejados están los datos de la media. Por lo que aporta mucha más información que la media sola. Por lo general las colocamos juntas:
 
@@ -126,7 +126,7 @@ Con el comando "summary()", obtenemos estos seis números (se agrega la media), 
 
 El gráfico de caja y brazos (o caja y bigotes), también toma en cuenta el concenpto de rango intercuartílico (RIC), que es la diferencia entre el cuartil 1 y el cuartil 3, es decir, establece el rango donde se concentra el 50% de los datos. 
 
-$$ RIC= Q_1 - Q_3 $$
+$$ RIC= Q_3 - Q_1 $$
 
 Otro concepto que utiliza el gráfico es el de atípicos, pero más allá de lo que ya habíamos hecho anteriormente (visualmente), propone unas medidas de límites inferior y superior:
 
@@ -212,7 +212,7 @@ Para la media, las estimaciones de la muestra pueden diferir de acuerdo al facto
 
 ```{r}
 ecovid0420 %>% 
-  filter(clase2==1 & pb1!=4) %>% #vamos a quitar los que no reciben ingresos
+  filter(clase2==1) %>% #sólo trabajadores
   group_by(as_label(pb1))  %>%  # hace el agrupamiento para la variables categóricas
   summarise(media=mean(pe10_1, na.rm=T),
             media_ponderada=
@@ -293,6 +293,35 @@ Con dplyr:
 ICI_2018 %>% 
   with(cor(homicidios_dolosos,pib_per_capita_139))
 
+```
+
+# Etiquetado de variables
+Adenda de lo visto en el curso
+```{r}
+#Revisamos los valores de la variable
+
+table(ecovid0420$pos_ocu)
+
+# De acuerdo a la documentación de la base de datos tenemos:
+
+ecovid0420$pos_ocu<-set_labels(ecovid0420$pos_ocu,
+                               labels=c("No Aplica", # para 0
+                                        "Subordinadxs", # para el 1
+                                        "Cuenta Propia", # para el 2
+                                        "Sin pago")) # Para el 3
+```
+
+Así establecemos estiquetas de valores. 
+
+Para etiquetar variable:
+
+```{r}
+set_label(ecovid0420$pos_ocu)<-"Posición en la ocupación"
+```
+
+Comando "paste", pega el valor de algún objeto. Así verificamos que tengamos esta información
+```{r}
+paste(get_label(ecovid0420$pos_ocu))
 ```
 
 

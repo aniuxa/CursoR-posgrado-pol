@@ -1557,11 +1557,11 @@ div.tocify {
 ##      &lt;dbl&gt;
 ## 1       NA</code></pre>
 <p>Antes de calcular la desviación estándar, debemos calcular la varianza. Para ello, de nuevo necesitamos el concepto de desviación: desviación es la diferencia de un valor con respecto a una norma. Por lo general, asumimos esta norma como la media aritmética. Del mismo modo,la media aritmética de los cuadrados de las desviaciones de los valores de la variable con respecto a una constante cualquiera se hace mínima cuando dicha constante coincide con la media aritmética. De ahí que la varianza nos da una medida de distancia promedio, sin el problema que siempre dé cero, como pasaría si no la eleváramos a la cuadrado. A continuación presentamso sus fórmulas para la población y la muestra.</p>
-<p><span class="math display">\[s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x}) }{n-1}\]</span></p>
-<p><span class="math display">\[\sigma^2=\frac{\sum_{i=1}^{N}(x_i-\mu) }{N}\]</span></p>
+<p><span class="math display">\[s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2 }{n-1}\]</span></p>
+<p><span class="math display">\[\sigma^2=\frac{\sum_{i=1}^{N}(x_i-\mu)^2 }{N}\]</span></p>
 <p>La medida muestral es diferente a la poblacional en su denominador. Esto proviene de la corrección de Bessel, que corrige el sesgo estadístico en la estimación de la varianza poblacional.</p>
 <p>La varianza es una medida muy importante pero díficil de interpretar. Debido que tenemos las unidades originales de nuestra variable: pesos al cuadrado, años al cuadrado, horas al cuadrado. De ahí, que sea importante sacarle raíz cuadrado:</p>
-<p><span class="math display">\[s= \sqrt{s^2}=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x}) }{n-1}}\]</span></p>
+<p><span class="math display">\[s= \sqrt{s^2}=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2 }{n-1}}\]</span></p>
 <p>La desviación estándar es entonces una medida de dispersión, que nos dice qué tan alejados están los datos de la media. Por lo que aporta mucha más información que la media sola. Por lo general las colocamos juntas:</p>
 <pre class="r"><code>ecovid0420 %&gt;% 
   filter(clase2==1) %&gt;% #filtro de casos 
@@ -1605,7 +1605,7 @@ div.tocify {
 ##    1.00   16.00   35.00   32.65   48.00   99.00     431</code></pre>
 <p>Con el comando “summary()”, obtenemos estos seis números (se agrega la media), el resto es lo que conocemos como el resumen de cinco números. Incluye el mínimo y máximo en los extremos y otras dos medidas de posición: el cuartil 1 y el cuartil 3. El cuartil 1 es una medida de posición igual que la mediana que separa la población en un 25% inferior y un 75% superior; mientras que el cuartil 3 separa a la población en un 75% inferior y un 25% superior. Estas medidas nos dan un idea de cómo se distribuye nuestra variable, pero también son la base de unos de los gráficos más famosos: el gráfico de caja y brazos o “boxplot”.</p>
 <p>El gráfico de caja y brazos (o caja y bigotes), también toma en cuenta el concenpto de rango intercuartílico (RIC), que es la diferencia entre el cuartil 1 y el cuartil 3, es decir, establece el rango donde se concentra el 50% de los datos.</p>
-<p><span class="math display">\[ RIC= Q_1 - Q_3 \]</span></p>
+<p><span class="math display">\[ RIC= Q_3 - Q_1 \]</span></p>
 <p>Otro concepto que utiliza el gráfico es el de atípicos, pero más allá de lo que ya habíamos hecho anteriormente (visualmente), propone unas medidas de límites inferior y superior:</p>
 <p><span class="math display">\[ L_{inferior}= Q_1- 1.5 * RIC \]</span></p>
 <p><span class="math display">\[ L_{superior}= Q_3+ 1.5 * RIC \]</span></p>
@@ -1690,7 +1690,7 @@ ecovid0420 %&gt;%
 ##   Total 100.0%</code></pre>
 <p>Para la media, las estimaciones de la muestra pueden diferir de acuerdo al factor de expansión que es parte del diseño muestral. En base tenemos la función que nos calcula la media expandida o ponderada:</p>
 <pre class="r"><code>ecovid0420 %&gt;% 
-  filter(clase2==1 &amp; pb1!=4) %&gt;% #vamos a quitar los que no reciben ingresos
+  filter(clase2==1) %&gt;% #sólo trabajadores
   group_by(as_label(pb1))  %&gt;%  # hace el agrupamiento para la variables categóricas
   summarise(media=mean(pe10_1, na.rm=T),
             media_ponderada=
@@ -1766,6 +1766,29 @@ cor(ICI_2018$homicidios_dolosos, ICI_2018$pib_per_capita_139,
 <pre><code>## [1] -0.4788776</code></pre>
 </div>
 </div>
+</div>
+<div id="etiquetado-de-variables" class="section level1">
+<h1>Etiquetado de variables</h1>
+<p>Adenda de lo visto en el curso</p>
+<pre class="r"><code>#Revisamos los valores de la variable
+
+table(ecovid0420$pos_ocu)</code></pre>
+<pre><code>## 
+##    0    1    2    3 
+## 2700 2050  796   47</code></pre>
+<pre class="r"><code># De acuerdo a la documentación de la base de datos tenemos:
+
+ecovid0420$pos_ocu&lt;-set_labels(ecovid0420$pos_ocu,
+                               labels=c(&quot;No Aplica&quot;, # para 0
+                                        &quot;Subordinadxs&quot;, # para el 1
+                                        &quot;Cuenta Propia&quot;, # para el 2
+                                        &quot;Sin pago&quot;)) # Para el 3</code></pre>
+<p>Así establecemos estiquetas de valores.</p>
+<p>Para etiquetar variable:</p>
+<pre class="r"><code>set_label(ecovid0420$pos_ocu)&lt;-&quot;Posición en la ocupación&quot;</code></pre>
+<p>Comando “paste”, pega el valor de algún objeto. Así verificamos que tengamos esta información</p>
+<pre class="r"><code>paste(get_label(ecovid0420$pos_ocu))</code></pre>
+<pre><code>## [1] &quot;Posición en la ocupación&quot;</code></pre>
 </div>
 <div id="ejercicio" class="section level1">
 <h1>Ejercicio</h1>
