@@ -73,7 +73,7 @@ ii.	Bivariada
 
 [Práctica 4](P4.md) 
 
-[Sesión 4] (https://youtu.be/VvokO1ekmks)
+[Sesión 4](https://youtu.be/VvokO1ekmks)
 
 *Sesión 5*
 
