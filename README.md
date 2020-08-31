@@ -85,6 +85,8 @@ ii.	Uso de “esquisse” para visualizar información
 
 [Práctica 5](P5.md) 
 
+[Sesión 5](https://youtu.be/dzjgx2Tl4us)
+
 *Sesión 6*
 
 d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 horas)
