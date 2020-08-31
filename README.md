@@ -85,6 +85,8 @@ ii.	Uso de “esquisse” para visualizar información
 
 [Práctica 5](P5.md) 
 
+[Sesión 5](https://youtu.be/dzjgx2Tl4us)
+
 *Sesión 6*
 
 d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 horas)
@@ -92,6 +94,8 @@ d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 
 i.	Gráficos multivariados
 
 ii.	Introducción a los mapas, uso del paquete “mxmaps”
+
+[Práctica 6](P6.R) 
 
 ### III.	Introducción al análisis de texto (2 horas)
 
