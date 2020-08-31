@@ -26,7 +26,7 @@ library(mxmaps)
 # Datos                   -----------------------------------------------
 
 # índice de competitividad estatal (no internacional)
-ICE_2018 <- read_excel("./datos/ICE_2018.xlsx", sheet = "para_importar")
+ICE_2018 <- read_excel("https://github.com/aniuxa/CursoR-posgrado-pol/blob/master/datos/ICE_2018.xlsx", sheet = "para_importar")
 ICE_2018 <- clean_names(ICE_2018) # limpia los nombres
 
 # Gráficos multivariados  -----------------------------------------------
