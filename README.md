@@ -81,7 +81,8 @@ c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
 
 i.	Introducción a ggplot
 
-ii.	Uso de “esquisse” para visualizar información 
+ii.	Uso de “esquisse” para visualizar información
+
 [Práctica 5](P5.md) 
 
 *Sesión 6*
