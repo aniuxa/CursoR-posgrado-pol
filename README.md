@@ -95,6 +95,8 @@ i.	Gráficos multivariados
 
 ii.	Introducción a los mapas, uso del paquete “mxmaps”
 
+[Práctica 6](P6.R) 
+
 ### III.	Introducción al análisis de texto (2 horas)
 
 *Sesión 7*
