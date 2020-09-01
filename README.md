@@ -97,6 +97,8 @@ ii.	Introducción a los mapas, uso del paquete “mxmaps”
 
 [Práctica 6](P6.R) 
 
+[Sesión 6] (https://youtu.be/gzZOEXq7tDs)
+
 ### III.	Introducción al análisis de texto (2 horas)
 
 #### *Sesión 7*
