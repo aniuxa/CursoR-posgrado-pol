@@ -31,7 +31,7 @@ Se enviaron tres cápsulas para trabajar de manera más adecuada el curso
 
 ### I.	Introducción al uso de R (2 horas)
 
-*Sesión 1*
+#### *Sesión 1*
 
 a. Fuentes de información mexicanas
 
@@ -51,7 +51,7 @@ Resolución ejercicio, [aquí](https://rpubs.com/aniuxa/Ej12018)
 
 ### II.	Estadística descriptiva usando información mexicana (8 horas)
 
-*Sesión 2:*
+#### *Sesión 2:*
 
 a. Importación de información desde diferentes formatos (2 horas)
 
@@ -59,7 +59,7 @@ a. Importación de información desde diferentes formatos (2 horas)
 
 [Sesión 2](https://youtu.be/8oomP9OrJgE)
 
-*Sesiones 3 y 4*
+#### *Sesiones 3 y 4*
 
 b.	Elementos de estadística descriptiva (4 horas)
 
@@ -75,7 +75,7 @@ ii.	Bivariada
 
 [Sesión 4](https://youtu.be/VvokO1ekmks)
 
-*Sesión 5*
+#### *Sesión 5*
 
 c.	Manipulación de bases de datos y visualización gráfica  (2 horas)
 
@@ -87,7 +87,7 @@ ii.	Uso de “esquisse” para visualizar información
 
 [Sesión 5](https://youtu.be/dzjgx2Tl4us)
 
-*Sesión 6*
+#### *Sesión 6*
 
 d.	Manipulación de bases de datos y visualización gráfica, continuación  (2 horas)
 
@@ -97,9 +97,11 @@ ii.	Introducción a los mapas, uso del paquete “mxmaps”
 
 [Práctica 6](P6.R) 
 
+[Sesión 6](https://youtu.be/gzZOEXq7tDs)
+
 ### III.	Introducción al análisis de texto (2 horas)
 
-*Sesión 7*
+#### *Sesión 7*
 
 a.	Importación y visualización de texto
 
@@ -108,6 +110,9 @@ i.	Importación de archivos .txt
 ii.	Limpieza de caracteres
 
 iii.	Nube de palabras y otras herramientas de análisis
+
+[Práctica 7](P7.md) 
+
 
 Total de horas= 14 horas
 
