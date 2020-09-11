@@ -5,6 +5,8 @@ Dra. Ana Escoto
 
 Mtra. Mónica Lara
 
+Este curso se impartió del 24 de agosto al 2 de septiembre de 2020.
+
 ## Objetivo general
 *	Ampliar las habilidades para el diseño y ejecución de la investigación social cuantitativa en los y las estudiantes a través de la discusión de elementos teóricos y metodológicos, así como la puesta en práctica de ejemplos con información secundaria y su interpretación con la herramienta de software libre, R, de acceso gratuito y de código abierto.  
 
